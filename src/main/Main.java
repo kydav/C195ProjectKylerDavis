@@ -18,10 +18,6 @@ public class Main extends Application {
         Locale.setDefault(userDefault);
         ResourceBundle defaultBundle = ResourceBundle.getBundle("Resources", userDefault);
 
-        //Locale userLocale = new Locale.Builder().setLanguage(Locale.getDefault().getLanguage()).build();
-        //Locale locale = Locale.userLocale;
-        //ResourceBundle userBundle = ResourceBundle.getBundle(userLocale, locale);
-
         Parent root = FXMLLoader.load(getClass().getResource("../View/LoginScreen.fxml"),defaultBundle);
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
