@@ -28,7 +28,7 @@ public class LoginScreenController {
 
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(query);
-        
+
         rs.next();
         String userPass = rs.getString("password");
 
