@@ -6,15 +6,17 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.LoginScreenController">
    <children>
       <Text layoutX="-3.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%login.title" textAlignment="CENTER" wrappingWidth="600.0">
          <font>
             <Font size="30.0" />
          </font>
       </Text>
-      <TextField layoutX="217.0" layoutY="130.0" promptText="%login.username" />
-      <TextField layoutX="217.0" layoutY="180.0" promptText="%login.password" />
-      <Button layoutX="254.0" layoutY="224.0" mnemonicParsing="false" text="%login.login" />
+      <TextField fx:id="loginUsername" layoutX="217.0" layoutY="130.0" promptText="%login.username" />
+      <TextField fx:id="loginPassword" layoutX="217.0" layoutY="197.0" promptText="%login.password" />
+      <Button layoutX="254.0" layoutY="246.0" mnemonicParsing="false" onAction="#loginClicked" text="%login.login" />
+      <Text layoutX="217.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%login.username" />
+      <Text layoutX="217.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%login.password" />
    </children>
 </AnchorPane>

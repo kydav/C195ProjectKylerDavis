@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.sql.SQLException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -13,7 +15,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         String userLanguage = Locale.getDefault().getLanguage();
-        System.out.println(userLanguage);
         Locale  userDefault = new Locale(userLanguage);
         Locale.setDefault(userDefault);
         ResourceBundle defaultBundle = ResourceBundle.getBundle("Resources", userDefault);
@@ -23,7 +24,10 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException, SQLException, Exception {
+        DBConnection.makeConnection();
         launch(args);
+        DBConnection.closeConnection();
+
     }
 }
