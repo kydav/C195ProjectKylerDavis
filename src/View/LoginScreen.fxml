@@ -16,7 +16,7 @@
       </Text>
       <TextField fx:id="loginUsername" layoutX="214.0" layoutY="130.0" promptText="%login.username" />
       <PasswordField fx:id="loginPassword" layoutX="214.0" layoutY="200.0" promptText="%login.password" />
-      <Button layoutX="254.0" layoutY="246.0" mnemonicParsing="false" onAction="#loginClicked" text="%login.login" />
+      <Button fx:id="loginButton" layoutX="254.0" layoutY="246.0" mnemonicParsing="false" onAction="#loginClicked" text="%login.login" />
       <Text layoutX="216.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%login.username" />
       <Text layoutX="216.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%login.password" />
    </children>
