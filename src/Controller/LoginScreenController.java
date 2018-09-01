@@ -45,11 +45,10 @@ public class LoginScreenController {
                     System.out.println("User login successful");
 
                     Stage stage = (Stage) loginButton.getScene().getWindow();
-                    Parent login = FXMLLoader.load(getClass().getResource("LandingScreen.fxml"));
+                    Parent login = FXMLLoader.load(getClass().getResource("../View/LandingScreen.fxml"));
                     Scene scene = new Scene(login);
                     stage.setScene(scene);
                     stage.show();
-
                 } else {
                     alertFunction(resources.getString("login.incorrectPassword"), resources.getString("login.incorrect") + " " + userName + ". " + resources.getString("login.tryAgain"));
                 }
