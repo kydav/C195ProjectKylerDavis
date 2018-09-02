@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.NewCustomerController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ManageCustomerController">
    <children>
       <TextField layoutX="14.0" layoutY="67.0" promptText="\%customer.customerName" />
       <TextField layoutX="14.0" layoutY="111.0" promptText="\%customer.customerAddress" />

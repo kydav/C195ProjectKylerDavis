@@ -11,7 +11,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Main extends Application {
-
+    public String loggedInUser;
     @Override
     public void start(Stage primaryStage) throws Exception{
         String userLanguage = Locale.getDefault().getLanguage();

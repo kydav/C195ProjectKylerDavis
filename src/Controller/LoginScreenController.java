@@ -44,6 +44,7 @@ public class LoginScreenController {
                 if (userPass.equals(password)) {
                     System.out.println("User login successful");
 
+
                     Stage stage = (Stage) loginButton.getScene().getWindow();
                     Parent login = FXMLLoader.load(getClass().getResource("../View/LandingScreen.fxml"));
                     Scene scene = new Scene(login);
