@@ -2,21 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Model/Customer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/C195ProjectKylerDavis/Controller/LoginScreenController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/C195ProjectKylerDavis/Controller/NewCustomerController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/C195ProjectKylerDavis/View/NewCustomer.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/C195ProjectKylerDavis/main/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/LandingScreenController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/LandingScreenController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/LoginScreenController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/LoginScreenController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/NewCustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ManageCustomerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Resources.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/Resources.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Resources_en.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/Resources_en.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Resources_es.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/Resources_es.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Resources_fr.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/Resources_fr.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/NewCustomer.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ManageCustomer.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ManageCustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ManageCustomerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/ManageCustomer.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ManageCustomer.fxml" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -82,30 +70,30 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="class" value="1" />
-          <entry key="fxml" value="11" />
-          <entry key="java" value="16" />
+          <entry key="fxml" value="13" />
+          <entry key="java" value="19" />
           <entry key="properties" value="37" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CLASS" value="1" />
-          <entry key="JAVA" value="16" />
+          <entry key="JAVA" value="19" />
           <entry key="Properties" value="37" />
-          <entry key="XML" value="11" />
+          <entry key="XML" value="13" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="27" />
           <entry key="fxml" value="162" />
-          <entry key="java" value="7319" />
+          <entry key="java" value="7887" />
           <entry key="properties" value="1021" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="7319" />
+          <entry key="JAVA" value="7887" />
           <entry key="PLAIN_TEXT" value="27" />
           <entry key="Properties" value="1021" />
           <entry key="XML" value="162" />
@@ -117,39 +105,39 @@
     <favorites_list name="JavaFxApplication" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Controller/ManageCustomerController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Controller/LandingScreenController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" column="32" lean-forward="true" selection-start-line="7" selection-start-column="32" selection-end-line="7" selection-end-column="32" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/ManageCustomer.fxml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
-            </state>
-          </provider>
-          <provider editor-type-id="JavaFX-Scene-Builder" />
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.4148784">
+      <split-first>
+        <leaf>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/Controller/LoginScreenController.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-28">
+                  <caret line="17" selection-start-line="17" selection-end-line="17" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/Controller/ManageCustomerController.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="156">
+                  <caret line="21" column="4" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="4" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                    <element signature="e#3580#3581#0" expanded="true" />
+                    <element signature="e#3615#3616#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -182,12 +170,13 @@
         <option value="$PROJECT_DIR$/src/View/LandingScreen.fxml" />
         <option value="$PROJECT_DIR$/src/Controller/LandingScreenController.java" />
         <option value="$PROJECT_DIR$/src/main/Main.java" />
-        <option value="$PROJECT_DIR$/src/Controller/LoginScreenController.java" />
         <option value="$PROJECT_DIR$/src/Resources.properties" />
         <option value="$PROJECT_DIR$/src/Resources_en.properties" />
         <option value="$PROJECT_DIR$/src/Resources_es.properties" />
         <option value="$PROJECT_DIR$/src/Resources_fr.properties" />
         <option value="$PROJECT_DIR$/src/Model/Customer.java" />
+        <option value="$PROJECT_DIR$/src/Controller/LoginScreenController.java" />
+        <option value="$PROJECT_DIR$/src/View/ManageCustomer.fxml" />
         <option value="$PROJECT_DIR$/src/Controller/ManageCustomerController.java" />
       </list>
     </option>
@@ -267,7 +256,7 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="OverrideImplement.combined" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1535921763246" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1535937376554" />
     <property name="dynamic.classpath" value="false" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -393,7 +382,7 @@
     <frame x="0" y="22" width="1440" height="878" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.18097281" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.18097281" />
       <window_info id="Structure" order="1" weight="0.24973376" />
       <window_info id="Favorites" order="2" weight="0.32960597" />
       <window_info id="Designer" order="3" />
@@ -403,7 +392,7 @@
       <window_info id="DB Browser" order="7" weight="0.32960597" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.21501273" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.21501273" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3994911" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -555,16 +544,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/LoginScreenController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="32" column="50" lean-forward="true" selection-start-line="32" selection-start-column="50" selection-end-line="32" selection-end-column="50" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
@@ -574,14 +553,6 @@
           </folding>
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ManageCustomer.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/LandingScreen.fxml">
       <provider selected="true" editor-type-id="text-editor">
@@ -598,12 +569,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Controller/LoginScreenController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-28">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ManageCustomer.fxml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="116" selection-start-line="10" selection-start-column="116" selection-end-line="10" selection-end-column="116" />
+        </state>
+      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Controller/ManageCustomerController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
+        <state relative-caret-position="156">
+          <caret line="21" column="4" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="4" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#3580#3581#0" expanded="true" />
+            <element signature="e#3615#3616#0" expanded="true" />
           </folding>
         </state>
       </provider>
