@@ -6,9 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
@@ -16,17 +14,34 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 
+import java.awt.event.FocusListener;
 import java.io.IOException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import Model.Customer;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.ResourceBundle;
 
 import static main.DBConnection.*;
+import javafx.beans.binding.Binding;
+import javafx.scene.control.TableView;
 
 public class ManageCustomerController {
+//public class ManageCustomerController implements FocusListener {
+    public static ObservableList<ObservableList> customerToModify;
     private ObservableList<ObservableList> data;
     @FXML
     private TableView<ObservableList> manageCustomerTableView;
+    //public void focusGained(FocusEvent e){
+    //    manageCustomerEdit.setDisable(false);
+    //}
+    //public void focusLost(FocusEvent e){
+    //    manageCustomerEdit.setDisable(false);
+    //}
+    @FXML
+    private ResourceBundle resources;
     @FXML
     private Button manageCustomerEdit;
     @FXML
@@ -72,30 +87,49 @@ public class ManageCustomerController {
     @FXML
     void cancelManageCustomer(ActionEvent event) throws IOException {
         Stage stage = (Stage) manageCustomerCancel.getScene().getWindow();
-        Parent landing = FXMLLoader.load(getClass().getResource("../View/LandingScreen.fxml"));
+        Parent landing = FXMLLoader.load(getClass().getResource("../View/LandingScreen.fxml"), resources);
         Scene scene = new Scene(landing);
         stage.setScene(scene);
         stage.show();
     }
 
     @FXML
-    void deleteCustomer(ActionEvent event) {
+    void deleteCustomer(ActionEvent event) throws IOException {
+        customerToModify = manageCustomerTableView.getSelectionModel().getSelectedItem();
+        if(customerToModify != null) {
 
+        }else{
+            alertFunction(resources.getString("manage.noSelectedTitle"), resources.getString("manage.noSelectedHeader"));
+        }
     }
 
     @FXML
-    void editCustomer(ActionEvent event) {
-
+    void editCustomer(ActionEvent event) throws IOException {
+        customerToModify = manageCustomerTableView.getSelectionModel().getSelectedItem();
+        if(customerToModify != null) {
+            Stage stage = (Stage) manageCustomerEdit.getScene().getWindow();
+            Parent modifyCustomer = FXMLLoader.load(getClass().getResource("ModifyCustomer.fxml"));
+            Scene scene = new Scene(modifyCustomer);
+            stage.setScene(scene);
+            stage.show();
+        }else{
+            alertFunction(resources.getString("manage.noSelectedTitle"), resources.getString("manage.noSelectedHeader"));
+        }
     }
 
     @FXML
     void newCustomer(ActionEvent event) {
 
     }
+    void alertFunction(String title, String header){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.showAndWait();
+    }
     public void initialize(){
         populateTableView();
-        manageCustomerDelete.setDisable(true);
-        manageCustomerEdit.setDisable(true);
+
     }
 
 }

@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
@@ -12,10 +11,10 @@
       </TableView>
       <ButtonBar layoutX="254.0" layoutY="354.0" prefHeight="40.0" prefWidth="322.0">
          <buttons>
-            <Button fx:id="manageCustomerEdit" defaultButton="true" mnemonicParsing="false" onAction="#editCustomer" text="Edit" />
-            <Button fx:id="manageCustomerDelete" defaultButton="true" mnemonicParsing="false" onAction="#deleteCustomer" text="Delete" />
-            <Button fx:id="manageCustomerNew" defaultButton="true" mnemonicParsing="false" onAction="#newCustomer" text="New" />
-            <Button fx:id="manageCustomerCancel" cancelButton="true" mnemonicParsing="false" onAction="#cancelManageCustomer" text="Cancel" />
+            <Button fx:id="manageCustomerEdit" defaultButton="true" mnemonicParsing="false" onAction="#editCustomer" text="%manage.editButton" />
+            <Button fx:id="manageCustomerDelete" defaultButton="true" mnemonicParsing="false" onAction="#deleteCustomer" text="%manage.deleteButton" />
+            <Button fx:id="manageCustomerNew" defaultButton="true" mnemonicParsing="false" onAction="#newCustomer" text="%manage.newButton" />
+            <Button fx:id="manageCustomerCancel" cancelButton="true" mnemonicParsing="false" onAction="#cancelManageCustomer" text="%manage.cancelButton" />
          </buttons>
       </ButtonBar>
    </children>

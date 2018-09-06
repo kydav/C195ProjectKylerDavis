@@ -46,7 +46,7 @@ public class LoginScreenController {
                     System.out.println("User login successful");
 
                     Stage stage = (Stage) loginButton.getScene().getWindow();
-                    Parent login = FXMLLoader.load(getClass().getResource("../View/LandingScreen.fxml"));
+                    Parent login = FXMLLoader.load(getClass().getResource("../View/LandingScreen.fxml"), resources);
                     Scene scene = new Scene(login);
                     stage.setScene(scene);
                     stage.show();
