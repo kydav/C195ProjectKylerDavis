@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 
+import java.util.Optional;
 import java.awt.event.FocusListener;
 import java.io.IOException;
 import java.sql.Statement;
@@ -30,7 +31,8 @@ import javafx.scene.control.TableView;
 
 public class ManageCustomerController {
 //public class ManageCustomerController implements FocusListener {
-    public static ObservableList<ObservableList> customerToModify;
+    public static ObservableList<String> customerToModify;
+    public static Customer customerToModifyTwo;
     private ObservableList<ObservableList> data;
     @FXML
     private TableView<ObservableList> manageCustomerTableView;
@@ -50,14 +52,76 @@ public class ManageCustomerController {
     private Button manageCustomerNew;
     @FXML
     private Button manageCustomerCancel;
+    @FXML
+    void deleteCustomer(ActionEvent event) throws IOException {
+        customerToModify = manageCustomerTableView.getSelectionModel().getSelectedItem();
+        String customerToModifyId = customerToModify.get(0);
+
+        if(customerToModify != null) {
+            try{
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle(resources.getString("manage.deleteConfirmTitle"));
+                alert.setHeaderText(resources.getString("manage.deleteConfirmHeader"));
+                alert.setContentText(resources.getString("manage.deleteConfirmText"));
+                Optional<ButtonType> result = alert.showAndWait();
+                if(result.get() == ButtonType.OK) {
+                    String customerToDelete = "UPDATE U04EE1.customer \n" +
+                            "SET U04EE1.customer.active = 0 \n" +
+                            "WHERE U04EE1.customer.customerId = " + customerToModifyId + ";";
+                    System.out.println(customerToDelete);
+                    Statement stmt = conn.createStatement();
+                    stmt.executeUpdate(customerToDelete);
+                    populateTableView();
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+                System.out.println("Error Deleting Customer");
+            }
+        }else{
+            alertFunction(resources.getString("manage.noSelectedTitle"), resources.getString("manage.noSelectedHeader"));
+        }
+    }
+    @FXML
+    void editCustomer(ActionEvent event) throws IOException {
+        customerToModify = manageCustomerTableView.getSelectionModel().getSelectedItem();
+
+        if(customerToModify != null) {
+            Stage stage = (Stage) manageCustomerEdit.getScene().getWindow();
+            Parent modifyCustomer = FXMLLoader.load(getClass().getResource("ModifyCustomer.fxml"));
+            Scene scene = new Scene(modifyCustomer);
+            stage.setScene(scene);
+            stage.show();
+        }else{
+            alertFunction(resources.getString("manage.noSelectedTitle"), resources.getString("manage.noSelectedHeader"));
+        }
+    }
+    @FXML
+    void newCustomer(ActionEvent event) {
+
+    }
+    @FXML
+    void cancelManageCustomer(ActionEvent event) throws IOException {
+        Stage stage = (Stage) manageCustomerCancel.getScene().getWindow();
+        Parent landing = FXMLLoader.load(getClass().getResource("../View/LandingScreen.fxml"), resources);
+        Scene scene = new Scene(landing);
+        stage.setScene(scene);
+        stage.show();
+    }
+    void alertFunction(String title, String header){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.showAndWait();
+    }
     public void populateTableView(){
         data = FXCollections.observableArrayList();
         try{
-            String allCustomer = "SELECT custo.customerid, custo.customerName, address.phone, country.country, address.postalCode  \n" +
-                    "FROM U04EE1.customer as custo \n" +
-                    "join U04EE1.address as address on custo.addressid = address.addressid \n" +
-                    "join U04EE1.city as city on address.cityid = city.cityid \n" +
-                    "join U04EE1.country as country on city.countryid = country.countryid;";
+            String allCustomer =    "SELECT U04EE1.customer.customerid, U04EE1.customer.customerName, U04EE1.address.phone, U04EE1.country.country, U04EE1.address.postalCode  \n" +
+                                    "FROM U04EE1.customer \n" +
+                                    "JOIN U04EE1.address ON U04EE1.customer.addressid = U04EE1.address.addressid \n" +
+                                    "JOIN U04EE1.city ON U04EE1.address.cityid = U04EE1.city.cityid \n" +
+                                    "JOIN U04EE1.country ON U04EE1.city.countryid = U04EE1.country.countryid \n" +
+                                    "WHERE U04EE1.customer.active = 1;";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(allCustomer);
 
@@ -83,49 +147,6 @@ public class ManageCustomerController {
             e.printStackTrace();
             System.out.println("Error on Building Data");
         }
-    }
-    @FXML
-    void cancelManageCustomer(ActionEvent event) throws IOException {
-        Stage stage = (Stage) manageCustomerCancel.getScene().getWindow();
-        Parent landing = FXMLLoader.load(getClass().getResource("../View/LandingScreen.fxml"), resources);
-        Scene scene = new Scene(landing);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    @FXML
-    void deleteCustomer(ActionEvent event) throws IOException {
-        customerToModify = manageCustomerTableView.getSelectionModel().getSelectedItem();
-        if(customerToModify != null) {
-
-        }else{
-            alertFunction(resources.getString("manage.noSelectedTitle"), resources.getString("manage.noSelectedHeader"));
-        }
-    }
-
-    @FXML
-    void editCustomer(ActionEvent event) throws IOException {
-        customerToModify = manageCustomerTableView.getSelectionModel().getSelectedItem();
-        if(customerToModify != null) {
-            Stage stage = (Stage) manageCustomerEdit.getScene().getWindow();
-            Parent modifyCustomer = FXMLLoader.load(getClass().getResource("ModifyCustomer.fxml"));
-            Scene scene = new Scene(modifyCustomer);
-            stage.setScene(scene);
-            stage.show();
-        }else{
-            alertFunction(resources.getString("manage.noSelectedTitle"), resources.getString("manage.noSelectedHeader"));
-        }
-    }
-
-    @FXML
-    void newCustomer(ActionEvent event) {
-
-    }
-    void alertFunction(String title, String header){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.showAndWait();
     }
     public void initialize(){
         populateTableView();

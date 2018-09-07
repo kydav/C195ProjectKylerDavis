@@ -31,7 +31,7 @@ public class LandingScreenController {
     @FXML
     void reportsButtonClicked(ActionEvent event) throws Exception{
         //Stage stage = (Stage) reportsButton.getScene().getWindow();
-        //Parent reports = FXMLLoader.load(getClass().getResource("../View/ManageReports.fxml"));
+        //Parent reports = FXMLLoader.load(getClass().getResource("../View/ManageReports.fxml"), resources);
         //Scene scene = new Scene(reports);
         //stage.setScene(scene);
         //stage.show();
@@ -40,7 +40,7 @@ public class LandingScreenController {
     @FXML
     void schedulingButtonClicked(ActionEvent event) throws Exception{
         //Stage stage = (Stage) schedulingButton.getScene().getWindow();
-        //Parent schedules = FXMLLoader.load(getClass().getResource("../View/ManageScheduling.fxml"));
+        //Parent schedules = FXMLLoader.load(getClass().getResource("../View/ManageSchedule.fxml"), resources);
         //Scene scene = new Scene(schedules);
         //stage.setScene(scene);
         //stage.show();
