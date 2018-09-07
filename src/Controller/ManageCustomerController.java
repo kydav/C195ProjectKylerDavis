@@ -13,35 +13,28 @@ import javafx.collections.FXCollections;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.scene.control.TableColumn.CellDataFeatures;
-
+import javafx.scene.control.TableView;
 import java.util.Optional;
-import java.awt.event.FocusListener;
 import java.io.IOException;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import Model.Customer;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.ResourceBundle;
 
 import static main.DBConnection.*;
+import Model.Customer;
+
+import java.sql.SQLException;
+import java.awt.event.FocusListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import javafx.beans.binding.Binding;
 import javafx.scene.control.TableView;
 
 public class ManageCustomerController {
-//public class ManageCustomerController implements FocusListener {
     public static ObservableList<String> customerToModify;
-    public static Customer customerToModifyTwo;
     private ObservableList<ObservableList> data;
     @FXML
     private TableView<ObservableList> manageCustomerTableView;
-    //public void focusGained(FocusEvent e){
-    //    manageCustomerEdit.setDisable(false);
-    //}
-    //public void focusLost(FocusEvent e){
-    //    manageCustomerEdit.setDisable(false);
-    //}
     @FXML
     private ResourceBundle resources;
     @FXML
@@ -56,7 +49,6 @@ public class ManageCustomerController {
     void deleteCustomer(ActionEvent event) throws IOException {
         customerToModify = manageCustomerTableView.getSelectionModel().getSelectedItem();
         String customerToModifyId = customerToModify.get(0);
-
         if(customerToModify != null) {
             try{
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -68,9 +60,9 @@ public class ManageCustomerController {
                     String customerToDelete = "UPDATE U04EE1.customer \n" +
                             "SET U04EE1.customer.active = 0 \n" +
                             "WHERE U04EE1.customer.customerId = " + customerToModifyId + ";";
-                    System.out.println(customerToDelete);
                     Statement stmt = conn.createStatement();
-                    stmt.executeUpdate(customerToDelete);
+                    int rows = stmt.executeUpdate(customerToDelete);
+                    System.out.println(rows + "Customer Deleted Successfully");
                     populateTableView();
                 }
             }catch(Exception e){
@@ -84,7 +76,7 @@ public class ManageCustomerController {
     @FXML
     void editCustomer(ActionEvent event) throws IOException {
         customerToModify = manageCustomerTableView.getSelectionModel().getSelectedItem();
-
+        String customerToModifyId = customerToModify.get(0);
         if(customerToModify != null) {
             Stage stage = (Stage) manageCustomerEdit.getScene().getWindow();
             Parent modifyCustomer = FXMLLoader.load(getClass().getResource("ModifyCustomer.fxml"));
@@ -96,8 +88,12 @@ public class ManageCustomerController {
         }
     }
     @FXML
-    void newCustomer(ActionEvent event) {
-
+    void newCustomer(ActionEvent event) throws IOException{
+        Stage stage = (Stage) manageCustomerNew.getScene().getWindow();
+        Parent newCustomer = FXMLLoader.load(getClass().getResource("../View/NewCustomer.fxml"));
+        Scene scene = new Scene(newCustomer);
+        stage.setScene(scene);
+        stage.show();
     }
     @FXML
     void cancelManageCustomer(ActionEvent event) throws IOException {
@@ -150,7 +146,5 @@ public class ManageCustomerController {
     }
     public void initialize(){
         populateTableView();
-
     }
-
 }
