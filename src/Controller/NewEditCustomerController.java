@@ -21,12 +21,14 @@ import java.sql.ResultSet;
 import java.util.ResourceBundle;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import static Controller.ManageCustomerController.customerToModify;
+
 
 import static main.DBConnection.*;
 import Model.Customer;
 import Model.Customer.*;
 
-public class NewCustomerController {
+public class NewEditCustomerController {
     @FXML
     private ResourceBundle resources;
     @FXML
@@ -83,5 +85,30 @@ public class NewCustomerController {
             alert.showAndWait();
         }
     }
-
+    public void initialize() {
+        if(customerToModify != null){
+            try {
+                String customerInEditId = customerToModify.get(0);
+                String customerInEdit = "SELECT U04EE1.customer.customerName, U04EE1.address.phone, U04EE1.address.address, U04EE1.address.address2, U04EE1.city.city, U04EE1.address.postalCode, U04EE1.country.country \n" +
+                        "FROM U04EE1.customer \n" +
+                        "JOIN U04EE1.address ON U04EE1.customer.addressid = U04EE1.address.addressid \n" +
+                        "JOIN U04EE1.city ON U04EE1.address.cityid = U04EE1.city.cityid \n" +
+                        "JOIN U04EE1.country ON U04EE1.city.countryid = U04EE1.country.countryid \n" +
+                        "WHERE U04EE1.customer.customerid = " + customerInEditId + ";";
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(customerInEdit);
+                rs.next();
+                customerNameField.setText(rs.getString("customerName"));
+                customerPhoneField.setText(rs.getString("phone"));
+                customerAddressField.setText(rs.getString("address"));
+                customerAddress2Field.setText(rs.getString("address2"));
+                customerCityField.setText(rs.getString("city"));
+                customerPostalCodeField.setText(rs.getString("postalCode"));
+                customerCountryField.setText(rs.getString("country"));
+            }catch(Exception e){
+                e.printStackTrace();
+                System.out.println("Error loading customer");
+            }
+        }
+    }
 }

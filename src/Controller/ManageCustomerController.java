@@ -21,14 +21,6 @@ import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
 import static main.DBConnection.*;
-import Model.Customer;
-
-import java.sql.SQLException;
-import java.awt.event.FocusListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import javafx.beans.binding.Binding;
-import javafx.scene.control.TableView;
 
 public class ManageCustomerController {
     public static ObservableList<String> customerToModify;
@@ -79,7 +71,7 @@ public class ManageCustomerController {
         String customerToModifyId = customerToModify.get(0);
         if(customerToModify != null) {
             Stage stage = (Stage) manageCustomerEdit.getScene().getWindow();
-            Parent modifyCustomer = FXMLLoader.load(getClass().getResource("ModifyCustomer.fxml"));
+            Parent modifyCustomer = FXMLLoader.load(getClass().getResource("../View/NewEditCustomer.fxml"), resources);
             Scene scene = new Scene(modifyCustomer);
             stage.setScene(scene);
             stage.show();
@@ -89,8 +81,9 @@ public class ManageCustomerController {
     }
     @FXML
     void newCustomer(ActionEvent event) throws IOException{
+        customerToModify = null;
         Stage stage = (Stage) manageCustomerNew.getScene().getWindow();
-        Parent newCustomer = FXMLLoader.load(getClass().getResource("../View/NewCustomer.fxml"));
+        Parent newCustomer = FXMLLoader.load(getClass().getResource("../View/NewEditCustomer.fxml"), resources);
         Scene scene = new Scene(newCustomer);
         stage.setScene(scene);
         stage.show();
