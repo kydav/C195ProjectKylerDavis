@@ -91,7 +91,6 @@ public class Customer {
             error = resources.getString("customer.city");
         if(country.length() == 0)
             error = resources.getString("customer.country");
-
         return error;
 
     }

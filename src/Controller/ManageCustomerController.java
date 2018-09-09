@@ -25,7 +25,6 @@ import static main.DBConnection.*;
 public class ManageCustomerController {
     public static ObservableList<String> customerToModify;
     private ObservableList<ObservableList> data;
-
     @FXML
     private TableView<ObservableList> manageCustomerTableView;
     @FXML
@@ -114,7 +113,7 @@ public class ManageCustomerController {
                                     "WHERE U04EE1.customer.active = 1;";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(allCustomer);
-
+            
 
 
 
