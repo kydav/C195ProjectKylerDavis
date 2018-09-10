@@ -1,6 +1,6 @@
 package Controller;
 
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,12 +21,26 @@ import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
 import static main.DBConnection.*;
+import Model.Customer;
 
 public class ManageCustomerController {
+    public ObservableList<Customer> customerList = FXCollections.observableArrayList();
     public static ObservableList<String> customerToModify;
-    private ObservableList<ObservableList> data;
+
     @FXML
-    private TableView<ObservableList> manageCustomerTableView;
+    private TableView<Customer> manageCustomerTableView;
+    @FXML
+    private TableColumn<Customer, Integer> idColumn;
+    @FXML
+    private TableColumn<Customer, String> nameColumn;
+    @FXML
+    private TableColumn<Customer, String> phoneColumn;
+    @FXML
+    private TableColumn<Customer, String> cityColumn;
+    @FXML
+    private TableColumn<Customer, String> postalCodeColumn;
+    @FXML
+    private TableColumn<Customer, String> countryColumn;
     @FXML
     private ResourceBundle resources;
     @FXML
@@ -39,7 +53,7 @@ public class ManageCustomerController {
     private Button manageCustomerCancel;
     @FXML
     void deleteCustomer(ActionEvent event) throws IOException {
-        customerToModify = manageCustomerTableView.getSelectionModel().getSelectedItem();
+        /*customerToModify = manageCustomerTableView.getSelectionModel().getSelectedItem();
         String customerToModifyId = customerToModify.get(0);
         if(customerToModify != null) {
             try{
@@ -63,11 +77,11 @@ public class ManageCustomerController {
             }
         }else{
             alertFunction(resources.getString("manage.noSelectedTitle"), resources.getString("manage.noSelectedHeader"));
-        }
+        }*/
     }
     @FXML
     void editCustomer(ActionEvent event) throws IOException {
-        customerToModify = manageCustomerTableView.getSelectionModel().getSelectedItem();
+        /*customerToModify = manageCustomerTableView.getSelectionModel().getSelectedItem();
         String customerToModifyId = customerToModify.get(0);
         if(customerToModify != null) {
             Stage stage = (Stage) manageCustomerEdit.getScene().getWindow();
@@ -77,7 +91,7 @@ public class ManageCustomerController {
             stage.show();
         }else{
             alertFunction(resources.getString("manage.noSelectedTitle"), resources.getString("manage.noSelectedHeader"));
-        }
+        }*/
     }
     @FXML
     void newCustomer(ActionEvent event) throws IOException{
@@ -103,9 +117,11 @@ public class ManageCustomerController {
         alert.showAndWait();
     }
     public void populateTableView(){
-        data = FXCollections.observableArrayList();
         try{
-            String allCustomer =    "SELECT U04EE1.customer.customerid, U04EE1.customer.customerName, U04EE1.address.phone, U04EE1.country.country, U04EE1.address.postalCode  \n" +
+            String allCustomer =    "SELECT U04EE1.customer.customerid, U04EE1.customer.customerName, " +
+                                    "U04EE1.address.addressId, U04EE1.address.address, U04EE1.address.address2,  " +
+                                    "U04EE1.city.cityId, U04EE1.address.postalCode, U04EE1.address.phone, " +
+                                    "U04EE1.city.city, U04EE1.city.countryId, U04EE1.country.country, U04EE1.customer.active \n" +
                                     "FROM U04EE1.customer \n" +
                                     "JOIN U04EE1.address ON U04EE1.customer.addressid = U04EE1.address.addressid \n" +
                                     "JOIN U04EE1.city ON U04EE1.address.cityid = U04EE1.city.cityid \n" +
@@ -113,11 +129,44 @@ public class ManageCustomerController {
                                     "WHERE U04EE1.customer.active = 1;";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(allCustomer);
-            
+            while (rs.next()) {
+                Customer current = new Customer();
+                current.setCustomerId(new SimpleIntegerProperty(Integer.parseInt(rs.getString("customerId"))));
+                current.setCustomerName(rs.getString("customerName"));
+                current.setAddressId(Integer.parseInt((rs.getString("addressId"))));
+                current.setAddress(rs.getString("address"));
+                current.setAddress2(rs.getString("address2"));
+                current.setCityId(Integer.parseInt((rs.getString("cityId"))));
+                current.setPostalCode(rs.getString("postalCode"));
+                current.setPhone(rs.getString("phone"));
+                current.setCity(rs.getString("city"));
+                current.setCountryId(Integer.parseInt((rs.getString("countryId"))));
+                current.setCountry(rs.getString("country"));
+                current.setActive(Integer.parseInt((rs.getString("active"))));
+                customerList.add(current);
+            }
+            idColumn.setCellValueFactory(cellData -> {
+                  return new ReadOnlyObjectWrapper(cellData.getValue().getCustomerId());
+            });
+            nameColumn.setCellValueFactory(cellData -> {
+                return new ReadOnlyStringWrapper(cellData.getValue().getCustomerName());
+            });
+            phoneColumn.setCellValueFactory(cellData -> {
+                return new ReadOnlyStringWrapper(cellData.getValue().getPhone());
+            });
+            cityColumn.setCellValueFactory(cellData -> {
+                return new ReadOnlyStringWrapper(cellData.getValue().getCity());
+            });
+            postalCodeColumn.setCellValueFactory(cellData -> {
+                return new ReadOnlyObjectWrapper(cellData.getValue().getPostalCode());
+            });
+            countryColumn.setCellValueFactory(cellData -> {
+                return new ReadOnlyStringWrapper(cellData.getValue().getCountry());
+            });
 
 
-
-            for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+            manageCustomerTableView.setItems(customerList);
+            /*for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
                 final int j = i;
                 TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i + 1));
                 col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
@@ -134,7 +183,10 @@ public class ManageCustomerController {
                 }
                 data.add(row);
             }
-            manageCustomerTableView.setItems(data);
+            manageCustomerTableView.setItems(data);*/
+
+
+
         }catch(Exception e){
             e.printStackTrace();
             System.out.println("Error on Building Data");
