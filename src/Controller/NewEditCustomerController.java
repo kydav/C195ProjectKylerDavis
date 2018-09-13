@@ -65,7 +65,6 @@ public class NewEditCustomerController {
     }
     @FXML
     void SaveCustomer(ActionEvent event) throws IOException{
-
         String name = customerNameField.getText();
         String phone = customerPhoneField.getText();
         String address = customerAddressField.getText();
@@ -105,12 +104,30 @@ public class NewEditCustomerController {
             //isNewCustomer
         }else{
             //isUpdateCustomer
-            String updateStatement = "UPDATE U04EE1.customer, U04EE1.address, U04EE1.city, U04EE1.country \n" +
-                    "SET U04EE1.customer.customerName = '" + customerToSave.getCustomerName() + "', \n" +
-                    "U04EE1.address.address = '" + customerToSave.getAddress() + "', \n" +
+            String updateStatement =
+                    "BEGIN TRANSACTION; \n" +
+                    "UPDATE U04EE1.customer\n" +
+                    "SET U04EE1.customer.customerName = '" + customerToSave.getCustomerName() + "' \n" +
+                    "WHERE U04EE1.customer.customerId = " + customerToSave.getCustomerId() + "; \n" +
+
+                    "UPDATE U04EE1.address \n" +
+                    "SET U04EE1.customer.address = '" + customerToSave.getAddress() + "', \n" +
                     "U04EE1.address.address2 = '" + customerToSave.getAddress2() + "', \n" +
                     "U04EE1.address.postalCode = '" + customerToSave.getPostalCode() + "', \n" +
-                    "U04EE1.address.phone = '" + customerToSave.getPhone() + "', \n" +
+                    "U04EE1.address.phone = '" + customerToSave.getPhone() + "' \n" +
+                    "WHERE U04EE1.addressId = " + customerToSave.getAddressId() + "; \n" +
+                    //Need to add another query that happens before this if the city was changed, might need to add the
+                            //logic back that set true or false on whether each item was changed or not.  Because I won't
+                            //need to run the query to query the city/country databases for existing records if the city/country
+                            //weren't changed.  I decided to update address records without updating or creating new entries.
+                            //just updating that entry and allowing the addressid to still point to it.  
+                    "UPDATE U04EE1.city \n" +
+                    "SET U04EE1.city.city = '" + customerToSave.getCity() + "' \n" +
+                    "WHERE U04EE1." +
+
+
+
+
                     "U04EE1.city.city = '" + customerToSave.getCity() + "', \n" +
                     "U04EE1.country.country = '" + customerToSave.getCountry() + "' \n" +
                     "WHERE U04EE1.customer.customerId = " + customerToSave.getCustomerId() + ";";
