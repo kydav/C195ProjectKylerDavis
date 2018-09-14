@@ -1,44 +1,23 @@
 package Controller;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import com.sun.xml.internal.xsom.impl.scd.Iterators;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
-import javafx.collections.ObservableList;
-import javafx.collections.FXCollections;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.TableView;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
-import java.io.IOException;
-import java.sql.Statement;
-import java.sql.ResultSet;
-import java.util.ResourceBundle;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+
+import java.sql.SQLException;
+import java.io.IOException;
+import java.util.ResourceBundle;
+
 import static Controller.ManageCustomerController.customerToModifyIndex;
 import static Controller.ManageCustomerController.customerList;
-
-
-import static main.DBConnection.*;
+import static main.QueryManager.*;
 import Model.Customer;
-import Model.Customer.*;
-import main.QueryManager;
-
-import javax.management.Query;
-
-import static main.QueryManager.addressCityOnly;
 
 public class NewEditCustomerController {
     @FXML
@@ -79,26 +58,35 @@ public class NewEditCustomerController {
         String postalCode = customerPostalCodeField.getText();
         String country = customerCountryField.getText();
         String validCustomer = Customer.validCustomer(name, address, postalCode,phone,city,country);
+        boolean customerTableChange = false;
+        boolean addressTableChange = false;
         boolean cityChange = false;
         boolean countryChange = false;
         if(validCustomer != null){
             Customer editCustomer = customerList.get(customerToModifyIndex);
 
-            if (!name.equals(editCustomer.getCustomerName())) editCustomer.setCustomerName(name);
-            if (!phone.equals(editCustomer.getPhone())) editCustomer.setPhone(phone);
-            if (!address.equals(editCustomer.getAddress())) editCustomer.setAddress(address);
-            if (!address2.equals(editCustomer.getAddress2())) editCustomer.setAddress2(address2);
+            if (!name.equals(editCustomer.getCustomerName())){ editCustomer.setCustomerName(name); customerTableChange = true;}
+            if (!phone.equals(editCustomer.getPhone())){ editCustomer.setPhone(phone); addressTableChange = true;}
+            if (!address.equals(editCustomer.getAddress())){ editCustomer.setAddress(address); addressTableChange = true;}
+            if (!address2.equals(editCustomer.getAddress2())){ editCustomer.setAddress2(address2); addressTableChange = true;}
             if (!city.equals(editCustomer.getCity())){ editCustomer.setCity(city); cityChange = true;}
-            if (!postalCode.equals(editCustomer.getPostalCode())) editCustomer.setPostalCode(postalCode);
+            if (!postalCode.equals(editCustomer.getPostalCode())){ editCustomer.setPostalCode(postalCode); addressTableChange = true;}
             if (!country.equals(editCustomer.getCountry())){ editCustomer.setCountry(country); countryChange = true;}
 
-            System.out.println(cityChange);
-            System.out.println(countryChange);
             if(cityChange  && countryChange == false) {
-                int updateCity = addressCityOnly(editCustomer.getAddressId(), editCustomer.getCity(), editCustomer.getCountryId());
-                System.out.println(updateCity);
-            }else if(cityChange && countryChange){
-
+                int updateCity = updateCity(editCustomer.getAddressId(), editCustomer.getCity(), editCustomer.getCountryId());
+                System.out.println(updateCity + "Record updated");
+            }else if(cityChange && countryChange ){
+                int updateCountry = updateCountry(editCustomer.getCountry(),editCustomer.getAddressId(),editCustomer.getCity());
+                System.out.println(updateCountry + "Record updated");
+            }
+            if(customerTableChange == true){
+                int updateCustomerTable = updateCustomerTable(editCustomer.getCustomerName(), editCustomer.getCustomerId());
+                System.out.println(updateCustomerTable + "Record updated");
+            }
+            if(addressTableChange == true){
+                int updateAddressTable = updateAddressTable(editCustomer.getAddressId(),editCustomer.getPhone(),editCustomer.getAddress(),editCustomer.getAddress2(),editCustomer.getPostalCode());
+                System.out.println(updateAddressTable + "Record updated");
             }
 
             Stage stage = (Stage) customerSaveButton.getScene().getWindow();
@@ -114,17 +102,7 @@ public class NewEditCustomerController {
             alert.showAndWait();
         }
     }
-    /*public String updateSaveFunction(Customer customerToSave, boolean cityChange, boolean countryChange) throws SQLException {
-        if(cityChange == true && countryChange == false){
-            int updateCity = addressCityOnly(customerToSave.getAddressId(),customerToSave.getCity(),customerToSave.getCountryId());
-            System.out.println(updateCity);
-        }
 
-            //isUpdateCustomer
-
-
-        return "";
-    }*/
     public void initialize() {
         if(customerToModifyIndex != -1){
             try {
