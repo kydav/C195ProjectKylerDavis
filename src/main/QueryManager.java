@@ -78,6 +78,9 @@ public class QueryManager{
         int rows = stmt.executeUpdate(customerToDeleteQuery);
         return rows;
     }
+    public static int insertCity(String city){
+        return 0;
+    }
     public static int updateCity(int addressId, String city, int countryId){
         int newCityId = 0;
         int rows =0;
@@ -145,6 +148,52 @@ public class QueryManager{
             return -1;
         }
     }
+    public static int insertCountry(String country){
+        int newCountryId = 0;
+        String checkCountry =
+                "SELECT U04EE1.country.countryId \n" +
+                        "FROM U04EE1.country \n" +
+                        "WHERE U04EE1.country.country = '" + country + "';";
+        String insertNewCountry =
+                "INSERT INTO U04EE1.country (country,createDate,createdBy,lastUpdate,lastUpdateBy) \n" +
+                "VALUES ('" + country + "',CURDATE(),'" + loggedUser + "',CURDATE(),'" + loggedUser + "');";
+            try{
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(checkCountry);
+                if(!rs.next()){
+                    try {
+                        //not found insert
+                        Statement insertStmt = conn.createStatement();
+                        int insertRs = insertStmt.executeUpdate(insertNewCountry);
+                        if (insertRs == 0) {
+                            //insert didn't work
+                        } else {
+                            try {
+                                Statement selectStmt = conn.createStatement();
+                                ResultSet selectRs = selectStmt.executeQuery(checkCountry);
+                                selectRs.next();
+                                newCountryId = selectRs.getInt("countryId");
+                            }catch(SQLException e){
+                                System.out.println("Failed to get new country id: " +e);
+                                newCountryId = -1;
+                            }
+                        }
+                    }catch(SQLException e){
+                        System.out.println("Insert was unsuccessful:" +e);
+                        newCountryId = -1;
+                    }
+                }else{
+                    //found, need to return id
+                    newCountryId = rs.getInt("countryId");
+                }
+            }catch(SQLException e){
+                System.out.println("Failed to check for existing country: " +e);
+                newCountryId = -1;
+            }
+            return newCountryId;
+    }
+
+
     public static int updateCountry(String country, int addressId, String city){
         int newCountryId = 0;
         String checkCountry =
@@ -220,4 +269,65 @@ public class QueryManager{
             return -1;
         }
     }
+    public static int insertNewCustomer(String customerName, String phone, String address, String address2, String city, String postalCode, String country){
+        int countryId = 0;
+        int cityId = 0;
+        int addressId = 0;
+        String checkExistCountry =
+                "SELECT U04EE1.country.countryId" +
+                "FROM U04EE1.country" +
+                "WHERE U04EE1.country.country ='" + country +"';";
+        String checkExistCity =
+                "SELECT U04EE1.city.cityId" +
+                "FROM U04EE1.city" +
+                "WHERE U04EE1.city.city ='" + city +"';";
+        String insertCountry =
+                "INSERT INTO U04EE1.country (country,createDate,createdBy,lastUpdate,lastUpdateBy) \n" +
+                "VALUES ('" + country + "',CURDATE(),'" + loggedUser + "',CURDATE(),'" + loggedUser + "');";
+        String insertCity =
+                "INSERT INTO U04EE1.city (city,countryId,createDate,createdBy,lastUpdate,lastUpdateBy) \n" +
+                "VALUES ('" + city + "'," + countryId + ",CURDATE(),'" + loggedUser + "',CURDATE(),'" + loggedUser + "');";
+        String insertAddress =
+                "INSERT INTO U04EE1.address(address,address2,cityId,postalCode,phone,createDate,createdBy,lastUpdate,lastUpdateBy) \n" +
+                "VALUES ('" +address+ "','" +address2+ "',"+cityId+",'" +postalCode+"','"+phone+"',CURDATE(),'"+loggedUser+"',CURDATE(),'" +loggedUser+"');";
+
+        String insertCustomer =
+                "INSERT INTO U04EE1.customer(customerName,addressId,active,createdDate,createdBy,lastUpdate,lastUpdateBy) \n" +
+                "VALUES ('" +customerName+"',"+addressId+",1,CURDATE(),'"+loggedUser+"',CURDATE(),'"+loggedUser+"');";
+        try{
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(checkExistCountry);
+            if(!rs.next()){
+                //Country doesn't exist, create
+                Statement insertStmt = conn.createStatement();
+                int insertRs = insertStmt.executeUpdate(insertCountry);
+                if(insertRs == 0){
+                    //no rows inserted
+                    System.out.println("No Country was inserted");
+                }
+                else{
+                    try{
+                        Statement selectStmt = conn.createStatement();
+                        ResultSet selectRs = selectStmt.executeQuery(checkExistCountry);
+                        if(!rs.next()){
+                            //Couldn't find newly inserted row in DB
+                        }else{
+                            countryId = rs.getInt("countryId");
+                        }
+                    }catch(SQLException e){
+
+                    }
+                }
+
+            }else{
+                //Country exists set countryId to id from select statement
+                countryId = rs.getInt("countryId");
+            }
+        }catch(SQLException e){
+
+        }
+        return 0;
+    }
+
+
 }

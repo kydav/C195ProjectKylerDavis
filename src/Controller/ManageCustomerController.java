@@ -93,7 +93,7 @@ public class ManageCustomerController {
     }
     @FXML
     void newCustomer(ActionEvent event) throws IOException{
-        customerToModify = null;
+        customerToModifyIndex = 0;
         Stage stage = (Stage) manageCustomerNew.getScene().getWindow();
         Parent newCustomer = FXMLLoader.load(getClass().getResource("../View/NewEditCustomer.fxml"), resources);
         Scene scene = new Scene(newCustomer);

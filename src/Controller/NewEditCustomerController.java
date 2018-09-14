@@ -49,7 +49,7 @@ public class NewEditCustomerController {
         stage.show();
     }
     @FXML
-    void SaveCustomer(ActionEvent event) throws IOException, SQLException{
+    void SaveCustomer(ActionEvent event) throws IOException{
         String name = customerNameField.getText();
         String phone = customerPhoneField.getText();
         String address = customerAddressField.getText();
@@ -57,43 +57,68 @@ public class NewEditCustomerController {
         String city = customerCityField.getText();
         String postalCode = customerPostalCodeField.getText();
         String country = customerCountryField.getText();
-        String validCustomer = Customer.validCustomer(name, address, postalCode,phone,city,country);
+        String validCustomer = Customer.validCustomer(name,address,postalCode,phone,city,country);
         boolean customerTableChange = false;
         boolean addressTableChange = false;
         boolean cityChange = false;
         boolean countryChange = false;
         if(validCustomer != null){
-            Customer editCustomer = customerList.get(customerToModifyIndex);
+            if(customerToModifyIndex == 0){
+                //newCustomerToSave
+            }else {
+                Customer editCustomer = customerList.get(customerToModifyIndex);
 
-            if (!name.equals(editCustomer.getCustomerName())){ editCustomer.setCustomerName(name); customerTableChange = true;}
-            if (!phone.equals(editCustomer.getPhone())){ editCustomer.setPhone(phone); addressTableChange = true;}
-            if (!address.equals(editCustomer.getAddress())){ editCustomer.setAddress(address); addressTableChange = true;}
-            if (!address2.equals(editCustomer.getAddress2())){ editCustomer.setAddress2(address2); addressTableChange = true;}
-            if (!city.equals(editCustomer.getCity())){ editCustomer.setCity(city); cityChange = true;}
-            if (!postalCode.equals(editCustomer.getPostalCode())){ editCustomer.setPostalCode(postalCode); addressTableChange = true;}
-            if (!country.equals(editCustomer.getCountry())){ editCustomer.setCountry(country); countryChange = true;}
+                if (!name.equals(editCustomer.getCustomerName())) {
+                    editCustomer.setCustomerName(name);
+                    customerTableChange = true;
+                }
+                if (!phone.equals(editCustomer.getPhone())) {
+                    editCustomer.setPhone(phone);
+                    addressTableChange = true;
+                }
+                if (!address.equals(editCustomer.getAddress())) {
+                    editCustomer.setAddress(address);
+                    addressTableChange = true;
+                }
+                if (!address2.equals(editCustomer.getAddress2())) {
+                    editCustomer.setAddress2(address2);
+                    addressTableChange = true;
+                }
+                if (!city.equals(editCustomer.getCity())) {
+                    editCustomer.setCity(city);
+                    cityChange = true;
+                }
+                if (!postalCode.equals(editCustomer.getPostalCode())) {
+                    editCustomer.setPostalCode(postalCode);
+                    addressTableChange = true;
+                }
+                if (!country.equals(editCustomer.getCountry())) {
+                    editCustomer.setCountry(country);
+                    countryChange = true;
+                }
 
-            if(cityChange  && countryChange == false) {
-                int updateCity = updateCity(editCustomer.getAddressId(), editCustomer.getCity(), editCustomer.getCountryId());
-                System.out.println(updateCity + "Record updated");
-            }else if(cityChange && countryChange ){
-                int updateCountry = updateCountry(editCustomer.getCountry(),editCustomer.getAddressId(),editCustomer.getCity());
-                System.out.println(updateCountry + "Record updated");
-            }
-            if(customerTableChange == true){
-                int updateCustomerTable = updateCustomerTable(editCustomer.getCustomerName(), editCustomer.getCustomerId());
-                System.out.println(updateCustomerTable + "Record updated");
-            }
-            if(addressTableChange == true){
-                int updateAddressTable = updateAddressTable(editCustomer.getAddressId(),editCustomer.getPhone(),editCustomer.getAddress(),editCustomer.getAddress2(),editCustomer.getPostalCode());
-                System.out.println(updateAddressTable + "Record updated");
-            }
+                if (cityChange && countryChange == false) {
+                    int updateCity = updateCity(editCustomer.getAddressId(), editCustomer.getCity(), editCustomer.getCountryId());
+                    System.out.println(updateCity + "Record updated");
+                } else if (cityChange && countryChange) {
+                    int updateCountry = updateCountry(editCustomer.getCountry(), editCustomer.getAddressId(), editCustomer.getCity());
+                    System.out.println(updateCountry + "Record updated");
+                }
+                if (customerTableChange == true) {
+                    int updateCustomerTable = updateCustomerTable(editCustomer.getCustomerName(), editCustomer.getCustomerId());
+                    System.out.println(updateCustomerTable + "Record updated");
+                }
+                if (addressTableChange == true) {
+                    int updateAddressTable = updateAddressTable(editCustomer.getAddressId(), editCustomer.getPhone(), editCustomer.getAddress(), editCustomer.getAddress2(), editCustomer.getPostalCode());
+                    System.out.println(updateAddressTable + "Record updated");
+                }
 
-            Stage stage = (Stage) customerSaveButton.getScene().getWindow();
-            Parent manage = FXMLLoader.load(getClass().getResource("../View/ManageCustomer.fxml"), resources);
-            Scene scene = new Scene(manage);
-            stage.setScene(scene);
-            stage.show();
+                Stage stage = (Stage) customerSaveButton.getScene().getWindow();
+                Parent manage = FXMLLoader.load(getClass().getResource("../View/ManageCustomer.fxml"), resources);
+                Scene scene = new Scene(manage);
+                stage.setScene(scene);
+                stage.show();
+            }
         }else{
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle(resources.getString("new.errorTitle"));
