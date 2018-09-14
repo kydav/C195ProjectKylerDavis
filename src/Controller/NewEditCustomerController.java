@@ -17,6 +17,7 @@ import javafx.util.Callback;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
@@ -33,6 +34,11 @@ import static Controller.ManageCustomerController.customerList;
 import static main.DBConnection.*;
 import Model.Customer;
 import Model.Customer.*;
+import main.QueryManager;
+
+import javax.management.Query;
+
+import static main.QueryManager.addressCityOnly;
 
 public class NewEditCustomerController {
     @FXML
@@ -64,7 +70,7 @@ public class NewEditCustomerController {
         stage.show();
     }
     @FXML
-    void SaveCustomer(ActionEvent event) throws IOException{
+    void SaveCustomer(ActionEvent event) throws IOException, SQLException{
         String name = customerNameField.getText();
         String phone = customerPhoneField.getText();
         String address = customerAddressField.getText();
@@ -73,6 +79,8 @@ public class NewEditCustomerController {
         String postalCode = customerPostalCodeField.getText();
         String country = customerCountryField.getText();
         String validCustomer = Customer.validCustomer(name, address, postalCode,phone,city,country);
+        boolean cityChange = false;
+        boolean countryChange = false;
         if(validCustomer != null){
             Customer editCustomer = customerList.get(customerToModifyIndex);
 
@@ -80,11 +88,18 @@ public class NewEditCustomerController {
             if (!phone.equals(editCustomer.getPhone())) editCustomer.setPhone(phone);
             if (!address.equals(editCustomer.getAddress())) editCustomer.setAddress(address);
             if (!address2.equals(editCustomer.getAddress2())) editCustomer.setAddress2(address2);
-            if (!city.equals(editCustomer.getCity())) editCustomer.setCity(city);
+            if (!city.equals(editCustomer.getCity())){ editCustomer.setCity(city); cityChange = true;}
             if (!postalCode.equals(editCustomer.getPostalCode())) editCustomer.setPostalCode(postalCode);
-            if (!country.equals(editCustomer.getCountry())) editCustomer.setCountry(country);
+            if (!country.equals(editCustomer.getCountry())){ editCustomer.setCountry(country); countryChange = true;}
 
-            saveFunction(editCustomer);
+            System.out.println(cityChange);
+            System.out.println(countryChange);
+            if(cityChange  && countryChange == false) {
+                int updateCity = addressCityOnly(editCustomer.getAddressId(), editCustomer.getCity(), editCustomer.getCountryId());
+                System.out.println(updateCity);
+            }else if(cityChange && countryChange){
+
+            }
 
             Stage stage = (Stage) customerSaveButton.getScene().getWindow();
             Parent manage = FXMLLoader.load(getClass().getResource("../View/ManageCustomer.fxml"), resources);
@@ -99,47 +114,17 @@ public class NewEditCustomerController {
             alert.showAndWait();
         }
     }
-    public String saveFunction(Customer customerToSave){
-        if(customerToModifyIndex == -1){
-            //isNewCustomer
-        }else{
-            //isUpdateCustomer
-            String updateStatement =
-                    "BEGIN TRANSACTION; \n" +
-                    "UPDATE U04EE1.customer\n" +
-                    "SET U04EE1.customer.customerName = '" + customerToSave.getCustomerName() + "' \n" +
-                    "WHERE U04EE1.customer.customerId = " + customerToSave.getCustomerId() + "; \n" +
-
-                    "UPDATE U04EE1.address \n" +
-                    "SET U04EE1.customer.address = '" + customerToSave.getAddress() + "', \n" +
-                    "U04EE1.address.address2 = '" + customerToSave.getAddress2() + "', \n" +
-                    "U04EE1.address.postalCode = '" + customerToSave.getPostalCode() + "', \n" +
-                    "U04EE1.address.phone = '" + customerToSave.getPhone() + "' \n" +
-                    "WHERE U04EE1.addressId = " + customerToSave.getAddressId() + "; \n" +
-                    //Need to add another query that happens before this if the city was changed, might need to add the
-                            //logic back that set true or false on whether each item was changed or not.  Because I won't
-                            //need to run the query to query the city/country databases for existing records if the city/country
-                            //weren't changed.  I decided to update address records without updating or creating new entries.
-                            //just updating that entry and allowing the addressid to still point to it.  
-                    "UPDATE U04EE1.city \n" +
-                    "SET U04EE1.city.city = '" + customerToSave.getCity() + "' \n" +
-                    "WHERE U04EE1." +
-
-
-
-
-                    "U04EE1.city.city = '" + customerToSave.getCity() + "', \n" +
-                    "U04EE1.country.country = '" + customerToSave.getCountry() + "' \n" +
-                    "WHERE U04EE1.customer.customerId = " + customerToSave.getCustomerId() + ";";
-
-
-
-
-         System.out.println(updateStatement);
+    /*public String updateSaveFunction(Customer customerToSave, boolean cityChange, boolean countryChange) throws SQLException {
+        if(cityChange == true && countryChange == false){
+            int updateCity = addressCityOnly(customerToSave.getAddressId(),customerToSave.getCity(),customerToSave.getCountryId());
+            System.out.println(updateCity);
         }
 
+            //isUpdateCustomer
+
+
         return "";
-    }
+    }*/
     public void initialize() {
         if(customerToModifyIndex != -1){
             try {
