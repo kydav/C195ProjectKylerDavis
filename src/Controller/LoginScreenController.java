@@ -4,11 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import java.io.IOException;
 import javafx.event.ActionEvent;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ResourceBundle;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
@@ -16,9 +12,7 @@ import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 
-
-import static main.DBConnection.*;
-
+import static main.QueryManager.userValidation;
 
 public class LoginScreenController {
     @FXML
@@ -30,19 +24,17 @@ public class LoginScreenController {
     @FXML
     private Button loginButton;
     @FXML
-    void loginClicked(ActionEvent event) throws IOException, ClassNotFoundException, SQLException, Exception {
+    void loginClicked(ActionEvent event) throws Exception {
         String userName = loginUsername.getText();
         String password = loginPassword.getText();
         if (userName.trim().isEmpty() || password.trim().isEmpty()) {
             alertFunction(resources.getString("login.fieldsEmpty"), resources.getString("login.empty"));
         } else {
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT password FROM user WHERE userName = '" + userName + "'");
-            if (!rs.next()) {
+            String isValidUser = userValidation(userName, password);
+            if(isValidUser == "notFound"){
                 alertFunction(resources.getString("login.userNotFound"), resources.getString("login.user") + " " + userName + " " + resources.getString("login.notFound"));
-            } else {
-                String userPass = rs.getString("password");
-                if (userPass.equals(password)) {
+            }else{
+                if(isValidUser == "authenticated"){
                     System.out.println("User login successful");
 
                     Stage stage = (Stage) loginButton.getScene().getWindow();
@@ -50,7 +42,7 @@ public class LoginScreenController {
                     Scene scene = new Scene(login);
                     stage.setScene(scene);
                     stage.show();
-                } else {
+                }else{
                     alertFunction(resources.getString("login.incorrectPassword"), resources.getString("login.incorrect") + " " + userName + ". " + resources.getString("login.tryAgain"));
                 }
             }
