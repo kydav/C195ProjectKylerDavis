@@ -1,6 +1,6 @@
 package Controller;
 
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,12 +21,30 @@ import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
 import static main.DBConnection.*;
+import Model.Customer;
+import static main.QueryManager.getCustomerTableView;
+import static main.QueryManager.deleteTheCustomer;
 
 public class ManageCustomerController {
+    public static ObservableList<Customer> customerList = FXCollections.observableArrayList();
+    public static int customerToModifyIndex = -1;
     public static ObservableList<String> customerToModify;
-    private ObservableList<ObservableList> data;
+    public static Optional<ButtonType> result;
+
     @FXML
-    private TableView<ObservableList> manageCustomerTableView;
+    private TableView<Customer> manageCustomerTableView;
+    @FXML
+    private TableColumn<Customer, Integer> idColumn;
+    @FXML
+    private TableColumn<Customer, String> nameColumn;
+    @FXML
+    private TableColumn<Customer, String> phoneColumn;
+    @FXML
+    private TableColumn<Customer, String> cityColumn;
+    @FXML
+    private TableColumn<Customer, String> postalCodeColumn;
+    @FXML
+    private TableColumn<Customer, String> countryColumn;
     @FXML
     private ResourceBundle resources;
     @FXML
@@ -38,10 +56,9 @@ public class ManageCustomerController {
     @FXML
     private Button manageCustomerCancel;
     @FXML
-    void deleteCustomer(ActionEvent event) throws IOException {
-        customerToModify = manageCustomerTableView.getSelectionModel().getSelectedItem();
-        String customerToModifyId = customerToModify.get(0);
-        if(customerToModify != null) {
+    void deleteCustomer(){
+        int customerToModifyId = customerList.get(manageCustomerTableView.getSelectionModel().getFocusedIndex()).getCustomerId();
+        if(customerToModifyId != 0) {
             try{
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle(resources.getString("manage.deleteConfirmTitle"));
@@ -49,12 +66,8 @@ public class ManageCustomerController {
                 alert.setContentText(resources.getString("manage.deleteConfirmText"));
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.get() == ButtonType.OK) {
-                    String customerToDelete = "UPDATE U04EE1.customer \n" +
-                            "SET U04EE1.customer.active = 0 \n" +
-                            "WHERE U04EE1.customer.customerId = " + customerToModifyId + ";";
-                    Statement stmt = conn.createStatement();
-                    int rows = stmt.executeUpdate(customerToDelete);
-                    System.out.println(rows + "Customer Deleted Successfully");
+                    int rowsDeleted = deleteTheCustomer(customerToModifyId);
+                    System.out.println(rowsDeleted + " Customer Deleted Successfully");
                     populateTableView();
                 }
             }catch(Exception e){
@@ -67,9 +80,8 @@ public class ManageCustomerController {
     }
     @FXML
     void editCustomer(ActionEvent event) throws IOException {
-        customerToModify = manageCustomerTableView.getSelectionModel().getSelectedItem();
-        String customerToModifyId = customerToModify.get(0);
-        if(customerToModify != null) {
+        customerToModifyIndex = manageCustomerTableView.getSelectionModel().getSelectedIndex();
+        if(customerToModifyIndex != -1) {
             Stage stage = (Stage) manageCustomerEdit.getScene().getWindow();
             Parent modifyCustomer = FXMLLoader.load(getClass().getResource("../View/NewEditCustomer.fxml"), resources);
             Scene scene = new Scene(modifyCustomer);
@@ -97,47 +109,36 @@ public class ManageCustomerController {
         stage.show();
     }
     void alertFunction(String title, String header){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.showAndWait();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(title);
+            alert.setHeaderText(header);
+            alert.showAndWait();
     }
     public void populateTableView(){
-        data = FXCollections.observableArrayList();
         try{
-            String allCustomer =    "SELECT U04EE1.customer.customerid, U04EE1.customer.customerName, U04EE1.address.phone, U04EE1.country.country, U04EE1.address.postalCode  \n" +
-                                    "FROM U04EE1.customer \n" +
-                                    "JOIN U04EE1.address ON U04EE1.customer.addressid = U04EE1.address.addressid \n" +
-                                    "JOIN U04EE1.city ON U04EE1.address.cityid = U04EE1.city.cityid \n" +
-                                    "JOIN U04EE1.country ON U04EE1.city.countryid = U04EE1.country.countryid \n" +
-                                    "WHERE U04EE1.customer.active = 1;";
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(allCustomer);
-            
-
-
-
-            for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
-                final int j = i;
-                TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i + 1));
-                col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-                    public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-                        return new SimpleStringProperty(param.getValue().get(j).toString());
-                    }
-                });
-                manageCustomerTableView.getColumns().addAll(col);
-            }
-            while (rs.next()) {
-                ObservableList<String> row = FXCollections.observableArrayList();
-                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                    row.add(rs.getString(i));
-                }
-                data.add(row);
-            }
-            manageCustomerTableView.setItems(data);
+            customerList = getCustomerTableView();
+            idColumn.setCellValueFactory(cellData -> {
+                  return new ReadOnlyObjectWrapper(cellData.getValue().getCustomerId());
+            });
+            nameColumn.setCellValueFactory(cellData -> {
+                return new ReadOnlyStringWrapper(cellData.getValue().getCustomerName());
+            });
+            phoneColumn.setCellValueFactory(cellData -> {
+                return new ReadOnlyStringWrapper(cellData.getValue().getPhone());
+            });
+            cityColumn.setCellValueFactory(cellData -> {
+                return new ReadOnlyStringWrapper(cellData.getValue().getCity());
+            });
+            postalCodeColumn.setCellValueFactory(cellData -> {
+                return new ReadOnlyObjectWrapper(cellData.getValue().getPostalCode());
+            });
+            countryColumn.setCellValueFactory(cellData -> {
+                return new ReadOnlyStringWrapper(cellData.getValue().getCountry());
+            });
+            manageCustomerTableView.setItems(customerList);
         }catch(Exception e){
             e.printStackTrace();
-            System.out.println("Error on Building Data");
+            System.out.println("Error putting data into TableView");
         }
     }
     public void initialize(){
