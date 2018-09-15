@@ -10,7 +10,6 @@ import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
-import java.sql.SQLException;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
@@ -41,12 +40,16 @@ public class NewEditCustomerController {
     @FXML
     private Button customerCancelButton;
     @FXML
-    void CancelCustomer(ActionEvent event) throws IOException{
-        Stage stage = (Stage) customerCancelButton.getScene().getWindow();
-        Parent manage = FXMLLoader.load(getClass().getResource("../View/ManageCustomer.fxml"), resources);
-        Scene scene = new Scene(manage);
-        stage.setScene(scene);
-        stage.show();
+    void CancelCustomer(){
+        try {
+            Stage stage = (Stage) customerCancelButton.getScene().getWindow();
+            Parent manage = FXMLLoader.load(getClass().getResource("../View/ManageCustomer.fxml"), resources);
+            Scene scene = new Scene(manage);
+            stage.setScene(scene);
+            stage.show();
+        }catch(IOException e){
+            System.out.println("Error Cancelling out of customer:" + e);
+        }
     }
     @FXML
     void SaveCustomer(ActionEvent event) throws IOException{
@@ -63,8 +66,17 @@ public class NewEditCustomerController {
         boolean cityChange = false;
         boolean countryChange = false;
         if(validCustomer != null){
-            if(customerToModifyIndex == 0){
-                //newCustomerToSave
+            if(customerToModifyIndex == -1){
+                int newCountryId = insertCountry(country);
+                int newCityId = insertCity(city,newCountryId);
+                int newAddressId = insertAddress(address,address2,newCityId,postalCode,phone);
+                int insertedCustomerRows = insertCustomer(name,newAddressId);
+                System.out.println(insertedCustomerRows);
+                Stage stage = (Stage) customerSaveButton.getScene().getWindow();
+                Parent manage = FXMLLoader.load(getClass().getResource("../View/ManageCustomer.fxml"), resources);
+                Scene scene = new Scene(manage);
+                stage.setScene(scene);
+                stage.show();
             }else {
                 Customer editCustomer = customerList.get(customerToModifyIndex);
 
@@ -98,16 +110,13 @@ public class NewEditCustomerController {
                 }
 
                 if (cityChange && countryChange == false) {
-                    //int updateCity = updateCity(editCustomer.getAddressId(), editCustomer.getCity(), editCustomer.getCountryId());
                     int updateCity = insertCity(editCustomer.getCity(),editCustomer.getCountryId());
                     int addressUpdate = addressUpdate(updateCity,editCustomer.getAddressId());
                     System.out.println(updateCity + "is new ID Record updated " + addressUpdate);
                 } else if (cityChange && countryChange) {
-                    //int updateCountry = updateCountry(editCustomer.getCountry(), editCustomer.getAddressId(), editCustomer.getCity());
                     int updateCountry = insertCountry(editCustomer.getCountry());
                     int updatedCity = insertCity(editCustomer.getCity(),updateCountry);
                     int addressUpdate = addressUpdate(updatedCity,editCustomer.getAddressId());
-                    //int updatedCity = updateCity(editCustomer.getAddressId(),editCustomer.getCity(),updateCountry);
                     System.out.println(updatedCity + "Rows edited and country Id:" +updateCountry + "and addresses updated: " + addressUpdate);
                 }
                 if (customerTableChange) {

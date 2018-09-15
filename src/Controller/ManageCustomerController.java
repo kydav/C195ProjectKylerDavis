@@ -1,7 +1,6 @@
 package Controller;
 
 import javafx.beans.property.*;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,16 +10,11 @@ import javafx.event.ActionEvent;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import java.util.Optional;
 import java.io.IOException;
-import java.sql.Statement;
-import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
-import static main.DBConnection.*;
 import Model.Customer;
 import static main.QueryManager.getCustomerTableView;
 import static main.QueryManager.deleteTheCustomer;
@@ -28,8 +22,6 @@ import static main.QueryManager.deleteTheCustomer;
 public class ManageCustomerController {
     public static ObservableList<Customer> customerList = FXCollections.observableArrayList();
     public static int customerToModifyIndex = -1;
-    public static ObservableList<String> customerToModify;
-    public static Optional<ButtonType> result;
 
     @FXML
     private TableView<Customer> manageCustomerTableView;
@@ -93,7 +85,7 @@ public class ManageCustomerController {
     }
     @FXML
     void newCustomer(ActionEvent event) throws IOException{
-        customerToModifyIndex = 0;
+        customerToModifyIndex = -1;
         Stage stage = (Stage) manageCustomerNew.getScene().getWindow();
         Parent newCustomer = FXMLLoader.load(getClass().getResource("../View/NewEditCustomer.fxml"), resources);
         Scene scene = new Scene(newCustomer);
