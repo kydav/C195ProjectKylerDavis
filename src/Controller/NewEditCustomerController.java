@@ -98,17 +98,23 @@ public class NewEditCustomerController {
                 }
 
                 if (cityChange && countryChange == false) {
-                    int updateCity = updateCity(editCustomer.getAddressId(), editCustomer.getCity(), editCustomer.getCountryId());
-                    System.out.println(updateCity + "Record updated");
+                    //int updateCity = updateCity(editCustomer.getAddressId(), editCustomer.getCity(), editCustomer.getCountryId());
+                    int updateCity = insertCity(editCustomer.getCity(),editCustomer.getCountryId());
+                    int addressUpdate = addressUpdate(updateCity,editCustomer.getAddressId());
+                    System.out.println(updateCity + "is new ID Record updated " + addressUpdate);
                 } else if (cityChange && countryChange) {
-                    int updateCountry = updateCountry(editCustomer.getCountry(), editCustomer.getAddressId(), editCustomer.getCity());
-                    System.out.println(updateCountry + "Record updated");
+                    //int updateCountry = updateCountry(editCustomer.getCountry(), editCustomer.getAddressId(), editCustomer.getCity());
+                    int updateCountry = insertCountry(editCustomer.getCountry());
+                    int updatedCity = insertCity(editCustomer.getCity(),updateCountry);
+                    int addressUpdate = addressUpdate(updatedCity,editCustomer.getAddressId());
+                    //int updatedCity = updateCity(editCustomer.getAddressId(),editCustomer.getCity(),updateCountry);
+                    System.out.println(updatedCity + "Rows edited and country Id:" +updateCountry + "and addresses updated: " + addressUpdate);
                 }
-                if (customerTableChange == true) {
+                if (customerTableChange) {
                     int updateCustomerTable = updateCustomerTable(editCustomer.getCustomerName(), editCustomer.getCustomerId());
                     System.out.println(updateCustomerTable + "Record updated");
                 }
-                if (addressTableChange == true) {
+                if (addressTableChange) {
                     int updateAddressTable = updateAddressTable(editCustomer.getAddressId(), editCustomer.getPhone(), editCustomer.getAddress(), editCustomer.getAddress2(), editCustomer.getPostalCode());
                     System.out.println(updateAddressTable + "Record updated");
                 }
