@@ -108,7 +108,6 @@ public class NewEditCustomerController {
                     editCustomer.setCountry(country);
                     countryChange = true;
                 }
-
                 if (cityChange && countryChange == false) {
                     int updateCity = insertCity(editCustomer.getCity(),editCustomer.getCountryId());
                     int addressUpdate = addressUpdate(updateCity,editCustomer.getAddressId());
