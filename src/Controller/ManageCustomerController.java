@@ -109,6 +109,7 @@ public class ManageCustomerController {
     public void populateTableView(){
         try{
             customerList = getCustomerTableView();
+
             idColumn.setCellValueFactory(cellData -> {
                   return new ReadOnlyObjectWrapper(cellData.getValue().getCustomerId());
             });

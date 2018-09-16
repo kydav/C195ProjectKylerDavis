@@ -31,7 +31,7 @@ public class ManageAppointmentsController {
     @FXML
     private TableColumn<Appointment, Integer> idColumn;
     @FXML
-    private TableColumn<Appointment, String> customerNameColumn;
+    private TableColumn<Appointment, String> nameColumn;
     @FXML
     private TableColumn<Appointment, String> titleColumn;
     @FXML
@@ -112,23 +112,24 @@ public class ManageAppointmentsController {
     public void populateTableView(){
         try{
             appointmentList = getAppointmentTableView();
+            System.out.println("Success");
             idColumn.setCellValueFactory(cellData -> {
                   return new ReadOnlyObjectWrapper(cellData.getValue().getAppointmentId());
             });
-            customerNameColumn.setCellValueFactory(cellData -> {
+            nameColumn.setCellValueFactory(cellData -> {
                 return new ReadOnlyStringWrapper(cellData.getValue().getCustomerName());
             });
             titleColumn.setCellValueFactory(cellData -> {
                 return new ReadOnlyStringWrapper(cellData.getValue().getTitle());
             });
             locationColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyObjectWrapper(cellData.getValue().getLocation());
+                return new ReadOnlyStringWrapper(cellData.getValue().getLocation());
             });
             startColumn.setCellValueFactory(cellData -> {
                 return new ReadOnlyObjectWrapper(cellData.getValue().getStart());
             });
             endColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyObjectWrapper(cellData.getValue().getStart());
+                return new ReadOnlyObjectWrapper(cellData.getValue().getEnd());
             });
             manageAppointmentTableView.setItems(appointmentList);
         }catch(Exception e){
