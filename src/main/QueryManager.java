@@ -10,6 +10,7 @@ import java.sql.Statement;
 
 import static main.DBConnection.conn;
 import Model.Customer;
+import Model.Appointment;
 
 public class QueryManager{
     private static String loggedUser;
@@ -276,6 +277,41 @@ public class QueryManager{
         }
         return rows;
     }
-
+    public static ObservableList<Appointment> getAppointmentTableView(){
+        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+        try{
+            String allAppointment =
+                    "SELECT U04EE1.appointment.appointmentId, U04EE1.appointment.customerId, " +
+                            "U04EE1.customer.customerName, U04EE1.appointment.userId, U04EE1.user.userName,  " +
+                            "U04EE1.appointment.title, U04EE1.appointment.description, U04EE1.appointment.contact, " +
+                            "U04EE1.appointment.type, U04EE1.appointment.url, U04EE1.appointment.start, U04EE1.appointment.end \n" +
+                            "FROM U04EE1.appointment \n" +
+                            "JOIN U04EE1.appointment ON U04EE1.customer.customerId = U04EE1.appointment.customerId \n" +
+                            "JOIN U04EE1.user ON U04EE1.appointment.userId = U04EE1.user.userId \n";
+            System.out.println(allAppointment);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(allAppointment);
+            while (rs.next()) {
+                Appointment current = new Appointment();
+                current.setAppointmentId(new SimpleIntegerProperty(Integer.parseInt(rs.getString("appointmentId"))));
+                current.setCustomerId(new SimpleIntegerProperty(Integer.parseInt(rs.getString("customerId"))));
+                current.setCustomerName(rs.getString("customerName"));
+                current.setUserId(new SimpleIntegerProperty(Integer.parseInt(rs.getString("userId"))));
+                current.setUserName(rs.getString("userName"));
+                current.setTitle(rs.getString("title"));
+                current.setDescription(rs.getString("description"));
+                current.setLocation(rs.getString("location"));
+                current.setContact(rs.getString("contact"));
+                current.setType(rs.getString("type"));
+                current.setUrl(rs.getString("url"));
+                current.setStart(rs.getDate("start"));
+                current.setEnd(rs.getDate("end"));
+                appointmentList.add(current);
+            }
+        }catch(SQLException e){
+            System.out.println("Error on Building Data: " + e);
+        }
+        return appointmentList;
+    }
 
 }

@@ -39,11 +39,11 @@ public class LandingScreenController {
 
     @FXML
     void schedulingButtonClicked(ActionEvent event) throws Exception{
-        //Stage stage = (Stage) schedulingButton.getScene().getWindow();
-        //Parent schedules = FXMLLoader.load(getClass().getResource("../View/ManageSchedule.fxml"), resources);
-        //Scene scene = new Scene(schedules);
-        //stage.setScene(scene);
-        //stage.show();
+        Stage stage = (Stage) schedulingButton.getScene().getWindow();
+        Parent schedules = FXMLLoader.load(getClass().getResource("../View/ManageAppointments.fxml"), resources);
+        Scene scene = new Scene(schedules);
+        stage.setScene(scene);
+        stage.show();
     }
 
 }

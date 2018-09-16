@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ManageAppointmentsController">
+   <children>
+      <TableView fx:id="manageCustomerTableView" layoutX="14.0" layoutY="15.0" prefHeight="339.0" prefWidth="571.0">
+         <columns>
+            <TableColumn fx:id="idColumn" prefWidth="37.0" text="ID" />
+            <TableColumn fx:id="customerNameColumn" prefWidth="132.0" text="Customer Name" />
+            <TableColumn fx:id="titleColumn" prefWidth="91.0" text="Title" />
+            <TableColumn fx:id="locationColumn" prefWidth="98.0" text="Location" />
+            <TableColumn fx:id="startColumn" prefWidth="111.0" text="Start" />
+            <TableColumn fx:id="endColumn" prefWidth="111.0" text="End" />
+         </columns></TableView>
+      <ButtonBar layoutX="254.0" layoutY="354.0" prefHeight="40.0" prefWidth="322.0">
+         <buttons>
+            <Button fx:id="manageAppointmentEdit" defaultButton="true" mnemonicParsing="false" onAction="#editAppointment" text="%manage.editButton" />
+            <Button fx:id="manageAppointmentDelete" defaultButton="true" mnemonicParsing="false" onAction="#deleteAppointment" text="%manage.deleteButton" />
+            <Button fx:id="manageAppointmentNew" defaultButton="true" mnemonicParsing="false" onAction="#newAppointment" text="%manage.newButton" />
+            <Button fx:id="manageAppointmentCancel" cancelButton="true" mnemonicParsing="false" onAction="#cancelManageAppointment" text="%manage.cancelButton" />
+         </buttons>
+      </ButtonBar>
+   </children>
+</AnchorPane>

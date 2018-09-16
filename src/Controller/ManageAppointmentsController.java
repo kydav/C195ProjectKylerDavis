@@ -1,6 +1,7 @@
 package Controller;
 
-import Model.Customer;
+
+import Model.Appointment;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -12,32 +13,33 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import java.util.Date;
 
 import java.io.IOException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static main.QueryManager.deleteTheCustomer;
-import static main.QueryManager.getCustomerTableView;
+import static main.QueryManager.getAppointmentTableView;
 
 public class ManageAppointmentsController {
-    public static ObservableList<Customer> appointmentList = FXCollections.observableArrayList();
+    public static ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
     public static int appointmentToModifyIndex = -1;
 
     @FXML
-    private TableView<Customer> manageAppointmentTableView;
+    private TableView<Appointment> manageAppointmentTableView;
     @FXML
-    private TableColumn<Customer, Integer> idColumn;
+    private TableColumn<Appointment, Integer> idColumn;
     @FXML
-    private TableColumn<Customer, String> customerNameColumn;
+    private TableColumn<Appointment, String> customerNameColumn;
     @FXML
-    private TableColumn<Customer, String> titleColumn;
+    private TableColumn<Appointment, String> titleColumn;
     @FXML
-    private TableColumn<Customer, String> locationColumn;
+    private TableColumn<Appointment, String> locationColumn;
     @FXML
-    private TableColumn<Customer, String> startColumn;
+    private TableColumn<Appointment, Date> startColumn;
     @FXML
-    private TableColumn<Customer, String> endColumn;
+    private TableColumn<Appointment, Date> endColumn;
     @FXML
     private ResourceBundle resources;
     @FXML
@@ -109,24 +111,24 @@ public class ManageAppointmentsController {
     }
     public void populateTableView(){
         try{
-            appointmentList = getCustomerTableView();
+            appointmentList = getAppointmentTableView();
             idColumn.setCellValueFactory(cellData -> {
-                  return new ReadOnlyObjectWrapper(cellData.getValue().getCustomerId());
+                  return new ReadOnlyObjectWrapper(cellData.getValue().getAppointmentId());
             });
             customerNameColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyStringWrapper(cellData.getValue().getPhone());
+                return new ReadOnlyStringWrapper(cellData.getValue().getCustomerName());
             });
             titleColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyStringWrapper(cellData.getValue().getCity());
+                return new ReadOnlyStringWrapper(cellData.getValue().getTitle());
             });
             locationColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyObjectWrapper(cellData.getValue().getPostalCode());
+                return new ReadOnlyObjectWrapper(cellData.getValue().getLocation());
             });
             startColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyStringWrapper(cellData.getValue().getCountry());
+                return new ReadOnlyObjectWrapper(cellData.getValue().getStart());
             });
             endColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyStringWrapper(cellData.getValue().getCustomerName());
+                return new ReadOnlyObjectWrapper(cellData.getValue().getStart());
             });
             manageAppointmentTableView.setItems(appointmentList);
         }catch(Exception e){
