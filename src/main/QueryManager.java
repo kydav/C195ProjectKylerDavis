@@ -281,8 +281,8 @@ public class QueryManager{
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         try{
             String allAppointment =
-                    "SELECT U04EE1.appointment.appointmentid, U04EE1.appointment.customerId, " +
-                    "U04EE1.customer.customerName, U04EE1.appointment.contact, U04EE1.appointment.title, " +
+                    "SELECT U04EE1.appointment.appointmentid, U04EE1.appointment.customerId, U04EE1.appointment.userid, " +
+                    "U04EE1.appointment.title, U04EE1.customer.customerName, U04EE1.appointment.contact, " +
                     "U04EE1.appointment.description,  U04EE1.appointment.location, U04EE1.appointment.url, " +
                     "U04EE1.appointment.start, U04EE1.appointment.end \n" +
                     "FROM U04EE1.appointment \n" +
@@ -294,14 +294,15 @@ public class QueryManager{
                 Appointment current = new Appointment();
                 current.setAppointmentId(new SimpleIntegerProperty(Integer.parseInt(rs.getString("appointmentId"))));
                 current.setCustomerId(new SimpleIntegerProperty(Integer.parseInt(rs.getString("customerId"))));
+                current.setUserId(new SimpleIntegerProperty(Integer.parseInt(rs.getString("userId"))));
+                current.setTitle(rs.getString("title"));
                 current.setCustomerName(rs.getString("customerName"));
                 current.setContact(rs.getString("contact"));
-                current.setTitle(rs.getString("title"));
                 current.setDescription(rs.getString("description"));
                 current.setLocation(rs.getString("location"));
                 current.setUrl(rs.getString("url"));
-                current.setStart(rs.getDate("start"));
-                current.setEnd(rs.getDate("end"));
+                current.setStart(rs.getTimestamp("start"));
+                current.setEnd(rs.getTimestamp("end"));
                 appointmentList.add(current);
             }
         }catch(SQLException e){

@@ -2,6 +2,7 @@ package Controller;
 
 
 import Model.Appointment;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -13,6 +14,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+
+import java.sql.Timestamp;
 import java.util.Date;
 
 import java.io.IOException;
@@ -37,9 +40,9 @@ public class ManageAppointmentsController {
     @FXML
     private TableColumn<Appointment, String> locationColumn;
     @FXML
-    private TableColumn<Appointment, Date> startColumn;
+    private TableColumn<Appointment, Timestamp> startColumn;
     @FXML
-    private TableColumn<Appointment, Date> endColumn;
+    private TableColumn<Appointment, Timestamp> endColumn;
     @FXML
     private ResourceBundle resources;
     @FXML
@@ -112,7 +115,7 @@ public class ManageAppointmentsController {
     public void populateTableView(){
         try{
             appointmentList = getAppointmentTableView();
-            System.out.println("Success");
+
             idColumn.setCellValueFactory(cellData -> {
                   return new ReadOnlyObjectWrapper(cellData.getValue().getAppointmentId());
             });
@@ -126,7 +129,8 @@ public class ManageAppointmentsController {
                 return new ReadOnlyStringWrapper(cellData.getValue().getLocation());
             });
             startColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyObjectWrapper(cellData.getValue().getStart());
+                return new ReadOnlyObjectWrapper(cellData.getValue().getEnd());
+                //return new ReadOnlyObjectWrapper(cellData.getValue().getStart());
             });
             endColumn.setCellValueFactory(cellData -> {
                 return new ReadOnlyObjectWrapper(cellData.getValue().getEnd());

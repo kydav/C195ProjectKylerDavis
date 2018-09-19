@@ -4,10 +4,14 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import sun.java2d.pipe.SpanShapeRenderer;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class Appointment {
@@ -24,8 +28,8 @@ public class Appointment {
     private StringProperty contact;
     private StringProperty type;
     private StringProperty url;
-    private Date start;
-    private Date end;
+    private Timestamp start;
+    private Timestamp end;
 
     public Appointment(){
         appointmentId = new SimpleIntegerProperty();
@@ -39,24 +43,24 @@ public class Appointment {
         contact = new SimpleStringProperty();
         type = new SimpleStringProperty();
         url = new SimpleStringProperty();
-        start = new Date();
-        end = new Date();
+        this.start = start;
+        this.end = end;
     }
     public void setAppointmentId(IntegerProperty appointmentId){
         this.appointmentId = appointmentId;
     }
     public void setCustomerId(IntegerProperty customerId){ this.customerId = customerId; }
-    public void setCustomerName(String customerName){ this.description.set(customerName); }
+    public void setCustomerName(String customerName){ this.customerName.set(customerName); }
     public void setUserId(IntegerProperty userId){ this.userId = userId; }
-    public void setUserName(String userName){ this.description.set(userName); }
+    public void setUserName(String userName){ this.userName.set(userName); }
     public void setTitle(String title){ this.title.set(title); }
     public void setDescription(String description){ this.description.set(description); }
     public void setLocation(String location){ this.location.set(location); }
     public void setContact(String contact){ this.contact.set(contact); }
     public void setType(String type){ this.type.set(type); }
     public void setUrl(String url){ this.url.set(url); }
-    public void setStart(Date start){ this.start = start; }
-    public void setEnd(Date end){ this.end = end; }
+    public void setStart(Timestamp start){ this.start = start; }
+    public void setEnd(Timestamp end){ this.end = end; }
 
     public IntegerProperty appointmentIdProperty(){ return appointmentId; }
     public IntegerProperty customerIdProperty(){ return customerId; }
@@ -69,8 +73,8 @@ public class Appointment {
     public StringProperty contactProperty(){ return contact; }
     public StringProperty typeProperty(){ return type; }
     public StringProperty urlProperty(){ return url; }
-    public Date startProperty(){ return start; }
-    public Date endProperty(){ return end; }
+    public Timestamp startProperty(){ return start; }
+    public Timestamp endProperty(){ return end; }
     public int getAppointmentId(){ return appointmentId.get(); }
     public int getCustomerId(){ return customerId.get(); }
     public String getCustomerName(){ return customerName.get(); }
@@ -82,8 +86,8 @@ public class Appointment {
     public String getContact(){ return contact.get(); }
     public String getType(){ return type.get(); }
     public String getUrl(){ return url.get(); }
-    public Date getStart(){ return start; }
-    public Date getEnd(){ return end; }
+    public Timestamp getStart(){ return start; }
+    public Timestamp getEnd(){ return end; }
 
 
     public static String validAppointment(String title, String description, String location, String contact,  String start, String end){
