@@ -311,4 +311,24 @@ public class QueryManager{
         return appointmentList;
     }
 
+    public static ObservableList<String> getCustomerNames(){
+        ObservableList<String> allCustomersList  = FXCollections.observableArrayList();
+        try{
+            String allCustomers =
+                            "SELECT U04EE1.customer.customerName \n" +
+                            "FROM U04EE1.customer \n" +
+                            "WHERE U04EE1.customer.active = 1;";
+            System.out.println(allCustomers);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(allCustomers);
+            while(rs.next()){
+                allCustomersList.add(rs.getString("customerName"));
+            }
+            return allCustomersList;
+        }catch(SQLException e){
+            System.out.println("Error getting user name data: " + e);
+            return null;
+        }
+    }
+
 }
