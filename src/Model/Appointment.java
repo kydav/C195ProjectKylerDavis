@@ -30,6 +30,10 @@ public class Appointment {
     private StringProperty url;
     private Timestamp start;
     private Timestamp end;
+    private Date startDate;
+    private Date endDate;
+    private Time startTime;
+    private Time endTime;
 
     public Appointment(){
         appointmentId = new SimpleIntegerProperty();
@@ -45,6 +49,10 @@ public class Appointment {
         url = new SimpleStringProperty();
         this.start = start;
         this.end = end;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
     public void setAppointmentId(IntegerProperty appointmentId){
         this.appointmentId = appointmentId;
@@ -61,6 +69,12 @@ public class Appointment {
     public void setUrl(String url){ this.url.set(url); }
     public void setStart(Timestamp start){ this.start = start; }
     public void setEnd(Timestamp end){ this.end = end; }
+    public void setStartDate(Date startDate){this.startDate = startDate; }
+    public void setEndDate(Date endDate){this.endDate = endDate; }
+    public void setStartTime(Time startTime){this.startTime = startTime; }
+    public void setEndTime(Time endTime){this.endTime = endTime; }
+
+
 
     public IntegerProperty appointmentIdProperty(){ return appointmentId; }
     public IntegerProperty customerIdProperty(){ return customerId; }
@@ -75,6 +89,10 @@ public class Appointment {
     public StringProperty urlProperty(){ return url; }
     public Timestamp startProperty(){ return start; }
     public Timestamp endProperty(){ return end; }
+    public Date startDateProperty(){ return startDate; }
+    public Date endDateProperty(){ return endDate; }
+    public Time startTimeProperty(){ return startTime; }
+    public Time endTimeProperty(){ return endTime; }
     public int getAppointmentId(){ return appointmentId.get(); }
     public int getCustomerId(){ return customerId.get(); }
     public String getCustomerName(){ return customerName.get(); }
@@ -88,6 +106,10 @@ public class Appointment {
     public String getUrl(){ return url.get(); }
     public Timestamp getStart(){ return start; }
     public Timestamp getEnd(){ return end; }
+    public Date getStartDate() { return startDate; }
+    public Date getEndDate() { return endDate; }
+    public Time getStartTime() { return startTime; }
+    public Time getEndTime() { return endTime; }
 
 
     public static String validAppointment(String title, String description, String location, String contact,  String start, String end){

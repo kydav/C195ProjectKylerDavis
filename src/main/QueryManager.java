@@ -281,13 +281,13 @@ public class QueryManager{
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         try{
             String allAppointment =
-                    "SELECT U04EE1.appointment.appointmentid, U04EE1.appointment.customerId, U04EE1.appointment.userid, " +
+                    "SELECT U04EE1.appointment.appointmentid, U04EE1.user.userName, U04EE1.appointment.customerId, U04EE1.appointment.userid, " +
                     "U04EE1.appointment.title, U04EE1.customer.customerName, U04EE1.appointment.contact, " +
                     "U04EE1.appointment.description,  U04EE1.appointment.location, U04EE1.appointment.url, " +
                     "U04EE1.appointment.start, U04EE1.appointment.end \n" +
                     "FROM U04EE1.appointment \n" +
-                    "JOIN U04EE1.customer ON U04EE1.appointment.customerId = U04EE1.customer.customerId;";
-            System.out.println(allAppointment);
+                    "JOIN U04EE1.customer ON U04EE1.appointment.customerId = U04EE1.customer.customerId \n" +
+                    "JOIN U04EE1.user ON U04EE1.appointment.userId = U04EE1.user.userId;";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(allAppointment);
             while (rs.next()) {
@@ -295,6 +295,7 @@ public class QueryManager{
                 current.setAppointmentId(new SimpleIntegerProperty(Integer.parseInt(rs.getString("appointmentId"))));
                 current.setCustomerId(new SimpleIntegerProperty(Integer.parseInt(rs.getString("customerId"))));
                 current.setUserId(new SimpleIntegerProperty(Integer.parseInt(rs.getString("userId"))));
+                current.setUserName(rs.getString("userName"));
                 current.setTitle(rs.getString("title"));
                 current.setCustomerName(rs.getString("customerName"));
                 current.setContact(rs.getString("contact"));
@@ -303,6 +304,10 @@ public class QueryManager{
                 current.setUrl(rs.getString("url"));
                 current.setStart(rs.getTimestamp("start"));
                 current.setEnd(rs.getTimestamp("end"));
+                current.setStartDate(rs.getDate("start"));
+                current.setEndDate(rs.getDate("end"));
+                current.setStartTime(rs.getTime("start"));
+                current.setEndTime(rs.getTime("end"));
                 appointmentList.add(current);
             }
         }catch(SQLException e){
@@ -318,13 +323,30 @@ public class QueryManager{
                             "SELECT U04EE1.customer.customerName \n" +
                             "FROM U04EE1.customer \n" +
                             "WHERE U04EE1.customer.active = 1;";
-            System.out.println(allCustomers);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(allCustomers);
             while(rs.next()){
                 allCustomersList.add(rs.getString("customerName"));
             }
             return allCustomersList;
+        }catch(SQLException e){
+            System.out.println("Error getting user name data: " + e);
+            return null;
+        }
+    }
+    public static ObservableList<String> getUserNames(){
+        ObservableList<String> allUsersList  = FXCollections.observableArrayList();
+        try{
+            String allUsers =
+                            "SELECT U04EE1.user.userName \n" +
+                            "FROM U04EE1.user \n" +
+                            "WHERE U04EE1.user.active = 1;";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(allUsers);
+            while(rs.next()){
+                allUsersList.add(rs.getString("userName"));
+            }
+            return allUsersList;
         }catch(SQLException e){
             System.out.println("Error getting user name data: " + e);
             return null;
