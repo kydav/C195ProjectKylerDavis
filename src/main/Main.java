@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import java.sql.SQLException;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 public class Main extends Application {
     public String loggedInUser;
@@ -17,7 +18,9 @@ public class Main extends Application {
         String userLanguage = Locale.getDefault().getLanguage();
         Locale  userDefault = new Locale(userLanguage);
         Locale.setDefault(userDefault);
+        TimeZone userDefaultTimeZone = TimeZone.getDefault();
         ResourceBundle defaultBundle = ResourceBundle.getBundle("Resources", userDefault);
+
 
         Parent root = FXMLLoader.load(getClass().getResource("../View/LoginScreen.fxml"),defaultBundle);
         primaryStage.setScene(new Scene(root, 600, 400));

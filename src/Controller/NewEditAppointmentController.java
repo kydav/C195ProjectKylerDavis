@@ -15,6 +15,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.ZoneId;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 
 import javafx.event.ActionEvent;
 import java.io.IOException;
@@ -104,11 +110,18 @@ public class NewEditAppointmentController {
                 System.out.println(appointmentToModify.getEnd());
                 System.out.println(appointmentToModify.getEndDate());
                 System.out.println(appointmentToModify.getEndTime());
-                SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
-                Date date = dt.parse(appointmentToModify.getStartDate().toString());
+                //SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+                //Date date = dt.parse(appointmentToModify.getStartDate().toString());
+                //System.out.println(date);
+
+                Date input = appointmentToModify.getStartDate();
+                System.out.println(input);
+                Instant instant = input.toInstant();
+                ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
+                LocalDate date = zdt.toLocalDate();
                 System.out.println(date);
 
-                
+
 
             }catch(Exception e){
                 e.printStackTrace();
