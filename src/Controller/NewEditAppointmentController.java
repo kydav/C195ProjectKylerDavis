@@ -11,6 +11,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.control.DatePicker;
+
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.text.SimpleDateFormat;
@@ -18,8 +20,12 @@ import java.util.Date;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.ZoneId;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.TimeZone;
+import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.text.DateFormat;
 
 
 import javafx.event.ActionEvent;
@@ -104,22 +110,15 @@ public class NewEditAppointmentController {
                 urlField.setText(appointmentToModify.getUrl());
                 customerCombo.getSelectionModel().select(customerNames.indexOf(appointmentToModify.getCustomerName()));
                 userCombo.getSelectionModel().select(userNames.indexOf(appointmentToModify.getUserName()));
-                System.out.println(appointmentToModify.getStart());
-                System.out.println(appointmentToModify.getStartDate());
-                System.out.println(appointmentToModify.getStartTime());
-                System.out.println(appointmentToModify.getEnd());
-                System.out.println(appointmentToModify.getEndDate());
-                System.out.println(appointmentToModify.getEndTime());
-                //SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
-                //Date date = dt.parse(appointmentToModify.getStartDate().toString());
-                //System.out.println(date);
 
-                Date input = appointmentToModify.getStartDate();
-                System.out.println(input);
-                Instant instant = input.toInstant();
-                ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
-                LocalDate date = zdt.toLocalDate();
-                System.out.println(date);
+
+
+                DateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+                utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                System.out.println(appointmentToModify.getStart().toString());
+                java.util.Date startDate = utcFormat.parse(appointmentToModify.getStart().toString());
+                System.out.println(startDate);
+                
 
 
 

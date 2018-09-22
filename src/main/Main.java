@@ -18,7 +18,6 @@ public class Main extends Application {
         String userLanguage = Locale.getDefault().getLanguage();
         Locale  userDefault = new Locale(userLanguage);
         Locale.setDefault(userDefault);
-        TimeZone userDefaultTimeZone = TimeZone.getDefault();
         ResourceBundle defaultBundle = ResourceBundle.getBundle("Resources", userDefault);
 
 

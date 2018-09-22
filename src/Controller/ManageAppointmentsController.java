@@ -129,7 +129,7 @@ public class ManageAppointmentsController {
                 return new ReadOnlyStringWrapper(cellData.getValue().getLocation());
             });
             startColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyObjectWrapper(cellData.getValue().getEnd());
+                return new ReadOnlyObjectWrapper(cellData.getValue().getStart());
                 //return new ReadOnlyObjectWrapper(cellData.getValue().getStart());
             });
             endColumn.setCellValueFactory(cellData -> {
