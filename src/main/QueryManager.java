@@ -287,7 +287,7 @@ public class QueryManager{
         try{
             String allAppointment =
                     "SELECT U04EE1.appointment.appointmentid, U04EE1.user.userName, U04EE1.appointment.customerId, U04EE1.appointment.userid, " +
-                    "U04EE1.appointment.title, U04EE1.customer.customerName, U04EE1.appointment.contact, " +
+                    "U04EE1.appointment.title, U04EE1.customer.customerName, U04EE1.appointment.contact, U04EE1.appointment.type," +
                     "U04EE1.appointment.description,  U04EE1.appointment.location, U04EE1.appointment.url, " +
                     "U04EE1.appointment.start, U04EE1.appointment.end \n" +
                     "FROM U04EE1.appointment \n" +
@@ -303,6 +303,7 @@ public class QueryManager{
                 current.setUserName(rs.getString("userName"));
                 current.setTitle(rs.getString("title"));
                 current.setCustomerName(rs.getString("customerName"));
+                current.setType(rs.getString("type"));
                 current.setContact(rs.getString("contact"));
                 current.setDescription(rs.getString("description"));
                 current.setLocation(rs.getString("location"));
@@ -392,5 +393,22 @@ public class QueryManager{
         allPeriodsList.add("AM");
         allPeriodsList.add("PM");
         return allPeriodsList;
+    }
+    public static ObservableList<String> getTypeDrops(){
+        ObservableList<String> allTypesList  = FXCollections.observableArrayList();
+        try{
+            String allUsers =
+                    "SELECT DISTINCT U04EE1.appointment.type \n" +
+                    "FROM U04EE1.appointment;";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(allUsers);
+            while(rs.next()){
+                allTypesList.add(rs.getString("type"));
+            }
+            return allTypesList;
+        }catch(SQLException e){
+            System.out.println("Error getting user name data: " + e);
+            return null;
+        }
     }
 }

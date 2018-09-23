@@ -72,6 +72,8 @@ public class NewEditAppointmentController {
     private ComboBox<String> endMinutes;
     @FXML
     private ComboBox<String> endPeriod;
+    @FXML
+    private ComboBox<String> typeCombo;
 
     @FXML
     void CancelAppointment(ActionEvent event) throws IOException{
@@ -88,12 +90,31 @@ public class NewEditAppointmentController {
 
     @FXML
     void SaveAppointment(ActionEvent event) throws IOException{
+
         String title = titleField.getText();
+        String type = typeCombo.getValue();
         String description = descriptionField.getText();
         String location = locationField.getText();
         String url = urlField.getText();
         String customer = customerCombo.getValue();
         String user = userCombo.getValue();
+        LocalDate startDate = startDatePicker.getValue();
+        LocalDate endDate = endDatePicker.getValue();
+        String startHourString;
+        String endHourString;
+        if(startPeriod.getValue().equals("PM")){
+            startHourString = Integer.toString(Integer.parseInt(startHour.getValue()) + 12);
+        }else{
+            startHourString = startHour.getValue();
+        }
+        if(endPeriod.getValue().equals("PM")){
+            endHourString = Integer.toString(Integer.parseInt(endHour.getValue()) + 12);
+        }else{
+            endHourString = endHour.getValue();
+        }
+        String startTime = startHourString + ":" + startMinutes.getValue();
+        String endTime = endHourString + ":" + endMinutes.getValue();
+
     }
     public void initialize() {
         ObservableList<String> customerNames = getCustomerNames();
@@ -109,6 +130,7 @@ public class NewEditAppointmentController {
         ObservableList<String> periodDrop = getPeriodDrops();
         startPeriod.setItems(periodDrop);
         endPeriod.setItems(periodDrop);
+        typeCombo.setItems(getTypeDrops());
 
         if(appointmentToModifyIndex != -1){
             try {
@@ -119,6 +141,7 @@ public class NewEditAppointmentController {
                 urlField.setText(appointmentToModify.getUrl());
                 customerCombo.getSelectionModel().select(customerNames.indexOf(appointmentToModify.getCustomerName()));
                 userCombo.getSelectionModel().select(userNames.indexOf(appointmentToModify.getUserName()));
+                typeCombo.getSelectionModel().select(appointmentToModify.getType());
 
                 DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
                 dt.setTimeZone(TimeZone.getTimeZone("UTC"));
