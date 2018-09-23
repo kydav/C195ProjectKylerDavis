@@ -59,19 +59,19 @@ public class NewEditAppointmentController {
     @FXML
     private DatePicker startDatePicker;
     @FXML
-    private ComboBox<?> startHour;
+    private ComboBox<String> startHour;
     @FXML
-    private ComboBox<?> startHours;
+    private ComboBox<String> startMinutes;
     @FXML
-    private ComboBox<?> startPeriod;
+    private ComboBox<String> startPeriod;
     @FXML
     private DatePicker endDatePicker;
     @FXML
-    private ComboBox<?> endHour;
+    private ComboBox<String> endHour;
     @FXML
-    private ComboBox<?> endMinutes;
+    private ComboBox<String> endMinutes;
     @FXML
-    private ComboBox<?> endPeriod;
+    private ComboBox<String> endPeriod;
 
     @FXML
     void CancelAppointment(ActionEvent event) throws IOException{
@@ -100,6 +100,15 @@ public class NewEditAppointmentController {
         customerCombo.setItems(customerNames);
         ObservableList<String> userNames = getUserNames();
         userCombo.setItems(userNames);
+        ObservableList<String> hourDrop = getHourDrops();
+        startHour.setItems(hourDrop);
+        endHour.setItems(hourDrop);
+        ObservableList<String> minuteDrop = getMinuteDrops();
+        startMinutes.setItems(minuteDrop);
+        endMinutes.setItems(minuteDrop);
+        ObservableList<String> periodDrop = getPeriodDrops();
+        startPeriod.setItems(periodDrop);
+        endPeriod.setItems(periodDrop);
 
         if(appointmentToModifyIndex != -1){
             try {
@@ -111,14 +120,36 @@ public class NewEditAppointmentController {
                 customerCombo.getSelectionModel().select(customerNames.indexOf(appointmentToModify.getCustomerName()));
                 userCombo.getSelectionModel().select(userNames.indexOf(appointmentToModify.getUserName()));
 
+                DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+                dt.setTimeZone(TimeZone.getTimeZone("UTC"));
+                Date startDate = dt.parse(appointmentToModify.getStart().toString());
+                Date endDate = dt.parse(appointmentToModify.getEnd().toString());
+                DateFormat dateFormatter = new SimpleDateFormat("yyyy/MM/dd");
+                DateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
+                String startDateAsString = dateFormatter.format(startDate); //09/02/2017
+                String startTimeAsString = timeFormatter.format(startDate); //02:00:00
+
+                String endDateAsString = dateFormatter.format(endDate);
+                String endTimeAsString = timeFormatter.format(endDate);
+                int startYearInt = Integer.parseInt(startDateAsString.substring(0,4));
+                int startMonthInt = Integer.parseInt(startDateAsString.substring(5,7));
+                int startDayInt = Integer.parseInt(startDateAsString.substring(8,10));
+                int endYearInt = Integer.parseInt(endDateAsString.substring(0,4));
+                int endMonthInt = Integer.parseInt(endDateAsString.substring(5,7));
+                int endDayInt = Integer.parseInt(endDateAsString.substring(8,10));
+
+                System.out.println(startTimeAsString);
+                int startHourInt = Integer.parseInt(startTimeAsString.substring(0,2));
+                int startMinuteInt = Integer.parseInt(startTimeAsString.substring(3,5));
+                int endHourInt = Integer.parseInt(endTimeAsString.substring(0,2));
+                int endMinuteInt = Integer.parseInt(endTimeAsString.substring(3,5));
+
+                System.out.println(startHourInt +" " + startMinuteInt  );//" " + endHourInt + " " + endMinuteInt);
+                startDatePicker.setValue(LocalDate.of(startYearInt, startMonthInt, startDayInt));
+                endDatePicker.setValue(LocalDate.of(endYearInt,endMonthInt,endDayInt));
 
 
-                DateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-                utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-                System.out.println(appointmentToModify.getStart().toString());
-                java.util.Date startDate = utcFormat.parse(appointmentToModify.getStart().toString());
-                System.out.println(startDate);
-                
+
 
 
 

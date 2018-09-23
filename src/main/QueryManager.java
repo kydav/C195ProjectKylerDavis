@@ -352,5 +352,34 @@ public class QueryManager{
             return null;
         }
     }
-
+    public static ObservableList<String> getHourDrops(){
+        ObservableList<String> allHoursList = FXCollections.observableArrayList();
+        allHoursList.add("01");
+        allHoursList.add("02");
+        allHoursList.add("03");
+        allHoursList.add("04");
+        allHoursList.add("05");
+        allHoursList.add("06");
+        allHoursList.add("07");
+        allHoursList.add("08");
+        allHoursList.add("09");
+        allHoursList.add("10");
+        allHoursList.add("11");
+        allHoursList.add("12");
+        return allHoursList;
+    }
+    public static ObservableList<String> getMinuteDrops(){
+        ObservableList<String> allMinutesList = FXCollections.observableArrayList();
+        allMinutesList.add("00");
+        allMinutesList.add("15");
+        allMinutesList.add("30");
+        allMinutesList.add("45");
+        return allMinutesList;
+    }
+    public static ObservableList<String> getPeriodDrops(){
+        ObservableList<String> allPeriodsList = FXCollections.observableArrayList();
+        allPeriodsList.add("AM");
+        allPeriodsList.add("PM");
+        return allPeriodsList;
+    }
 }
