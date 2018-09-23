@@ -126,11 +126,11 @@ public class NewEditAppointmentController {
                 Date endDate = dt.parse(appointmentToModify.getEnd().toString());
                 DateFormat dateFormatter = new SimpleDateFormat("yyyy/MM/dd");
                 DateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
-                String startDateAsString = dateFormatter.format(startDate); //09/02/2017
-                String startTimeAsString = timeFormatter.format(startDate); //02:00:00
-
+                String startDateAsString = dateFormatter.format(startDate);
+                String startTimeAsString = timeFormatter.format(startDate);
                 String endDateAsString = dateFormatter.format(endDate);
                 String endTimeAsString = timeFormatter.format(endDate);
+
                 int startYearInt = Integer.parseInt(startDateAsString.substring(0,4));
                 int startMonthInt = Integer.parseInt(startDateAsString.substring(5,7));
                 int startDayInt = Integer.parseInt(startDateAsString.substring(8,10));
@@ -138,21 +138,28 @@ public class NewEditAppointmentController {
                 int endMonthInt = Integer.parseInt(endDateAsString.substring(5,7));
                 int endDayInt = Integer.parseInt(endDateAsString.substring(8,10));
 
-                System.out.println(startTimeAsString);
-                int startHourInt = Integer.parseInt(startTimeAsString.substring(0,2));
-                int startMinuteInt = Integer.parseInt(startTimeAsString.substring(3,5));
-                int endHourInt = Integer.parseInt(endTimeAsString.substring(0,2));
-                int endMinuteInt = Integer.parseInt(endTimeAsString.substring(3,5));
+                String startHourString = startTimeAsString.substring(0,2);
+                String startMinuteString = startTimeAsString.substring(3,5);
+                String endHourString = endTimeAsString.substring(0,2);
+                String endMinuteString = endTimeAsString.substring(3,5);
 
-                System.out.println(startHourInt +" " + startMinuteInt  );//" " + endHourInt + " " + endMinuteInt);
                 startDatePicker.setValue(LocalDate.of(startYearInt, startMonthInt, startDayInt));
                 endDatePicker.setValue(LocalDate.of(endYearInt,endMonthInt,endDayInt));
+                startHour.getSelectionModel().select(startHourString);
+                startMinutes.getSelectionModel().select(startMinuteString);
+                endHour.getSelectionModel().select(endHourString);
+                endMinutes.getSelectionModel().select(endMinuteString);
 
-
-
-
-
-
+                if(Integer.parseInt(startHourString) >= 8 && Integer.parseInt(startHourString) < 12){
+                    startPeriod.getSelectionModel().select("AM");
+                }else{
+                    startPeriod.getSelectionModel().select("PM");
+                }
+                if(Integer.parseInt(endHourString) >= 8 && Integer.parseInt(endHourString) < 12){
+                    endPeriod.getSelectionModel().select("AM");
+                }else{
+                    endPeriod.getSelectionModel().select("PM");
+                }
             }catch(Exception e){
                 e.printStackTrace();
                 System.out.println("Error loading Appointment");

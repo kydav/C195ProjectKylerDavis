@@ -125,15 +125,17 @@ public class ManageAppointmentsController {
             titleColumn.setCellValueFactory(cellData -> {
                 return new ReadOnlyStringWrapper(cellData.getValue().getTitle());
             });
+
             locationColumn.setCellValueFactory(cellData -> {
                 return new ReadOnlyStringWrapper(cellData.getValue().getLocation());
             });
+
             startColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyObjectWrapper(cellData.getValue().getStart());
+                return new ReadOnlyObjectWrapper(cellData.getValue().getStartDate());
                 //return new ReadOnlyObjectWrapper(cellData.getValue().getStart());
             });
             endColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyObjectWrapper(cellData.getValue().getEnd());
+                return new ReadOnlyObjectWrapper(cellData.getValue().getEndDate());
             });
             manageAppointmentTableView.setItems(appointmentList);
         }catch(Exception e){

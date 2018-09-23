@@ -7,6 +7,11 @@ import javafx.collections.ObservableList;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 import static main.DBConnection.conn;
 import Model.Customer;
@@ -277,7 +282,7 @@ public class QueryManager{
         }
         return rows;
     }
-    public static ObservableList<Appointment> getAppointmentTableView(){
+    public static ObservableList<Appointment> getAppointmentTableView() throws ParseException {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         try{
             String allAppointment =
@@ -304,8 +309,14 @@ public class QueryManager{
                 current.setUrl(rs.getString("url"));
                 current.setStart(rs.getTimestamp("start"));
                 current.setEnd(rs.getTimestamp("end"));
-                current.setStartDate(rs.getDate("start"));
-                current.setEndDate(rs.getDate("end"));
+
+                DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                dt.setTimeZone(TimeZone.getTimeZone("UTC"));
+                Date startDate = dt.parse(rs.getTimestamp("Start").toString());
+                Date endDate = dt.parse(rs.getTimestamp("end").toString());
+
+                current.setStartDate(startDate);
+                current.setEndDate(endDate);
                 current.setStartTime(rs.getTime("start"));
                 current.setEndTime(rs.getTime("end"));
                 appointmentList.add(current);
