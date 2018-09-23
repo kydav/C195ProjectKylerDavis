@@ -126,6 +126,7 @@ public class Appointment {
             error = resources.getString("customer.city");
         if(end.length() == 0)
             error = resources.getString("customer.country");
+
         return error;
 
     }

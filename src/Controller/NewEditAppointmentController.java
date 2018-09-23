@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.DatePicker;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.text.SimpleDateFormat;
@@ -89,8 +90,7 @@ public class NewEditAppointmentController {
     }
 
     @FXML
-    void SaveAppointment(ActionEvent event) throws IOException{
-
+    void SaveAppointment(ActionEvent event) throws IOException, ParseException {
         String title = titleField.getText();
         String type = typeCombo.getValue();
         String description = descriptionField.getText();
@@ -98,8 +98,8 @@ public class NewEditAppointmentController {
         String url = urlField.getText();
         String customer = customerCombo.getValue();
         String user = userCombo.getValue();
-        LocalDate startDate = startDatePicker.getValue();
-        LocalDate endDate = endDatePicker.getValue();
+        LocalDate startLocalDate = startDatePicker.getValue();
+        LocalDate endLocalDate = endDatePicker.getValue();
         String startHourString;
         String endHourString;
         if(startPeriod.getValue().equals("PM")){
@@ -112,8 +112,25 @@ public class NewEditAppointmentController {
         }else{
             endHourString = endHour.getValue();
         }
-        String startTime = startHourString + ":" + startMinutes.getValue();
-        String endTime = endHourString + ":" + endMinutes.getValue();
+
+        LocalTime startLocalTime = LocalTime.of(Integer.parseInt(startHourString), Integer.parseInt(startMinutes.getValue()));
+        LocalDateTime startLocalDateTime = LocalDateTime.of(startLocalDate, startLocalTime);
+        LocalTime endLocalTime = LocalTime.of(Integer.parseInt(endHourString), Integer.parseInt(endMinutes.getValue()));
+        LocalDateTime endLocalDateTime = LocalDateTime.of(endLocalDate, endLocalTime);
+
+        ZoneId zid = ZoneId.systemDefault();
+        ZonedDateTime zdtStart = startLocalDateTime.atZone(zid);
+        ZonedDateTime zdtEnd = endLocalDateTime.atZone(zid);
+
+
+        ZonedDateTime utcStart = zdtStart.withZoneSameInstant(ZoneId.of("UTC"));
+        ZonedDateTime utcEND = zdtEnd.withZoneSameInstant(ZoneId.of("UTC"));
+
+        startLocalDateTime = utcStart.toLocalDateTime();
+        endLocalDateTime = utcEND.toLocalDateTime();
+
+        Timestamp startsqlts = Timestamp.valueOf(startLocalDateTime);
+        Timestamp endsqlts = Timestamp.valueOf(endLocalDateTime);
 
     }
     public void initialize() {
@@ -142,10 +159,12 @@ public class NewEditAppointmentController {
                 customerCombo.getSelectionModel().select(customerNames.indexOf(appointmentToModify.getCustomerName()));
                 userCombo.getSelectionModel().select(userNames.indexOf(appointmentToModify.getUserName()));
                 typeCombo.getSelectionModel().select(appointmentToModify.getType());
+                System.out.println(appointmentToModify.getStart().toString());
 
                 DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
                 dt.setTimeZone(TimeZone.getTimeZone("UTC"));
                 Date startDate = dt.parse(appointmentToModify.getStart().toString());
+                System.out.println(startDate.toString());
                 Date endDate = dt.parse(appointmentToModify.getEnd().toString());
                 DateFormat dateFormatter = new SimpleDateFormat("yyyy/MM/dd");
                 DateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
