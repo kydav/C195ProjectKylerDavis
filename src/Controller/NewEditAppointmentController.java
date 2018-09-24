@@ -37,6 +37,7 @@ import static Controller.ManageAppointmentsController.appointmentList;
 import static Controller.ManageAppointmentsController.appointmentToModifyIndex;
 import static main.QueryManager.*;
 import Model.Appointment;
+import Model.Appointment.*;
 
 public class NewEditAppointmentController {
     @FXML
@@ -124,13 +125,17 @@ public class NewEditAppointmentController {
 
 
         ZonedDateTime utcStart = zdtStart.withZoneSameInstant(ZoneId.of("UTC"));
-        ZonedDateTime utcEND = zdtEnd.withZoneSameInstant(ZoneId.of("UTC"));
+        ZonedDateTime utcEnd = zdtEnd.withZoneSameInstant(ZoneId.of("UTC"));
 
         startLocalDateTime = utcStart.toLocalDateTime();
-        endLocalDateTime = utcEND.toLocalDateTime();
+        endLocalDateTime = utcEnd.toLocalDateTime();
 
         Timestamp startsqlts = Timestamp.valueOf(startLocalDateTime);
         Timestamp endsqlts = Timestamp.valueOf(endLocalDateTime);
+
+        System.out.println(startLocalTime.getHour() +"end:"+ endLocalTime.getHour());
+        String validAppointment = Appointment.validAppointment(title,customer,type,description,user,startsqlts,endsqlts,startLocalDateTime,endLocalDateTime,startLocalTime,endLocalTime);
+
 
     }
     public void initialize() {
@@ -159,7 +164,6 @@ public class NewEditAppointmentController {
                 customerCombo.getSelectionModel().select(customerNames.indexOf(appointmentToModify.getCustomerName()));
                 userCombo.getSelectionModel().select(userNames.indexOf(appointmentToModify.getUserName()));
                 typeCombo.getSelectionModel().select(appointmentToModify.getType());
-                System.out.println(appointmentToModify.getStart().toString());
 
                 DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
                 dt.setTimeZone(TimeZone.getTimeZone("UTC"));

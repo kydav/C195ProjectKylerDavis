@@ -8,6 +8,7 @@ import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalTime;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -30,6 +31,8 @@ public class Appointment {
     private StringProperty url;
     private Timestamp start;
     private Timestamp end;
+    private LocalDateTime startLocalDateTime;
+    private LocalDateTime endLocalDateTime;
     private Date startDate;
     private Date endDate;
     private Time startTime;
@@ -49,6 +52,8 @@ public class Appointment {
         url = new SimpleStringProperty();
         this.start = start;
         this.end = end;
+        this.startLocalDateTime = startLocalDateTime;
+        this.endLocalDateTime = endLocalDateTime;
         this.startDate = startDate;
         this.endDate = endDate;
         this.startTime = startTime;
@@ -69,6 +74,8 @@ public class Appointment {
     public void setUrl(String url){ this.url.set(url); }
     public void setStart(Timestamp start){ this.start = start; }
     public void setEnd(Timestamp end){ this.end = end; }
+    public void setStartLocalDateTime(LocalDateTime startLocalDateTime){ this.startLocalDateTime = startLocalDateTime; }
+    public void setEndLocalDateTime(LocalDateTime endLocalDateTime){ this.endLocalDateTime = endLocalDateTime; }
     public void setStartDate(Date startDate){this.startDate = startDate; }
     public void setEndDate(Date endDate){this.endDate = endDate; }
     public void setStartTime(Time startTime){this.startTime = startTime; }
@@ -89,6 +96,8 @@ public class Appointment {
     public StringProperty urlProperty(){ return url; }
     public Timestamp startProperty(){ return start; }
     public Timestamp endProperty(){ return end; }
+    public LocalDateTime startLocalDateTimeProperty(){ return startLocalDateTime; }
+    public LocalDateTime endLocalDateTimeProperty(){ return startLocalDateTime; }
     public Date startDateProperty(){ return startDate; }
     public Date endDateProperty(){ return endDate; }
     public Time startTimeProperty(){ return startTime; }
@@ -106,27 +115,35 @@ public class Appointment {
     public String getUrl(){ return url.get(); }
     public Timestamp getStart(){ return start; }
     public Timestamp getEnd(){ return end; }
+    public LocalDateTime getStartLocalDateTime() { return startLocalDateTime; }
+    public LocalDateTime getEndLocalDateTime() { return endLocalDateTime; }
     public Date getStartDate() { return startDate; }
     public Date getEndDate() { return endDate; }
     public Time getStartTime() { return startTime; }
     public Time getEndTime() { return endTime; }
 
 
-    public static String validAppointment(String title, String description, String location, String contact,  String start, String end){
+    public static String validAppointment(String title, String customer, String type, String description, String contact, Timestamp start, Timestamp end, LocalDateTime startLocalDateTime, LocalDateTime endLocalDateTime, LocalTime startTime, LocalTime endTime){
         String error = "";
         if(title.length() == 0)
-            error = resources.getString("customer.name");
+            error = resources.getString("appointment.title");
+        if(customer.length() == 0)
+            error = resources.getString("appointment.customer");
+        if(type.length() == 0)
+            error = resources.getString("appointment.type");
         if(description.length() == 0)
-            error = resources.getString("customer.address");
-        if(location.length() == 0)
-            error = resources.getString("customer.postalCode");
+            error = resources.getString("appointment.description");
         if(contact.length() == 0)
-            error = resources.getString("customer.phone");
-        if(start.length() == 0)
-            error = resources.getString("customer.city");
-        if(end.length() == 0)
-            error = resources.getString("customer.country");
-
+            error = resources.getString("appointment.contact");
+        if(start.toString() == null)
+            error = resources.getString("appointment.start");
+        if(end.toString() == null)
+            error = resources.getString("appointment.end");
+        if(startLocalDateTime.getDayOfWeek().toString().equals("SATURDAY") || startLocalDateTime.getDayOfWeek().toString().equals("SUNDAY") ||
+                endLocalDateTime.getDayOfWeek().toString().equals("SATURDAY") || endLocalDateTime.getDayOfWeek().toString().equals("SUNDAY"))
+            error = resources.getString("appointment.weekend");
+        if(startTime.getHour() < 8 && startTime.getHour() > 16  || endTime.getHour() < 8 && endTime.getHour() > 17)
+            error = resources.getString("appointment.afterHours");
         return error;
 
     }
