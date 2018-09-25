@@ -7,9 +7,13 @@ import javafx.collections.ObservableList;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -300,6 +304,7 @@ public class QueryManager{
                 current.setAppointmentId(new SimpleIntegerProperty(Integer.parseInt(rs.getString("appointmentId"))));
                 current.setCustomerId(new SimpleIntegerProperty(Integer.parseInt(rs.getString("customerId"))));
                 current.setUserId(new SimpleIntegerProperty(Integer.parseInt(rs.getString("userId"))));
+
                 current.setUserName(rs.getString("userName"));
                 current.setTitle(rs.getString("title"));
                 current.setCustomerName(rs.getString("customerName"));
@@ -308,6 +313,7 @@ public class QueryManager{
                 current.setDescription(rs.getString("description"));
                 current.setLocation(rs.getString("location"));
                 current.setUrl(rs.getString("url"));
+
                 current.setStart(rs.getTimestamp("start"));
                 current.setEnd(rs.getTimestamp("end"));
 
@@ -320,12 +326,48 @@ public class QueryManager{
                 current.setEndDate(endDate);
                 current.setStartTime(rs.getTime("start"));
                 current.setEndTime(rs.getTime("end"));
+
+                //Needing to set the localdatetime of startlocaldatetime
+                LocalDateTime startLocalDateTime = LocalDateTime.ofInstant(startDate.toInstant(), ZoneId.systemDefault());
+                LocalDateTime endLocalDateTime = LocalDateTime.ofInstant(endDate.toInstant(), ZoneId.systemDefault());
+                LocalTime localTimeofStart = startLocalDateTime.toLocalTime();
+                System.out.println(localTimeofStart);
+                System.out.println(localTimeofStart.getHour());
+                System.out.println(localTimeofStart.getMinute());
+                current.setStartLocalDateTime(startLocalDateTime);
+                current.setEndLocalDateTime(endLocalDateTime);
+
                 appointmentList.add(current);
             }
         }catch(SQLException e){
             System.out.println("Error on Building Data: " + e);
         }
         return appointmentList;
+    }
+    public static boolean appointmentOverlaps(LocalDateTime newStartTime, LocalDateTime newEndTime)throws ParseException{
+        ObservableList<Appointment> appointmentList = getAppointmentTableView();
+        for(Appointment app: appointmentList){
+            LocalDateTime appStartTime = app.getStartLocalDateTime();
+            LocalDateTime appEndTime = app.getStartLocalDateTime();
+            System.out.println("new start" + newStartTime);
+            System.out.println("new end" + newEndTime);
+            System.out.println("exist start" + appStartTime);
+            System.out.println("exist end" + appEndTime);
+            if(appStartTime.equals(newStartTime)){
+                return true;
+            }else if(newStartTime.isAfter(appStartTime) && newStartTime.isBefore(appEndTime)){
+                return true;
+            }else if(newStartTime.isBefore(appStartTime) && newEndTime.isAfter(appStartTime)){
+                return true;
+            }else if(newStartTime.isAfter(appStartTime) && newStartTime.isBefore(appEndTime)){
+                return true;
+            }else if(newEndTime.isAfter(appStartTime)  && newEndTime.isBefore(appEndTime)){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        return false;
     }
 
     public static ObservableList<String> getCustomerNames(){

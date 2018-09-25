@@ -99,10 +99,14 @@ public class NewEditAppointmentController {
         String url = urlField.getText();
         String customer = customerCombo.getValue();
         String user = userCombo.getValue();
+
         LocalDate startLocalDate = startDatePicker.getValue();
         LocalDate endLocalDate = endDatePicker.getValue();
+
         String startHourString;
         String endHourString;
+
+
         if(startPeriod.getValue().equals("PM")){
             startHourString = Integer.toString(Integer.parseInt(startHour.getValue()) + 12);
         }else{
@@ -113,7 +117,6 @@ public class NewEditAppointmentController {
         }else{
             endHourString = endHour.getValue();
         }
-
         LocalTime startLocalTime = LocalTime.of(Integer.parseInt(startHourString), Integer.parseInt(startMinutes.getValue()));
         LocalDateTime startLocalDateTime = LocalDateTime.of(startLocalDate, startLocalTime);
         LocalTime endLocalTime = LocalTime.of(Integer.parseInt(endHourString), Integer.parseInt(endMinutes.getValue()));
@@ -135,6 +138,9 @@ public class NewEditAppointmentController {
 
         System.out.println(startLocalTime.getHour() +"end:"+ endLocalTime.getHour());
         String validAppointment = Appointment.validAppointment(title,customer,type,description,user,startsqlts,endsqlts,startLocalDateTime,endLocalDateTime,startLocalTime,endLocalTime);
+        boolean appointmentOverLaps = appointmentOverlaps(startLocalDateTime, endLocalDateTime);
+        System.out.println(appointmentOverLaps);
+
 
 
     }
@@ -168,7 +174,6 @@ public class NewEditAppointmentController {
                 DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
                 dt.setTimeZone(TimeZone.getTimeZone("UTC"));
                 Date startDate = dt.parse(appointmentToModify.getStart().toString());
-                System.out.println(startDate.toString());
                 Date endDate = dt.parse(appointmentToModify.getEnd().toString());
                 DateFormat dateFormatter = new SimpleDateFormat("yyyy/MM/dd");
                 DateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
