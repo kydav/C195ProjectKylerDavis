@@ -122,9 +122,14 @@ public class NewEditAppointmentController {
         LocalTime endLocalTime = LocalTime.of(Integer.parseInt(endHourString), Integer.parseInt(endMinutes.getValue()));
         LocalDateTime endLocalDateTime = LocalDateTime.of(endLocalDate, endLocalTime);
 
+        System.out.println(startLocalDateTime);
+
         ZoneId zid = ZoneId.systemDefault();
+
         ZonedDateTime zdtStart = startLocalDateTime.atZone(zid);
         ZonedDateTime zdtEnd = endLocalDateTime.atZone(zid);
+
+        System.out.println(startLocalDateTime);
 
 
         ZonedDateTime utcStart = zdtStart.withZoneSameInstant(ZoneId.of("UTC"));
@@ -132,14 +137,16 @@ public class NewEditAppointmentController {
 
         startLocalDateTime = utcStart.toLocalDateTime();
         endLocalDateTime = utcEnd.toLocalDateTime();
+        System.out.println(startLocalDateTime);
 
         Timestamp startsqlts = Timestamp.valueOf(startLocalDateTime);
         Timestamp endsqlts = Timestamp.valueOf(endLocalDateTime);
+        System.out.println(startsqlts);
 
         System.out.println(startLocalTime.getHour() +"end:"+ endLocalTime.getHour());
         String validAppointment = Appointment.validAppointment(title,customer,type,description,user,startsqlts,endsqlts,startLocalDateTime,endLocalDateTime,startLocalTime,endLocalTime);
-        boolean appointmentOverLaps = appointmentOverlaps(startLocalDateTime, endLocalDateTime);
-        System.out.println(appointmentOverLaps);
+        //boolean appointmentOverLaps = appointmentOverlaps(startLocalDateTime, endLocalDateTime);
+        //System.out.println(appointmentOverLaps);
 
 
 

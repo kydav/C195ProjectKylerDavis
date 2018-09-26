@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -313,29 +314,50 @@ public class QueryManager{
                 current.setDescription(rs.getString("description"));
                 current.setLocation(rs.getString("location"));
                 current.setUrl(rs.getString("url"));
-
+                Timestamp startTimeStamp = rs.getTimestamp("start");
+                Timestamp endTimeStamp = rs.getTimestamp("end");
                 current.setStart(rs.getTimestamp("start"));
                 current.setEnd(rs.getTimestamp("end"));
 
-                DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                dt.setTimeZone(TimeZone.getTimeZone("UTC"));
-                Date startDate = dt.parse(rs.getTimestamp("Start").toString());
-                Date endDate = dt.parse(rs.getTimestamp("end").toString());
 
-                current.setStartDate(startDate);
-                current.setEndDate(endDate);
+                LocalDateTime startToLocal = startTimeStamp.toLocalDateTime();
+                LocalDateTime endToLocal = endTimeStamp.toLocalDateTime();
+
+                ZoneId zid = ZoneId.systemDefault();
+
+                ZonedDateTime zdtStart = startToLocal.atZone(zid);
+                ZonedDateTime zdtEnd = endToLocal.atZone(zid);
+
+                startToLocal = zdtStart.toLocalDateTime();
+                endToLocal = zdtEnd.toLocalDateTime();
+
+                DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                dt.setTimeZone(TimeZone.getDefault());
+
+                ZonedDateTime localStart = zdtStart.withZoneSameInstant(ZoneId.systemDefault());
+                ZonedDateTime localEnd = zdtEnd.withZoneSameInstant(ZoneId.systemDefault());
+                System.out.println(localStart);
+
+                //LocalDateTime startDate = dt.parse(rs.getTimestamp("Start").toString());
+                //LocalDateTime endDate = dt.parse(rs.getTimestamp("end").toString());
+                LocalDateTime startAdjusted = localStart.toLocalDateTime();
+                LocalDateTime endAdjusted = localEnd.toLocalDateTime();
+                System.out.println(startAdjusted);
+                current.setStartDate(startAdjusted);
+                current.setEndDate(endAdjusted);
                 current.setStartTime(rs.getTime("start"));
                 current.setEndTime(rs.getTime("end"));
 
-                //Needing to set the localdatetime of startlocaldatetime
-                LocalDateTime startLocalDateTime = LocalDateTime.ofInstant(startDate.toInstant(), ZoneId.systemDefault());
-                LocalDateTime endLocalDateTime = LocalDateTime.ofInstant(endDate.toInstant(), ZoneId.systemDefault());
-                LocalTime localTimeofStart = startLocalDateTime.toLocalTime();
-                System.out.println(localTimeofStart);
-                System.out.println(localTimeofStart.getHour());
-                System.out.println(localTimeofStart.getMinute());
-                current.setStartLocalDateTime(startLocalDateTime);
-                current.setEndLocalDateTime(endLocalDateTime);
+                //LocalDateTime startLocalDateTime = LocalDateTime.ofInstant(startDate.toInstant(), ZoneId.systemDefault());
+                //LocalDateTime endLocalDateTime = LocalDateTime.ofInstant(endDate.toInstant(), ZoneId.systemDefault());
+                //LocalTime localTimeofStart = startLocalDateTime.toLocalTime();
+
+
+                System.out.println(startToLocal);
+                System.out.println(startToLocal.getHour());
+                System.out.println(startToLocal.getMinute());
+                //current.setStartLocalDateTime(startLocalDateTime);
+                //current.setEndLocalDateTime(endLocalDateTime);
 
                 appointmentList.add(current);
             }

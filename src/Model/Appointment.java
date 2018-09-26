@@ -8,6 +8,7 @@ import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 import java.text.DateFormat;
@@ -33,8 +34,8 @@ public class Appointment {
     private Timestamp end;
     private LocalDateTime startLocalDateTime;
     private LocalDateTime endLocalDateTime;
-    private Date startDate;
-    private Date endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private Time startTime;
     private Time endTime;
 //NEED to refactor appointment so that I am storing a localdate and a timestamp.
@@ -77,8 +78,8 @@ public class Appointment {
     public void setEnd(Timestamp end){ this.end = end; }
     public void setStartLocalDateTime(LocalDateTime startLocalDateTime){ this.startLocalDateTime = startLocalDateTime; }
     public void setEndLocalDateTime(LocalDateTime endLocalDateTime){ this.endLocalDateTime = endLocalDateTime; }
-    public void setStartDate(Date startDate){this.startDate = startDate; }
-    public void setEndDate(Date endDate){this.endDate = endDate; }
+    public void setStartDate(LocalDateTime startDate){this.startDate = startDate; }
+    public void setEndDate(LocalDateTime endDate){this.endDate = endDate; }
     public void setStartTime(Time startTime){this.startTime = startTime; }
     public void setEndTime(Time endTime){this.endTime = endTime; }
 
@@ -99,8 +100,8 @@ public class Appointment {
     public Timestamp endProperty(){ return end; }
     public LocalDateTime startLocalDateTimeProperty(){ return startLocalDateTime; }
     public LocalDateTime endLocalDateTimeProperty(){ return startLocalDateTime; }
-    public Date startDateProperty(){ return startDate; }
-    public Date endDateProperty(){ return endDate; }
+    public LocalDateTime startDateProperty(){ return startDate; }
+    public LocalDateTime endDateProperty(){ return endDate; }
     public Time startTimeProperty(){ return startTime; }
     public Time endTimeProperty(){ return endTime; }
     public int getAppointmentId(){ return appointmentId.get(); }
@@ -118,8 +119,8 @@ public class Appointment {
     public Timestamp getEnd(){ return end; }
     public LocalDateTime getStartLocalDateTime() { return startLocalDateTime; }
     public LocalDateTime getEndLocalDateTime() { return endLocalDateTime; }
-    public Date getStartDate() { return startDate; }
-    public Date getEndDate() { return endDate; }
+    public LocalDateTime getStartDate() { return startDate; }
+    public LocalDateTime getEndDate() { return endDate; }
     public Time getStartTime() { return startTime; }
     public Time getEndTime() { return endTime; }
 
