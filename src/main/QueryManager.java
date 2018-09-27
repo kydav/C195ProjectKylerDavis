@@ -327,7 +327,7 @@ public class QueryManager{
                 current.setStartTime(rs.getTime("start"));
                 current.setEndTime(rs.getTime("end"));
 
-                //Needing to set the localdatetime of startlocaldatetime
+
                 LocalDateTime startLocalDateTime = LocalDateTime.ofInstant(startDate.toInstant(), ZoneId.systemDefault());
                 LocalDateTime endLocalDateTime = LocalDateTime.ofInstant(endDate.toInstant(), ZoneId.systemDefault());
                 LocalTime localTimeofStart = startLocalDateTime.toLocalTime();
@@ -336,6 +336,7 @@ public class QueryManager{
                 System.out.println(localTimeofStart.getMinute());
                 current.setStartLocalDateTime(startLocalDateTime);
                 current.setEndLocalDateTime(endLocalDateTime);
+                System.out.println(startLocalDateTime.toString());
 
                 appointmentList.add(current);
             }

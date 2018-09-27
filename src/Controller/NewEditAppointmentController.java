@@ -107,16 +107,19 @@ public class NewEditAppointmentController {
         String endHourString;
 
 
-        if(startPeriod.getValue().equals("PM")){
-            startHourString = Integer.toString(Integer.parseInt(startHour.getValue()) + 12);
-        }else{
-            startHourString = startHour.getValue();
-        }
-        if(endPeriod.getValue().equals("PM")){
-            endHourString = Integer.toString(Integer.parseInt(endHour.getValue()) + 12);
-        }else{
-            endHourString = endHour.getValue();
-        }
+        //if(startPeriod.getValue().equals("PM")){
+        //    startHourString = Integer.toString(Integer.parseInt(startHour.getValue()) + 12);
+        //}else{
+        //    startHourString = startHour.getValue();
+        //}
+        //if(endPeriod.getValue().equals("PM")){
+        //    endHourString = Integer.toString(Integer.parseInt(endHour.getValue()) + 12);
+        //}else{
+        //    endHourString = endHour.getValue();
+        //}
+        startHourString = startHour.getValue();
+        endHourString = endHour.getValue();
+
         LocalTime startLocalTime = LocalTime.of(Integer.parseInt(startHourString), Integer.parseInt(startMinutes.getValue()));
         LocalDateTime startLocalDateTime = LocalDateTime.of(startLocalDate, startLocalTime);
         LocalTime endLocalTime = LocalTime.of(Integer.parseInt(endHourString), Integer.parseInt(endMinutes.getValue()));
@@ -126,7 +129,6 @@ public class NewEditAppointmentController {
         ZonedDateTime zdtStart = startLocalDateTime.atZone(zid);
         ZonedDateTime zdtEnd = endLocalDateTime.atZone(zid);
 
-
         ZonedDateTime utcStart = zdtStart.withZoneSameInstant(ZoneId.of("UTC"));
         ZonedDateTime utcEnd = zdtEnd.withZoneSameInstant(ZoneId.of("UTC"));
 
@@ -135,9 +137,11 @@ public class NewEditAppointmentController {
 
         Timestamp startsqlts = Timestamp.valueOf(startLocalDateTime);
         Timestamp endsqlts = Timestamp.valueOf(endLocalDateTime);
+        System.out.println("SQL insert" + startsqlts);
 
         System.out.println(startLocalTime.getHour() +"end:"+ endLocalTime.getHour());
         String validAppointment = Appointment.validAppointment(title,customer,type,description,user,startsqlts,endsqlts,startLocalDateTime,endLocalDateTime,startLocalTime,endLocalTime);
+        System.out.println(startLocalDateTime + "sadf" + endLocalDateTime);
         boolean appointmentOverLaps = appointmentOverlaps(startLocalDateTime, endLocalDateTime);
         System.out.println(appointmentOverLaps);
 
