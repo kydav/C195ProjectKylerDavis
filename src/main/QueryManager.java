@@ -318,26 +318,70 @@ public class QueryManager{
                 current.setStart(rs.getTimestamp("start"));
                 current.setEnd(rs.getTimestamp("end"));
 
-                DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
                 dt.setTimeZone(TimeZone.getTimeZone("UTC"));
+
                 Date startDate = dt.parse(rs.getTimestamp("Start").toString());
                 Date endDate = dt.parse(rs.getTimestamp("end").toString());
 
-                current.setStartDate(startDate);
-                current.setEndDate(endDate);
-                current.setStartTime(rs.getTime("start"));
-                current.setEndTime(rs.getTime("end"));
+                DateFormat dateFormatter = new SimpleDateFormat("yyyy/MM/dd");
+                DateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
 
+                String startDateAsString = dateFormatter.format(startDate);
+                String startTimeAsString = timeFormatter.format(startDate);
+
+                String endDateAsString = dateFormatter.format(endDate);
+                String endTimeAsString = timeFormatter.format(endDate);
+
+                String startYearString = startDateAsString.substring(0,4);
+                String startMonthString = startDateAsString.substring(5,7);
+                String startDayString = startDateAsString.substring(8,10);
+                String endYearString = endDateAsString.substring(0,4);
+                String endMonthString = endDateAsString.substring(5,7);
+                String endDayString = endDateAsString.substring(8,10);
+
+
+                String startHourString = startTimeAsString.substring(0,2);
+                String startMinuteString = startTimeAsString.substring(3,5);
+                String endHourString = endTimeAsString.substring(0,2);
+                String endMinuteString = endTimeAsString.substring(3,5);
+                String startPeriod;
+                String endPeriod;
+
+                if(Integer.parseInt(startHourString) > 12){
+                    startHourString = Integer.toString(Integer.parseInt(startHourString)-12);
+                    startPeriod ="PM";
+                }else{
+                    startPeriod = "AM";
+                }
+                if(Integer.parseInt(endHourString) > 12){
+                    endHourString = Integer.toString(Integer.parseInt(endHourString)-12);
+                    endPeriod = "PM";
+                }else{
+                    endPeriod = "AM";
+                }
+                String wholeStartString = startMonthString + "/" + startDayString + "/" + startYearString +
+                        " " + startHourString + ":" + startMinuteString + " " + startPeriod;
+                String wholeEndString = endMonthString + "/" + endDayString + "/" + endYearString +
+                        " " + endHourString + ":" + endMinuteString + " " + endPeriod;
+
+
+                current.setStartDate(wholeStartString);
+                current.setEndDate(wholeEndString);
+                //current.setStartTime(rs.getTime("start"));
+                //current.setEndTime(rs.getTime("end"));
 
                 LocalDateTime startLocalDateTime = LocalDateTime.ofInstant(startDate.toInstant(), ZoneId.systemDefault());
                 LocalDateTime endLocalDateTime = LocalDateTime.ofInstant(endDate.toInstant(), ZoneId.systemDefault());
-                LocalTime localTimeofStart = startLocalDateTime.toLocalTime();
-                System.out.println(localTimeofStart);
-                System.out.println(localTimeofStart.getHour());
-                System.out.println(localTimeofStart.getMinute());
-                current.setStartLocalDateTime(startLocalDateTime);
-                current.setEndLocalDateTime(endLocalDateTime);
-                System.out.println(startLocalDateTime.toString());
+
+                System.out.println(startLocalDateTime.getDayOfWeek());
+                //LocalTime localTimeofStart = startLocalDateTime.toLocalTime();
+                //System.out.println(localTimeofStart);
+                //System.out.println(localTimeofStart.getHour());
+                //System.out.println(localTimeofStart.getMinute());
+                //current.setStartLocalDateTime(startLocalDateTime);
+                //current.setEndLocalDateTime(endLocalDateTime);
+                //System.out.println(startLocalDateTime.toString());
 
                 appointmentList.add(current);
             }

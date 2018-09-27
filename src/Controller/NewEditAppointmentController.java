@@ -141,7 +141,7 @@ public class NewEditAppointmentController {
 
         boolean appointmentOverLaps = appointmentOverlaps(startsqlts, endsqlts);
         if(validAppointment.equals("")  && appointmentOverLaps){
-            
+
         }
     }
     public void initialize() {
@@ -175,10 +175,13 @@ public class NewEditAppointmentController {
                 dt.setTimeZone(TimeZone.getTimeZone("UTC"));
                 Date startDate = dt.parse(appointmentToModify.getStart().toString());
                 Date endDate = dt.parse(appointmentToModify.getEnd().toString());
+
                 DateFormat dateFormatter = new SimpleDateFormat("yyyy/MM/dd");
                 DateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
+
                 String startDateAsString = dateFormatter.format(startDate);
                 String startTimeAsString = timeFormatter.format(startDate);
+
                 String endDateAsString = dateFormatter.format(endDate);
                 String endTimeAsString = timeFormatter.format(endDate);
 

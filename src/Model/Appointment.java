@@ -33,8 +33,8 @@ public class Appointment {
     private Timestamp end;
     private LocalDateTime startLocalDateTime;
     private LocalDateTime endLocalDateTime;
-    private Date startDate;
-    private Date endDate;
+    private String startDate;
+    private String endDate;
     private Time startTime;
     private Time endTime;
 
@@ -76,12 +76,10 @@ public class Appointment {
     public void setEnd(Timestamp end){ this.end = end; }
     public void setStartLocalDateTime(LocalDateTime startLocalDateTime){ this.startLocalDateTime = startLocalDateTime; }
     public void setEndLocalDateTime(LocalDateTime endLocalDateTime){ this.endLocalDateTime = endLocalDateTime; }
-    public void setStartDate(Date startDate){this.startDate = startDate; }
-    public void setEndDate(Date endDate){this.endDate = endDate; }
+    public void setStartDate(String startDate){this.startDate = startDate; }
+    public void setEndDate(String endDate){this.endDate = endDate; }
     public void setStartTime(Time startTime){this.startTime = startTime; }
     public void setEndTime(Time endTime){this.endTime = endTime; }
-
-
 
     public IntegerProperty appointmentIdProperty(){ return appointmentId; }
     public IntegerProperty customerIdProperty(){ return customerId; }
@@ -98,8 +96,8 @@ public class Appointment {
     public Timestamp endProperty(){ return end; }
     public LocalDateTime startLocalDateTimeProperty(){ return startLocalDateTime; }
     public LocalDateTime endLocalDateTimeProperty(){ return startLocalDateTime; }
-    public Date startDateProperty(){ return startDate; }
-    public Date endDateProperty(){ return endDate; }
+    public String startDateProperty(){ return startDate; }
+    public String endDateProperty(){ return endDate; }
     public Time startTimeProperty(){ return startTime; }
     public Time endTimeProperty(){ return endTime; }
     public int getAppointmentId(){ return appointmentId.get(); }
@@ -117,8 +115,8 @@ public class Appointment {
     public Timestamp getEnd(){ return end; }
     public LocalDateTime getStartLocalDateTime() { return startLocalDateTime; }
     public LocalDateTime getEndLocalDateTime() { return endLocalDateTime; }
-    public Date getStartDate() { return startDate; }
-    public Date getEndDate() { return endDate; }
+    public String getStartDate() { return startDate; }
+    public String getEndDate() { return endDate; }
     public Time getStartTime() { return startTime; }
     public Time getEndTime() { return endTime; }
 
