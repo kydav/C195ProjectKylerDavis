@@ -37,7 +37,6 @@ public class Appointment {
     private Date endDate;
     private Time startTime;
     private Time endTime;
-//NEED to refactor appointment so that I am storing a localdate and a timestamp.
 
     public Appointment(){
         appointmentId = new SimpleIntegerProperty();

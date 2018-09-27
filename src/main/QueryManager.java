@@ -16,6 +16,7 @@ import java.time.ZoneId;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.TimeZone;
+import java.sql.Timestamp;
 
 import static main.DBConnection.conn;
 import Model.Customer;
@@ -345,27 +346,21 @@ public class QueryManager{
         }
         return appointmentList;
     }
-    public static boolean appointmentOverlaps(LocalDateTime newStartTime, LocalDateTime newEndTime)throws ParseException{
+    public static boolean appointmentOverlaps(Timestamp newStartTime, Timestamp newEndTime)throws ParseException{
         ObservableList<Appointment> appointmentList = getAppointmentTableView();
         for(Appointment app: appointmentList){
-            LocalDateTime appStartTime = app.getStartLocalDateTime();
-            LocalDateTime appEndTime = app.getStartLocalDateTime();
-            System.out.println("new start" + newStartTime);
-            System.out.println("new end" + newEndTime);
-            System.out.println("exist start" + appStartTime);
-            System.out.println("exist end" + appEndTime);
+            Timestamp appStartTime = app.getStart();
+            Timestamp appEndTime = app.getEnd();
             if(appStartTime.equals(newStartTime)){
                 return true;
-            }else if(newStartTime.isAfter(appStartTime) && newStartTime.isBefore(appEndTime)){
+            }else if(newStartTime.after(appStartTime) && newStartTime.before(appEndTime)){
                 return true;
-            }else if(newStartTime.isBefore(appStartTime) && newEndTime.isAfter(appStartTime)){
+            }else if(newStartTime.before(appStartTime) && newEndTime.after(appStartTime)){
                 return true;
-            }else if(newStartTime.isAfter(appStartTime) && newStartTime.isBefore(appEndTime)){
+            }else if(newStartTime.after(appStartTime) && newStartTime.before(appEndTime)){
                 return true;
-            }else if(newEndTime.isAfter(appStartTime)  && newEndTime.isBefore(appEndTime)){
+            }else if(newEndTime.after(appStartTime)  && newEndTime.before(appEndTime)){
                 return true;
-            }else{
-                return false;
             }
         }
         return false;

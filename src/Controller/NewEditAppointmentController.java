@@ -106,19 +106,18 @@ public class NewEditAppointmentController {
         String startHourString;
         String endHourString;
 
-
-        //if(startPeriod.getValue().equals("PM")){
-        //    startHourString = Integer.toString(Integer.parseInt(startHour.getValue()) + 12);
-        //}else{
-        //    startHourString = startHour.getValue();
-        //}
-        //if(endPeriod.getValue().equals("PM")){
-        //    endHourString = Integer.toString(Integer.parseInt(endHour.getValue()) + 12);
-        //}else{
-        //    endHourString = endHour.getValue();
-        //}
-        startHourString = startHour.getValue();
-        endHourString = endHour.getValue();
+        if(startPeriod.getValue().equals("PM")){
+            startHourString = Integer.toString(Integer.parseInt(startHour.getValue()) + 12);
+        }else{
+            startHourString = startHour.getValue();
+        }
+        if(endPeriod.getValue().equals("PM")){
+            endHourString = Integer.toString(Integer.parseInt(endHour.getValue()) + 12);
+        }else{
+            endHourString = endHour.getValue();
+        }
+        //startHourString = startHour.getValue();
+        //endHourString = endHour.getValue();
 
         LocalTime startLocalTime = LocalTime.of(Integer.parseInt(startHourString), Integer.parseInt(startMinutes.getValue()));
         LocalDateTime startLocalDateTime = LocalDateTime.of(startLocalDate, startLocalTime);
@@ -135,18 +134,15 @@ public class NewEditAppointmentController {
         startLocalDateTime = utcStart.toLocalDateTime();
         endLocalDateTime = utcEnd.toLocalDateTime();
 
-        Timestamp startsqlts = Timestamp.valueOf(startLocalDateTime);
-        Timestamp endsqlts = Timestamp.valueOf(endLocalDateTime);
-        System.out.println("SQL insert" + startsqlts);
+        Timestamp startsqlts = Timestamp.valueOf(startLocalDateTime); //Should be 2018-02-08 22:00:00
+        Timestamp endsqlts = Timestamp.valueOf(endLocalDateTime);  //Should be 2018-02-08 23:00:00
 
-        System.out.println(startLocalTime.getHour() +"end:"+ endLocalTime.getHour());
         String validAppointment = Appointment.validAppointment(title,customer,type,description,user,startsqlts,endsqlts,startLocalDateTime,endLocalDateTime,startLocalTime,endLocalTime);
-        System.out.println(startLocalDateTime + "sadf" + endLocalDateTime);
-        boolean appointmentOverLaps = appointmentOverlaps(startLocalDateTime, endLocalDateTime);
-        System.out.println(appointmentOverLaps);
 
-
-
+        boolean appointmentOverLaps = appointmentOverlaps(startsqlts, endsqlts);
+        if(validAppointment.equals("")  && appointmentOverLaps){
+            
+        }
     }
     public void initialize() {
         ObservableList<String> customerNames = getCustomerNames();
@@ -197,24 +193,24 @@ public class NewEditAppointmentController {
                 String startMinuteString = startTimeAsString.substring(3,5);
                 String endHourString = endTimeAsString.substring(0,2);
                 String endMinuteString = endTimeAsString.substring(3,5);
-
+                if(Integer.parseInt(startHourString) > 12){
+                    startHourString = Integer.toString(Integer.parseInt(startHourString)-12);
+                    startPeriod.getSelectionModel().select("PM");
+                }else{
+                    startPeriod.getSelectionModel().select("AM");
+                }
+                if(Integer.parseInt(endHourString) > 12){
+                    endHourString = Integer.toString(Integer.parseInt(endHourString)-12);
+                    endPeriod.getSelectionModel().select("PM");
+                }else{
+                    endPeriod.getSelectionModel().select("AM");
+                }
                 startDatePicker.setValue(LocalDate.of(startYearInt, startMonthInt, startDayInt));
                 endDatePicker.setValue(LocalDate.of(endYearInt,endMonthInt,endDayInt));
                 startHour.getSelectionModel().select(startHourString);
                 startMinutes.getSelectionModel().select(startMinuteString);
                 endHour.getSelectionModel().select(endHourString);
                 endMinutes.getSelectionModel().select(endMinuteString);
-
-                if(Integer.parseInt(startHourString) >= 8 && Integer.parseInt(startHourString) < 12){
-                    startPeriod.getSelectionModel().select("AM");
-                }else{
-                    startPeriod.getSelectionModel().select("PM");
-                }
-                if(Integer.parseInt(endHourString) >= 8 && Integer.parseInt(endHourString) < 12){
-                    endPeriod.getSelectionModel().select("AM");
-                }else{
-                    endPeriod.getSelectionModel().select("PM");
-                }
             }catch(Exception e){
                 e.printStackTrace();
                 System.out.println("Error loading Appointment");
