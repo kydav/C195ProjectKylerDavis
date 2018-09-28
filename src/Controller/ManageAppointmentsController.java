@@ -40,6 +40,8 @@ public class ManageAppointmentsController {
     @FXML
     private TableColumn<Appointment, String> locationColumn;
     @FXML
+    private TableColumn<Appointment, String> dayColumn;
+    @FXML
     private TableColumn<Appointment, Timestamp> startColumn;
     @FXML
     private TableColumn<Appointment, Timestamp> endColumn;
@@ -125,14 +127,14 @@ public class ManageAppointmentsController {
             titleColumn.setCellValueFactory(cellData -> {
                 return new ReadOnlyStringWrapper(cellData.getValue().getTitle());
             });
-
             locationColumn.setCellValueFactory(cellData -> {
                 return new ReadOnlyStringWrapper(cellData.getValue().getLocation());
             });
-
+            dayColumn.setCellValueFactory(cellData -> {
+                return new ReadOnlyStringWrapper(cellData.getValue().getStartDayOfWeek());
+            });
             startColumn.setCellValueFactory(cellData -> {
                 return new ReadOnlyObjectWrapper(cellData.getValue().getStartDate());
-                //return new ReadOnlyObjectWrapper(cellData.getValue().getStart());
             });
             endColumn.setCellValueFactory(cellData -> {
                 return new ReadOnlyObjectWrapper(cellData.getValue().getEndDate());

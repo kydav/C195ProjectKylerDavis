@@ -35,8 +35,8 @@ public class Appointment {
     private LocalDateTime endLocalDateTime;
     private String startDate;
     private String endDate;
-    private Time startTime;
-    private Time endTime;
+    private String startDayOfWeek;
+    private String endDayOfWeek;
 
     public Appointment(){
         appointmentId = new SimpleIntegerProperty();
@@ -54,10 +54,10 @@ public class Appointment {
         this.end = end;
         this.startLocalDateTime = startLocalDateTime;
         this.endLocalDateTime = endLocalDateTime;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        startDate = new String();
+        endDate = new String();
+        startDayOfWeek = new String();
+        endDayOfWeek = new String();
     }
     public void setAppointmentId(IntegerProperty appointmentId){
         this.appointmentId = appointmentId;
@@ -78,8 +78,8 @@ public class Appointment {
     public void setEndLocalDateTime(LocalDateTime endLocalDateTime){ this.endLocalDateTime = endLocalDateTime; }
     public void setStartDate(String startDate){this.startDate = startDate; }
     public void setEndDate(String endDate){this.endDate = endDate; }
-    public void setStartTime(Time startTime){this.startTime = startTime; }
-    public void setEndTime(Time endTime){this.endTime = endTime; }
+    public void setStartDayOfWeek(String startDayOfWeek){ this.startDayOfWeek = startDayOfWeek; }
+    public void setEndDayOfWeek(String endDayOfWeek){ this.endDayOfWeek = endDayOfWeek; }
 
     public IntegerProperty appointmentIdProperty(){ return appointmentId; }
     public IntegerProperty customerIdProperty(){ return customerId; }
@@ -98,8 +98,9 @@ public class Appointment {
     public LocalDateTime endLocalDateTimeProperty(){ return startLocalDateTime; }
     public String startDateProperty(){ return startDate; }
     public String endDateProperty(){ return endDate; }
-    public Time startTimeProperty(){ return startTime; }
-    public Time endTimeProperty(){ return endTime; }
+    public String startDayOfWeekProperty(){ return startDayOfWeek; }
+    public String EndDayOfWeekProperty(){ return endDayOfWeek; }
+
     public int getAppointmentId(){ return appointmentId.get(); }
     public int getCustomerId(){ return customerId.get(); }
     public String getCustomerName(){ return customerName.get(); }
@@ -117,8 +118,8 @@ public class Appointment {
     public LocalDateTime getEndLocalDateTime() { return endLocalDateTime; }
     public String getStartDate() { return startDate; }
     public String getEndDate() { return endDate; }
-    public Time getStartTime() { return startTime; }
-    public Time getEndTime() { return endTime; }
+    public String getStartDayOfWeek() { return startDayOfWeek; }
+    public String getEndDayOfWeek() { return endDayOfWeek; }
 
 
     public static String validAppointment(String title, String customer, String type, String description, String contact, Timestamp start, Timestamp end, LocalDateTime startLocalDateTime, LocalDateTime endLocalDateTime, LocalTime startTime, LocalTime endTime){

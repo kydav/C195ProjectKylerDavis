@@ -92,13 +92,14 @@ public class NewEditAppointmentController {
 
     @FXML
     void SaveAppointment(ActionEvent event) throws IOException, ParseException {
-        String title = titleField.getText();
-        String type = typeCombo.getValue();
-        String description = descriptionField.getText();
-        String location = locationField.getText();
-        String url = urlField.getText();
         String customer = customerCombo.getValue();
         String user = userCombo.getValue();
+        String title = titleField.getText();
+        String description = descriptionField.getText();
+        String location = locationField.getText();
+
+        String type = typeCombo.getValue();
+        String url = urlField.getText();
 
         LocalDate startLocalDate = startDatePicker.getValue();
         LocalDate endLocalDate = endDatePicker.getValue();
@@ -116,8 +117,6 @@ public class NewEditAppointmentController {
         }else{
             endHourString = endHour.getValue();
         }
-        //startHourString = startHour.getValue();
-        //endHourString = endHour.getValue();
 
         LocalTime startLocalTime = LocalTime.of(Integer.parseInt(startHourString), Integer.parseInt(startMinutes.getValue()));
         LocalDateTime startLocalDateTime = LocalDateTime.of(startLocalDate, startLocalTime);

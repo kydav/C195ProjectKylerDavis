@@ -1,6 +1,7 @@
 package main;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -365,24 +366,16 @@ public class QueryManager{
                 String wholeEndString = endMonthString + "/" + endDayString + "/" + endYearString +
                         " " + endHourString + ":" + endMinuteString + " " + endPeriod;
 
-
                 current.setStartDate(wholeStartString);
                 current.setEndDate(wholeEndString);
-                //current.setStartTime(rs.getTime("start"));
-                //current.setEndTime(rs.getTime("end"));
-
                 LocalDateTime startLocalDateTime = LocalDateTime.ofInstant(startDate.toInstant(), ZoneId.systemDefault());
                 LocalDateTime endLocalDateTime = LocalDateTime.ofInstant(endDate.toInstant(), ZoneId.systemDefault());
 
-                System.out.println(startLocalDateTime.getDayOfWeek());
-                //LocalTime localTimeofStart = startLocalDateTime.toLocalTime();
-                //System.out.println(localTimeofStart);
-                //System.out.println(localTimeofStart.getHour());
-                //System.out.println(localTimeofStart.getMinute());
-                //current.setStartLocalDateTime(startLocalDateTime);
-                //current.setEndLocalDateTime(endLocalDateTime);
-                //System.out.println(startLocalDateTime.toString());
+                String startDay = startLocalDateTime.getDayOfWeek().toString().toLowerCase();
+                String endDay = endLocalDateTime.getDayOfWeek().toString().toLowerCase();
 
+                current.setStartDayOfWeek(startDay.substring(0, 1).toUpperCase() + startDay.substring(1));
+                current.setEndDayOfWeek(endDay.substring(0,1).toUpperCase() + endDay.substring(1));
                 appointmentList.add(current);
             }
         }catch(SQLException e){
