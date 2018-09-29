@@ -407,7 +407,7 @@ public class QueryManager{
         ObservableList<String> allCustomersList  = FXCollections.observableArrayList();
         try{
             String allCustomers =
-                            "SELECT U04EE1.customer.customerName \n" +
+                            "SELECT U04EE1.customer.customerName, U04EE1.customer.customerId\n" +
                             "FROM U04EE1.customer \n" +
                             "WHERE U04EE1.customer.active = 1;";
             Statement stmt = conn.createStatement();
@@ -485,5 +485,54 @@ public class QueryManager{
             System.out.println("Error getting user name data: " + e);
             return null;
         }
+    }
+    public static int insertAppointment(int customerId, int userId, String title, String description, String location, String contact, String type, String url, Timestamp startTime, Timestamp endTime){
+        int rows = 0;
+        String insertAppointment =
+                "INSERT INTO U04EE1.appointment(customerId,userId,title,description,location,contact,type,url,start,end,createDate,createdBy,lastUpdate,lastUpdateBy) \n" +
+                        "VALUES ("+customerId+","+userId+",'"+title+"','"+description+"','"+location+"','"+contact+"','"+type+"','"+url+"','"+startTime+"','"+endTime+"',NOW(),'"+loggedUser+"',NOW(),'"+loggedUser+"');";
+        try{
+            System.out.println(insertAppointment);
+            Statement insertStmt = conn.createStatement();
+            rows = insertStmt.executeUpdate(insertAppointment);
+            if (rows == 0) {
+                //insert didn't work
+                System.out.println("Failed to insert data, no rows were updated");
+                rows = -1;
+            } else {
+                return rows;
+            }
+        }catch(SQLException e){
+            System.out.println("Customer Insert was unsuccessful:" +e);
+            rows = -1;
+        }
+        return rows;
+    }
+    public static int updateAppointment(int appointmentId, int customerId, int userId, String title, String description, String location, String contact, String type, String url, Timestamp startTime, Timestamp endTime){
+        int rows = 0;
+        String updateAppointment =
+                        "UPDATE U04EE1.appointment \n" +
+                        "SET U04EE1.appointment.customerId = '"+customerId+"',U04EE1.appointment.userId = '"+userId+"',U04EE1.appointment.title='"+title+"'," +
+                        "U04EE1.appointment.description='"+description+"',U04EE1.appointment.location='"+location+"',U04EE1.appointment.contact='"+contact+"'," +
+                        "U04EE1.appointment.type='"+type+"',U04EE1.appointment.url='"+url+"',U04EE1.appointment.start='"+startTime+"',U04EE1.appointment.end='"+endTime+"'," +
+                        "U04EE1.appointment.lastUpdate=NOW(),U04EE1.appointment.lastUpdateBy='"+loggedUser+"' \n" +
+                        "WHERE U04EE1.appointment.appointmentId = "+appointmentId+";";
+        try{
+            System.out.println(updateAppointment);
+            Statement updateStmt = conn.createStatement();
+            rows = updateStmt.executeUpdate(updateAppointment);
+
+            if (rows == 0) {
+                //update didn't work
+                System.out.println("Failed to update data, no rows were updated");
+                rows = -1;
+            } else {
+                return rows;
+            }
+        }catch(SQLException e){
+            System.out.println("Customer Insert was unsuccessful:" +e);
+            rows = -1;
+        }
+        return rows;
     }
 }

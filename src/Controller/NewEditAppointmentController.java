@@ -1,16 +1,15 @@
 package Controller;
 
 import Model.Customer;
+import javafx.beans.property.IntegerProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
-import javafx.scene.control.DatePicker;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -30,6 +29,7 @@ import java.text.DateFormat;
 
 
 import javafx.event.ActionEvent;
+import javafx.beans.property.SimpleIntegerProperty;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
@@ -40,6 +40,7 @@ import Model.Appointment;
 import Model.Appointment.*;
 
 public class NewEditAppointmentController {
+    Appointment appointmentToModify = new Appointment();
     @FXML
     private ResourceBundle resources;
     @FXML
@@ -50,6 +51,8 @@ public class NewEditAppointmentController {
     private ComboBox<String> customerCombo;
     @FXML
     private ComboBox<String> userCombo;
+    @FXML
+    private TextField contactField;
     @FXML
     private TextField titleField;
     @FXML
@@ -93,54 +96,106 @@ public class NewEditAppointmentController {
     @FXML
     void SaveAppointment(ActionEvent event) throws IOException, ParseException {
         String customer = customerCombo.getValue();
+        int customerId =customerCombo.getSelectionModel().getSelectedIndex() + 1;
         String user = userCombo.getValue();
+        int userId = userCombo.getSelectionModel().getSelectedIndex() + 1;
         String title = titleField.getText();
         String description = descriptionField.getText();
+        String contact = contactField.getText();
         String location = locationField.getText();
-
         String type = typeCombo.getValue();
         String url = urlField.getText();
+        if(startDatePicker.getValue() == null || endDatePicker.getValue() == null || startHour.getValue() == null ||
+                endHour.getValue() == null || startMinutes.getValue() == null || endMinutes.getValue() == null){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(resources.getString("newAppointment.missingDatesTitle"));
+            alert.setHeaderText(resources.getString("newAppointment.missingDatesHeader"));
+            alert.setContentText(resources.getString("newAppointment.missingDatesMessage"));
+            alert.showAndWait();
+        }else {
+            LocalDate startLocalDate = startDatePicker.getValue();
+            LocalDate endLocalDate = endDatePicker.getValue();
+            String startHourString = "";
+            String endHourString = "";
 
-        LocalDate startLocalDate = startDatePicker.getValue();
-        LocalDate endLocalDate = endDatePicker.getValue();
+                if (startPeriod.getValue().equals("PM")) {
+                    startHourString = Integer.toString(Integer.parseInt(startHour.getValue()) + 12);
+                } else {
+                    startHourString = startHour.getValue();
+                }
+                if (endPeriod.getValue().equals("PM")) {
+                    endHourString = Integer.toString(Integer.parseInt(endHour.getValue()) + 12);
+                } else {
+                    endHourString = endHour.getValue();
+                }
+            LocalTime startLocalTime = LocalTime.of(Integer.parseInt(startHourString), Integer.parseInt(startMinutes.getValue()));
+            LocalDateTime startLocalDateTime = LocalDateTime.of(startLocalDate, startLocalTime);
+            LocalTime endLocalTime = LocalTime.of(Integer.parseInt(endHourString), Integer.parseInt(endMinutes.getValue()));
+            LocalDateTime endLocalDateTime = LocalDateTime.of(endLocalDate, endLocalTime);
 
-        String startHourString;
-        String endHourString;
+            ZoneId zid = ZoneId.systemDefault();
+            ZonedDateTime zdtStart = startLocalDateTime.atZone(zid);
+            ZonedDateTime zdtEnd = endLocalDateTime.atZone(zid);
 
-        if(startPeriod.getValue().equals("PM")){
-            startHourString = Integer.toString(Integer.parseInt(startHour.getValue()) + 12);
-        }else{
-            startHourString = startHour.getValue();
-        }
-        if(endPeriod.getValue().equals("PM")){
-            endHourString = Integer.toString(Integer.parseInt(endHour.getValue()) + 12);
-        }else{
-            endHourString = endHour.getValue();
-        }
+            ZonedDateTime utcStart = zdtStart.withZoneSameInstant(ZoneId.of("UTC"));
+            ZonedDateTime utcEnd = zdtEnd.withZoneSameInstant(ZoneId.of("UTC"));
 
-        LocalTime startLocalTime = LocalTime.of(Integer.parseInt(startHourString), Integer.parseInt(startMinutes.getValue()));
-        LocalDateTime startLocalDateTime = LocalDateTime.of(startLocalDate, startLocalTime);
-        LocalTime endLocalTime = LocalTime.of(Integer.parseInt(endHourString), Integer.parseInt(endMinutes.getValue()));
-        LocalDateTime endLocalDateTime = LocalDateTime.of(endLocalDate, endLocalTime);
+            startLocalDateTime = utcStart.toLocalDateTime();
+            endLocalDateTime = utcEnd.toLocalDateTime();
 
-        ZoneId zid = ZoneId.systemDefault();
-        ZonedDateTime zdtStart = startLocalDateTime.atZone(zid);
-        ZonedDateTime zdtEnd = endLocalDateTime.atZone(zid);
+            Timestamp startsqlts = Timestamp.valueOf(startLocalDateTime); //Should be 2018-02-08 22:00:00
+            Timestamp endsqlts = Timestamp.valueOf(endLocalDateTime);  //Should be 2018-02-08 23:00:00
+            String validAppointment = Appointment.validAppointment(title, customer, user, type, description, startsqlts, endsqlts, startLocalDateTime, endLocalDateTime, startLocalTime, endLocalTime);
 
-        ZonedDateTime utcStart = zdtStart.withZoneSameInstant(ZoneId.of("UTC"));
-        ZonedDateTime utcEnd = zdtEnd.withZoneSameInstant(ZoneId.of("UTC"));
-
-        startLocalDateTime = utcStart.toLocalDateTime();
-        endLocalDateTime = utcEnd.toLocalDateTime();
-
-        Timestamp startsqlts = Timestamp.valueOf(startLocalDateTime); //Should be 2018-02-08 22:00:00
-        Timestamp endsqlts = Timestamp.valueOf(endLocalDateTime);  //Should be 2018-02-08 23:00:00
-
-        String validAppointment = Appointment.validAppointment(title,customer,type,description,user,startsqlts,endsqlts,startLocalDateTime,endLocalDateTime,startLocalTime,endLocalTime);
-
-        boolean appointmentOverLaps = appointmentOverlaps(startsqlts, endsqlts);
-        if(validAppointment.equals("")  && appointmentOverLaps){
-
+            boolean appointmentOverLaps = appointmentOverlaps(startsqlts, endsqlts);
+            if (validAppointment.equals("") && !appointmentOverLaps) {
+                Appointment appointmentToSave = new Appointment();
+                appointmentToSave.setCustomerName(customer);
+                appointmentToSave.setCustomerId(new SimpleIntegerProperty(customerId));
+                appointmentToSave.setUserName(user);
+                appointmentToSave.setUserId(new SimpleIntegerProperty(userId));
+                appointmentToSave.setTitle(title);
+                appointmentToSave.setDescription(description);
+                appointmentToSave.setLocation(location);
+                appointmentToSave.setContact(contact);
+                appointmentToSave.setType(type);
+                appointmentToSave.setUrl(url);
+                appointmentToSave.setStart(startsqlts);
+                appointmentToSave.setEnd(endsqlts);
+                appointmentToSave.setStartLocalDateTime(startLocalDateTime);
+                appointmentToSave.setEndLocalDateTime(endLocalDateTime);
+                if (appointmentToModifyIndex == -1) {
+                    int rowsInserted = insertAppointment(appointmentToSave.getCustomerId(), appointmentToSave.getUserId(), appointmentToSave.getTitle(), appointmentToSave.getDescription(),
+                                appointmentToSave.getLocation(), appointmentToSave.getContact(), appointmentToSave.getType(), appointmentToSave.getUrl(), appointmentToSave.getStart(), appointmentToSave.getEnd());
+                    System.out.println("Inserted Rows: " + rowsInserted);
+                    Stage stage = (Stage) appointmentCancelButton.getScene().getWindow();
+                    Parent manage = FXMLLoader.load(getClass().getResource("../View/ManageAppointments.fxml"), resources);
+                    Scene scene = new Scene(manage);
+                    stage.setScene(scene);
+                    stage.show();
+                } else {
+                    int rowsUpdated = updateAppointment(appointmentToModify.getAppointmentId(),appointmentToSave.getCustomerId(), appointmentToSave.getUserId(), appointmentToSave.getTitle(), appointmentToSave.getDescription(),
+                                            appointmentToSave.getLocation(), appointmentToSave.getContact(), appointmentToSave.getType(), appointmentToSave.getUrl(), appointmentToSave.getStart(), appointmentToSave.getEnd());
+                    System.out.println("Updated rows:" + rowsUpdated);
+                    Stage stage = (Stage) appointmentCancelButton.getScene().getWindow();
+                    Parent manage = FXMLLoader.load(getClass().getResource("../View/ManageAppointments.fxml"), resources);
+                    Scene scene = new Scene(manage);
+                    stage.setScene(scene);
+                    stage.show();
+                }
+            }else if(!validAppointment.equals("")){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle(resources.getString("appointment.invalidTitle"));
+                alert.setHeaderText(resources.getString("appointment.invalidHeader"));
+                alert.setContentText(validAppointment);
+                alert.showAndWait();
+            }else if(appointmentOverLaps){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle(resources.getString("appointment.overlapsTitle"));
+                alert.setHeaderText(resources.getString("appointment.overlapsHeader"));
+                alert.setContentText(resources.getString("appointment.overlapsMessage"));
+                alert.showAndWait();
+            }
         }
     }
     public void initialize() {
@@ -161,7 +216,7 @@ public class NewEditAppointmentController {
 
         if(appointmentToModifyIndex != -1){
             try {
-                Appointment appointmentToModify = appointmentList.get(appointmentToModifyIndex);
+                appointmentToModify = appointmentList.get(appointmentToModifyIndex);
                 titleField.setText(appointmentToModify.getTitle());
                 descriptionField.setText(appointmentToModify.getDescription());
                 locationField.setText(appointmentToModify.getLocation());

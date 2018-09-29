@@ -14,10 +14,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
+import java.util.Locale;
+
+
 
 public class Appointment {
-
-    private static ResourceBundle resources;
     private IntegerProperty appointmentId;
     private IntegerProperty customerId;
     private StringProperty customerName;
@@ -122,18 +124,19 @@ public class Appointment {
     public String getEndDayOfWeek() { return endDayOfWeek; }
 
 
-    public static String validAppointment(String title, String customer, String type, String description, String contact, Timestamp start, Timestamp end, LocalDateTime startLocalDateTime, LocalDateTime endLocalDateTime, LocalTime startTime, LocalTime endTime){
+    public static String validAppointment(String title, String customer, String user, String type, String description, Timestamp start, Timestamp end, LocalDateTime startLocalDateTime, LocalDateTime endLocalDateTime, LocalTime startTime, LocalTime endTime){
         String error = "";
-        if(title.length() == 0)
+        ResourceBundle resources = ResourceBundle.getBundle("Resources", Locale.getDefault());
+        if(title.isEmpty())
             error = resources.getString("appointment.title");
-        if(customer.length() == 0)
+        if(customer.isEmpty())
             error = resources.getString("appointment.customer");
-        if(type.length() == 0)
+        if(user.isEmpty())
+            error = resources.getString("appointment.user");
+        if(type.isEmpty())
             error = resources.getString("appointment.type");
-        if(description.length() == 0)
+        if(description.isEmpty())
             error = resources.getString("appointment.description");
-        if(contact.length() == 0)
-            error = resources.getString("appointment.contact");
         if(start.toString() == null)
             error = resources.getString("appointment.start");
         if(end.toString() == null)

@@ -28,7 +28,6 @@ import static main.QueryManager.getAppointmentTableView;
 public class ManageAppointmentsController {
     public static ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
     public static int appointmentToModifyIndex = -1;
-
     @FXML
     private TableView<Appointment> manageAppointmentTableView;
     @FXML
