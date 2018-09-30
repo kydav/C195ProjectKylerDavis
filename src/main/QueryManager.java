@@ -47,19 +47,21 @@ public class QueryManager{
             return "error";
         }
     }
-    public static String checkAppointmentsIncoming(String userName) throws ParseException{
+    public static String[] checkAppointmentsIncoming(String userName) throws ParseException{
         ObservableList<Appointment> appointmentList = getAppointmentTableView();
         Timestamp currentDateTime = new Timestamp(System.currentTimeMillis());
         Timestamp timeInFifteenMinutes = new Timestamp(System.currentTimeMillis()+15*60*1000);
+        String[] arrayToReturn = new String[3];
         for(Appointment app: appointmentList){
-            Timestamp appStartTime = app.getStart();
-            if(app.getUserName().equals(userName) && currentDateTime.before(appStartTime) && timeInFifteenMinutes.after(appStartTime)){
-                System.out.println(currentDateTime);
-                System.out.println(timeInFifteenMinutes);
-                return app.getTitle() + ":" + app.getCustomerName() + ":" + app.getStartLocalDateTime();
+            LocalDateTime appStartTime = app.getStartLocalDateTime();
+            if(app.getUserName().equals(userName) && currentDateTime.toLocalDateTime().isBefore(appStartTime) && timeInFifteenMinutes.toLocalDateTime().isAfter(appStartTime)){
+                arrayToReturn[0] = app.getTitle();
+                arrayToReturn[1] = app.getCustomerName();
+                arrayToReturn[2] = app.getStartLocalDateTime().toString();
+                return arrayToReturn;
             }
         }
-        return "";
+        return arrayToReturn;
     }
     public static ObservableList<Customer> getCustomerTableView(){
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
@@ -311,7 +313,7 @@ public class QueryManager{
             "FROM U04EE1.appointment \n" +
             "JOIN U04EE1.customer ON U04EE1.appointment.customerId = U04EE1.customer.customerId \n" +
             "JOIN U04EE1.user ON U04EE1.appointment.userId = U04EE1.user.userId \n" +
-            "WHERE U04EE1.appointment.start > NOW();";
+            "WHERE U04EE1.appointment.end > NOW();";
         try{
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(allAppointment);
@@ -385,6 +387,8 @@ public class QueryManager{
 
                 String startDay = startLocalDateTime.getDayOfWeek().toString().toLowerCase();
                 String endDay = endLocalDateTime.getDayOfWeek().toString().toLowerCase();
+                current.setStartLocalDateTime(startLocalDateTime);
+                current.setEndLocalDateTime(endLocalDateTime);
 
                 current.setStartDayOfWeek(startDay.substring(0, 1).toUpperCase() + startDay.substring(1));
                 current.setEndDayOfWeek(endDay.substring(0,1).toUpperCase() + endDay.substring(1));

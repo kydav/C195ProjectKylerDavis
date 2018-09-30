@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
@@ -49,8 +50,19 @@ public class LandingScreenController {
         stage.show();
     }
     public void initialize()throws ParseException {
-        String incomingString = checkAppointmentsIncoming(loggedUser);
-        System.out.println(incomingString);
+        String[] incomingString = checkAppointmentsIncoming(loggedUser);
+
+        if(incomingString[0] != null){
+            System.out.println(incomingString);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(resources.getString("appointment.upcomingAppointmentTitle"));
+            alert.setHeaderText(resources.getString("appointment.upcomingAppointmentHeader"));
+            alert.setContentText(resources.getString("generic.title") + " : "  + incomingString[0] + "\n" +
+                resources.getString("generic.name") + " : " + incomingString[1] + "\n" +
+                resources.getString("generic.startDate") + " : " + incomingString[2]);
+            alert.showAndWait();
+        }
+
 
 
     }
