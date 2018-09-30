@@ -562,4 +562,102 @@ public class QueryManager{
         }
         return rows;
     }
+    public static ObservableList<Appointment> getAppointmentsByMonth() throws ParseException {
+        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+        String monthAppointments =
+                "SELECT U04EE1.appointment.appointmentid, U04EE1.user.userName, U04EE1.appointment.customerId, U04EE1.appointment.userid, " +
+                        "U04EE1.appointment.title, U04EE1.customer.customerName, U04EE1.appointment.contact, U04EE1.appointment.type," +
+                        "U04EE1.appointment.description,  U04EE1.appointment.location, U04EE1.appointment.url, " +
+                        "U04EE1.appointment.start, U04EE1.appointment.end \n" +
+                        "FROM U04EE1.appointment \n" +
+                        "JOIN U04EE1.customer ON U04EE1.appointment.customerId = U04EE1.customer.customerId \n" +
+                        "JOIN U04EE1.user ON U04EE1.appointment.userId = U04EE1.user.userId \n" +
+                        "WHERE U04EE1.appointment.start >  DATE_ADD(DATE_ADD(LAST_DAY(CURDATE()), INTERVAL 1 DAY),\n" +
+                        "INTERVAL - 1 MONTH) AND U04EE1.appointment.start < LAST_DAY(CURDATE());";
+        System.out.println(monthAppointments);
+        try{
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(monthAppointments);
+            while (rs.next()) {
+                Appointment current = new Appointment();
+                current.setAppointmentId(new SimpleIntegerProperty(Integer.parseInt(rs.getString("appointmentId"))));
+                current.setCustomerId(new SimpleIntegerProperty(Integer.parseInt(rs.getString("customerId"))));
+                current.setUserId(new SimpleIntegerProperty(Integer.parseInt(rs.getString("userId"))));
+
+                current.setUserName(rs.getString("userName"));
+                current.setTitle(rs.getString("title"));
+                current.setCustomerName(rs.getString("customerName"));
+                current.setType(rs.getString("type"));
+                current.setContact(rs.getString("contact"));
+                current.setDescription(rs.getString("description"));
+                current.setLocation(rs.getString("location"));
+                current.setUrl(rs.getString("url"));
+
+                current.setStart(rs.getTimestamp("start"));
+                current.setEnd(rs.getTimestamp("end"));
+
+                DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+                dt.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+                Date startDate = dt.parse(rs.getTimestamp("Start").toString());
+                Date endDate = dt.parse(rs.getTimestamp("end").toString());
+
+                DateFormat dateFormatter = new SimpleDateFormat("yyyy/MM/dd");
+                DateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
+
+                String startDateAsString = dateFormatter.format(startDate);
+                String startTimeAsString = timeFormatter.format(startDate);
+
+                String endDateAsString = dateFormatter.format(endDate);
+                String endTimeAsString = timeFormatter.format(endDate);
+
+                String startYearString = startDateAsString.substring(0,4);
+                String startMonthString = startDateAsString.substring(5,7);
+                String startDayString = startDateAsString.substring(8,10);
+                String endYearString = endDateAsString.substring(0,4);
+                String endMonthString = endDateAsString.substring(5,7);
+                String endDayString = endDateAsString.substring(8,10);
+                String startHourString = startTimeAsString.substring(0,2);
+                String startMinuteString = startTimeAsString.substring(3,5);
+                String endHourString = endTimeAsString.substring(0,2);
+                String endMinuteString = endTimeAsString.substring(3,5);
+                String startPeriod;
+                String endPeriod;
+
+                if(Integer.parseInt(startHourString) > 12){
+                    startHourString = Integer.toString(Integer.parseInt(startHourString)-12);
+                    startPeriod ="PM";
+                }else{
+                    startPeriod = "AM";
+                }
+                if(Integer.parseInt(endHourString) > 12){
+                    endHourString = Integer.toString(Integer.parseInt(endHourString)-12);
+                    endPeriod = "PM";
+                }else{
+                    endPeriod = "AM";
+                }
+                String wholeStartString = startMonthString + "/" + startDayString + "/" + startYearString +
+                        " " + startHourString + ":" + startMinuteString + " " + startPeriod;
+                String wholeEndString = endMonthString + "/" + endDayString + "/" + endYearString +
+                        " " + endHourString + ":" + endMinuteString + " " + endPeriod;
+
+                current.setStartDate(wholeStartString);
+                current.setEndDate(wholeEndString);
+                LocalDateTime startLocalDateTime = LocalDateTime.ofInstant(startDate.toInstant(), ZoneId.systemDefault());
+                LocalDateTime endLocalDateTime = LocalDateTime.ofInstant(endDate.toInstant(), ZoneId.systemDefault());
+
+                String startDay = startLocalDateTime.getDayOfWeek().toString().toLowerCase();
+                String endDay = endLocalDateTime.getDayOfWeek().toString().toLowerCase();
+                current.setStartLocalDateTime(startLocalDateTime);
+                current.setEndLocalDateTime(endLocalDateTime);
+
+                current.setStartDayOfWeek(startDay.substring(0, 1).toUpperCase() + startDay.substring(1));
+                current.setEndDayOfWeek(endDay.substring(0,1).toUpperCase() + endDay.substring(1));
+                appointmentList.add(current);
+            }
+        }catch(SQLException e){
+            System.out.println("Error on Building Data: " + e + monthAppointments);
+        }
+        return appointmentList;
+    }
 }

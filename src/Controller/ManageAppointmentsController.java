@@ -15,11 +15,13 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.sql.Timestamp;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static main.QueryManager.deleteTheAppointment;
 import static main.QueryManager.getAppointmentTableView;
+import static main.QueryManager.getAppointmentsByMonth;
 
 public class ManageAppointmentsController {
     public static ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
@@ -140,7 +142,8 @@ public class ManageAppointmentsController {
             System.out.println("Error putting data into TableView");
         }
     }
-    public void initialize(){
+    public void initialize()throws ParseException {
         populateTableView();
+        getAppointmentsByMonth();
     }
 }
