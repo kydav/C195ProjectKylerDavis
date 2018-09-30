@@ -12,6 +12,8 @@ import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 
+import static main.QueryManager.checkAppointmentsIncoming;
+import static main.QueryManager.loggedUser;
 import static main.QueryManager.userValidation;
 
 public class LoginScreenController {
@@ -37,6 +39,17 @@ public class LoginScreenController {
                 if(isValidUser == "authenticated"){
                     System.out.println("User login successful");
 
+                    String[] incomingString = checkAppointmentsIncoming(loggedUser);
+                    if(incomingString[0] != null){
+                        System.out.println(incomingString);
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle(resources.getString("appointment.upcomingAppointmentTitle"));
+                        alert.setHeaderText(resources.getString("appointment.upcomingAppointmentHeader"));
+                        alert.setContentText(resources.getString("generic.title") + " : "  + incomingString[0] + "\n" +
+                                resources.getString("generic.name") + " : " + incomingString[1] + "\n" +
+                                resources.getString("generic.startDate") + " : " + incomingString[2]);
+                        alert.showAndWait();
+                    }
                     Stage stage = (Stage) loginButton.getScene().getWindow();
                     Parent login = FXMLLoader.load(getClass().getResource("../View/LandingScreen.fxml"), resources);
                     Scene scene = new Scene(login);

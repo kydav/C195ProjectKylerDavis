@@ -2,7 +2,6 @@ package Controller;
 
 
 import Model.Appointment;
-import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -14,10 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
 import java.sql.Timestamp;
-import java.util.Date;
-
 import java.io.IOException;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -118,7 +114,7 @@ public class ManageAppointmentsController {
             appointmentList = getAppointmentTableView();
 
             idColumn.setCellValueFactory(cellData -> {
-                  return new ReadOnlyObjectWrapper(cellData.getValue().getAppointmentId());
+                return new ReadOnlyObjectWrapper(cellData.getValue().getAppointmentId());
             });
             nameColumn.setCellValueFactory(cellData -> {
                 return new ReadOnlyStringWrapper(cellData.getValue().getCustomerName());

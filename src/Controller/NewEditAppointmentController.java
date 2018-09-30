@@ -1,8 +1,5 @@
 package Controller;
 
-import Model.Customer;
-import javafx.beans.property.IntegerProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,19 +11,14 @@ import javafx.stage.Stage;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.ZoneId;
 import java.time.LocalDateTime;
-import java.time.LocalDate;
 import java.util.TimeZone;
 import java.time.LocalTime;
-import java.time.LocalDateTime;
 import java.text.DateFormat;
-
 
 import javafx.event.ActionEvent;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -37,7 +29,6 @@ import static Controller.ManageAppointmentsController.appointmentList;
 import static Controller.ManageAppointmentsController.appointmentToModifyIndex;
 import static main.QueryManager.*;
 import Model.Appointment;
-import Model.Appointment.*;
 
 public class NewEditAppointmentController {
     Appointment appointmentToModify = new Appointment();
@@ -157,7 +148,7 @@ public class NewEditAppointmentController {
                 String validAppointment = Appointment.validAppointment(title, customer, user, type, description, startsqlts, endsqlts, startLocalDateTime, endLocalDateTime, startLocalTime, endLocalTime);
 
                 boolean appointmentOverLaps = appointmentOverlaps(appointmentToModifyIndex, startsqlts, endsqlts);
-                if (/*validAppointment.equals("") &&*/ !appointmentOverLaps) {
+                if (validAppointment.equals("") && !appointmentOverLaps) {
                     Appointment appointmentToSave = new Appointment();
                     appointmentToSave.setCustomerName(customer);
                     appointmentToSave.setCustomerId(new SimpleIntegerProperty(customerId));

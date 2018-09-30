@@ -4,20 +4,12 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import sun.java2d.pipe.SpanShapeRenderer;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalTime;
-import java.util.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
-import javafx.fxml.FXML;
 import java.util.Locale;
-
-
 
 public class Appointment {
     private IntegerProperty appointmentId;
@@ -144,9 +136,8 @@ public class Appointment {
         if(startLocalDateTime.getDayOfWeek().toString().equals("SATURDAY") || startLocalDateTime.getDayOfWeek().toString().equals("SUNDAY") ||
                 endLocalDateTime.getDayOfWeek().toString().equals("SATURDAY") || endLocalDateTime.getDayOfWeek().toString().equals("SUNDAY"))
             error = resources.getString("appointment.weekend");
-        if(startTime.getHour() < 8 && startTime.getHour() > 16  || endTime.getHour() < 8 && endTime.getHour() > 17)
+        if(startTime.getHour() < 8 || startTime.getHour() > 16 || endTime.getHour() < 8 || endTime.getHour() > 17)
             error = resources.getString("appointment.afterHours");
         return error;
-
     }
 }

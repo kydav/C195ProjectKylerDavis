@@ -1,7 +1,6 @@
 package main;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -14,15 +13,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.TimeZone;
-import java.sql.Timestamp;
 
 import static main.DBConnection.conn;
 import Model.Customer;
 import Model.Appointment;
-import javafx.scene.control.Alert;
 
 public class QueryManager{
     public static String loggedUser;
