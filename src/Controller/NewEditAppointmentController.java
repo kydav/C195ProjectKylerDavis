@@ -131,6 +131,7 @@ public class NewEditAppointmentController {
                 }
             LocalTime startLocalTime = LocalTime.of(Integer.parseInt(startHourString), Integer.parseInt(startMinutes.getValue()));
             LocalDateTime startLocalDateTime = LocalDateTime.of(startLocalDate, startLocalTime);
+
             LocalTime endLocalTime = LocalTime.of(Integer.parseInt(endHourString), Integer.parseInt(endMinutes.getValue()));
             LocalDateTime endLocalDateTime = LocalDateTime.of(endLocalDate, endLocalTime);
 

@@ -8,7 +8,10 @@ import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 
+import java.text.ParseException;
 import java.util.ResourceBundle;
+import static main.QueryManager.loggedUser;
+import static main.QueryManager.checkAppointmentsIncoming;
 
 public class LandingScreenController {
     @FXML
@@ -44,6 +47,12 @@ public class LandingScreenController {
         Scene scene = new Scene(schedules);
         stage.setScene(scene);
         stage.show();
+    }
+    public void initialize()throws ParseException {
+        String incomingString = checkAppointmentsIncoming(loggedUser);
+        System.out.println(incomingString);
+
+
     }
 
 }

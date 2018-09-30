@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import static main.QueryManager.deleteTheCustomer;
+import static main.QueryManager.deleteTheAppointment;
 import static main.QueryManager.getAppointmentTableView;
 
 public class ManageAppointmentsController {
@@ -65,7 +65,7 @@ public class ManageAppointmentsController {
                 alert.setContentText(resources.getString("manage.deleteConfirmText"));
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.get() == ButtonType.OK) {
-                    int rowsDeleted = deleteTheCustomer(appointmentToModifyId);
+                    int rowsDeleted = deleteTheAppointment(appointmentToModifyId);
                     System.out.println(rowsDeleted + " Appointment Deleted Successfully");
                     populateTableView();
                 }

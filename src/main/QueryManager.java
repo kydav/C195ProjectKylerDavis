@@ -22,11 +22,12 @@ import java.sql.Timestamp;
 import static main.DBConnection.conn;
 import Model.Customer;
 import Model.Appointment;
+import javafx.scene.control.Alert;
 
 public class QueryManager{
-    private static String loggedUser;
+    public static String loggedUser;
 
-    public static String userValidation(String userName, String password){
+    public static String userValidation(String userName, String password)throws ParseException{
         try {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT password FROM user WHERE userName = '" + userName + "'");
@@ -45,6 +46,20 @@ public class QueryManager{
             System.out.println("Error querying for user information: " + e);
             return "error";
         }
+    }
+    public static String checkAppointmentsIncoming(String userName) throws ParseException{
+        ObservableList<Appointment> appointmentList = getAppointmentTableView();
+        Timestamp currentDateTime = new Timestamp(System.currentTimeMillis());
+        Timestamp timeInFifteenMinutes = new Timestamp(System.currentTimeMillis()+15*60*1000);
+        for(Appointment app: appointmentList){
+            Timestamp appStartTime = app.getStart();
+            if(app.getUserName().equals(userName) && currentDateTime.before(appStartTime) && timeInFifteenMinutes.after(appStartTime)){
+                System.out.println(currentDateTime);
+                System.out.println(timeInFifteenMinutes);
+                return app.getTitle() + ":" + app.getCustomerName() + ":" + app.getStartLocalDateTime();
+            }
+        }
+        return "";
     }
     public static ObservableList<Customer> getCustomerTableView(){
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
@@ -296,7 +311,7 @@ public class QueryManager{
             "FROM U04EE1.appointment \n" +
             "JOIN U04EE1.customer ON U04EE1.appointment.customerId = U04EE1.customer.customerId \n" +
             "JOIN U04EE1.user ON U04EE1.appointment.userId = U04EE1.user.userId \n" +
-            "WHERE U04EE1.appointment.start;";
+            "WHERE U04EE1.appointment.start > NOW();";
         try{
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(allAppointment);
@@ -410,7 +425,6 @@ public class QueryManager{
             "FROM U04EE1.customer \n" +
             "WHERE U04EE1.customer.active = 1;";
         try{
-
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(allCustomers);
             while(rs.next()){
@@ -534,14 +548,14 @@ public class QueryManager{
         }
         return rows;
     }
-    public static int deleteAppointment(int appointmentId){
+    public static int deleteTheAppointment(int appointmentId){
         int rows;
         String deleteAppointment =
                 "DELETE FROM U04EE1.appointment \n" +
                 "WHERE U04EE1.appointment.appointmentId = '" + appointmentId + "';";
         try{
             Statement deleteStmt = conn.createStatement();
-            rows = deleteStmt.
+            rows = deleteStmt.executeUpdate(deleteAppointment);
         }catch(SQLException e){
             System.out.println("Appointment delete was unsuccessful" + e + deleteAppointment);
             rows = -1;
