@@ -95,6 +95,7 @@ public class NewEditAppointmentController {
 
     @FXML
     void SaveAppointment(ActionEvent event) throws IOException, ParseException {
+        int appointmentId = appointmentToModify.getAppointmentId();
         String customer = customerCombo.getValue();
         int customerId =customerCombo.getSelectionModel().getSelectedIndex() + 1;
         String user = userCombo.getValue();
@@ -147,7 +148,7 @@ public class NewEditAppointmentController {
             Timestamp endsqlts = Timestamp.valueOf(endLocalDateTime);  //Should be 2018-02-08 23:00:00
             String validAppointment = Appointment.validAppointment(title, customer, user, type, description, startsqlts, endsqlts, startLocalDateTime, endLocalDateTime, startLocalTime, endLocalTime);
 
-            boolean appointmentOverLaps = appointmentOverlaps(startsqlts, endsqlts);
+            boolean appointmentOverLaps = appointmentOverlaps(appointmentToModifyIndex, startsqlts, endsqlts);
             if (validAppointment.equals("") && !appointmentOverLaps) {
                 Appointment appointmentToSave = new Appointment();
                 appointmentToSave.setCustomerName(customer);
@@ -174,7 +175,8 @@ public class NewEditAppointmentController {
                     stage.setScene(scene);
                     stage.show();
                 } else {
-                    int rowsUpdated = updateAppointment(appointmentToModify.getAppointmentId(),appointmentToSave.getCustomerId(), appointmentToSave.getUserId(), appointmentToSave.getTitle(), appointmentToSave.getDescription(),
+                    appointmentToSave.setAppointmentId(new SimpleIntegerProperty(appointmentId));
+                    int rowsUpdated = updateAppointment(appointmentToSave.getAppointmentId(),appointmentToSave.getCustomerId(), appointmentToSave.getUserId(), appointmentToSave.getTitle(), appointmentToSave.getDescription(),
                                             appointmentToSave.getLocation(), appointmentToSave.getContact(), appointmentToSave.getType(), appointmentToSave.getUrl(), appointmentToSave.getStart(), appointmentToSave.getEnd());
                     System.out.println("Updated rows:" + rowsUpdated);
                     Stage stage = (Stage) appointmentCancelButton.getScene().getWindow();

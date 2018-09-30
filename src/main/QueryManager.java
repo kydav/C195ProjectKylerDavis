@@ -48,17 +48,17 @@ public class QueryManager{
     }
     public static ObservableList<Customer> getCustomerTableView(){
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
+        String allCustomer =
+                "SELECT U04EE1.customer.customerid, U04EE1.customer.customerName, " +
+                        "U04EE1.address.addressId, U04EE1.address.address, U04EE1.address.address2,  " +
+                        "U04EE1.city.cityId, U04EE1.address.postalCode, U04EE1.address.phone, " +
+                        "U04EE1.city.city, U04EE1.city.countryId, U04EE1.country.country, U04EE1.customer.active \n" +
+                        "FROM U04EE1.customer \n" +
+                        "JOIN U04EE1.address ON U04EE1.customer.addressid = U04EE1.address.addressid \n" +
+                        "JOIN U04EE1.city ON U04EE1.address.cityid = U04EE1.city.cityid \n" +
+                        "JOIN U04EE1.country ON U04EE1.city.countryid = U04EE1.country.countryid \n" +
+                        "WHERE U04EE1.customer.active = 1;";
         try{
-            String allCustomer =
-                    "SELECT U04EE1.customer.customerid, U04EE1.customer.customerName, " +
-                    "U04EE1.address.addressId, U04EE1.address.address, U04EE1.address.address2,  " +
-                    "U04EE1.city.cityId, U04EE1.address.postalCode, U04EE1.address.phone, " +
-                    "U04EE1.city.city, U04EE1.city.countryId, U04EE1.country.country, U04EE1.customer.active \n" +
-                    "FROM U04EE1.customer \n" +
-                    "JOIN U04EE1.address ON U04EE1.customer.addressid = U04EE1.address.addressid \n" +
-                    "JOIN U04EE1.city ON U04EE1.address.cityid = U04EE1.city.cityid \n" +
-                    "JOIN U04EE1.country ON U04EE1.city.countryid = U04EE1.country.countryid \n" +
-                    "WHERE U04EE1.customer.active = 1;";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(allCustomer);
             while (rs.next()) {
@@ -78,7 +78,7 @@ public class QueryManager{
                 customerList.add(current);
             }
         }catch(SQLException e){
-            System.out.println("Error on Building Data: " + e);
+            System.out.println("Error on Building Data: " + e + allCustomer);
         }
         return customerList;
     }
@@ -91,7 +91,7 @@ public class QueryManager{
             Statement stmt = conn.createStatement();
             rows = stmt.executeUpdate(customerToDeleteQuery);
         }catch(SQLException e){
-            System.out.println("Error deleting customer:" + e);
+            System.out.println("Error deleting customer:" + e + customerToDeleteQuery);
             rows = 0;
         }
         return rows;
@@ -107,7 +107,7 @@ public class QueryManager{
             rows = addressUpdateStmt.executeUpdate(addressUpdate);
 
         }catch(SQLException e){
-            System.out.println("Error updating address table: "+ e);
+            System.out.println("Error updating address table: " + e + addressUpdate);
             rows =  -1;
         }
         return rows;
@@ -153,7 +153,7 @@ public class QueryManager{
                 newCityId = rs.getInt("cityId");
             }
         }catch(SQLException e){
-            System.out.println("Failed to check for existing city: " +e);
+            System.out.println("Failed to check for existing city: " + e + checkCity + insertNewCity);
             newCityId = -1;
         }
         return newCityId;
@@ -199,7 +199,7 @@ public class QueryManager{
                     newCountryId = rs.getInt("countryId");
                 }
             }catch(SQLException e){
-                System.out.println("Failed to check for existing country: " +e);
+                System.out.println("Failed to check for existing country: " + e + checkCountry + insertNewCountry);
                 newCountryId = -1;
             }
             return newCountryId;
@@ -215,7 +215,7 @@ public class QueryManager{
             rows = existCityAddressUpdate.executeUpdate(updateAddress);
             return rows;
         }catch(SQLException e){
-            System.out.println("Failed to update address table: " + e);
+            System.out.println("Failed to update address table: " + e + updateAddress);
             return -1;
         }
     }
@@ -230,7 +230,7 @@ public class QueryManager{
             rows = existCityAddressUpdate.executeUpdate(updateCustomerName);
             return rows;
         }catch(SQLException e){
-            System.out.println("Failed to update customer table: " + e);
+            System.out.println("Failed to update customer table: " + e + updateCustomerName);
             return -1;
         }
     }
@@ -247,7 +247,6 @@ public class QueryManager{
             Statement insertStmt = conn.createStatement();
             int insertRs = insertStmt.executeUpdate(insertAddress);
             if (insertRs == 0) {
-                //insert didn't work
                 System.out.println("Failed to insert data, no rows were updated");
                 newAddressId = -1;
             } else {
@@ -262,7 +261,7 @@ public class QueryManager{
                 }
             }
         }catch(SQLException e){
-            System.out.println("Address insert was unsuccessful:" +e);
+            System.out.println("Address insert was unsuccessful:" + e + insertAddress + checkNewAddress);
             newAddressId = -1;
         }
         return newAddressId;
@@ -276,29 +275,29 @@ public class QueryManager{
             Statement insertStmt = conn.createStatement();
             int insertRs = insertStmt.executeUpdate(insertAddress);
             if (insertRs == 0) {
-                //insert didn't work
                 System.out.println("Failed to insert data, no rows were updated");
                 rows = -1;
             } else {
                 return insertRs;
             }
         }catch(SQLException e){
-            System.out.println("Customer Insert was unsuccessful:" +e);
+            System.out.println("Customer Insert was unsuccessful:" + e + insertAddress);
             rows = -1;
         }
         return rows;
     }
     public static ObservableList<Appointment> getAppointmentTableView() throws ParseException {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+        String allAppointment =
+            "SELECT U04EE1.appointment.appointmentid, U04EE1.user.userName, U04EE1.appointment.customerId, U04EE1.appointment.userid, " +
+            "U04EE1.appointment.title, U04EE1.customer.customerName, U04EE1.appointment.contact, U04EE1.appointment.type," +
+            "U04EE1.appointment.description,  U04EE1.appointment.location, U04EE1.appointment.url, " +
+            "U04EE1.appointment.start, U04EE1.appointment.end \n" +
+            "FROM U04EE1.appointment \n" +
+            "JOIN U04EE1.customer ON U04EE1.appointment.customerId = U04EE1.customer.customerId \n" +
+            "JOIN U04EE1.user ON U04EE1.appointment.userId = U04EE1.user.userId \n" +
+            "WHERE U04EE1.appointment.start;";
         try{
-            String allAppointment =
-                    "SELECT U04EE1.appointment.appointmentid, U04EE1.user.userName, U04EE1.appointment.customerId, U04EE1.appointment.userid, " +
-                    "U04EE1.appointment.title, U04EE1.customer.customerName, U04EE1.appointment.contact, U04EE1.appointment.type," +
-                    "U04EE1.appointment.description,  U04EE1.appointment.location, U04EE1.appointment.url, " +
-                    "U04EE1.appointment.start, U04EE1.appointment.end \n" +
-                    "FROM U04EE1.appointment \n" +
-                    "JOIN U04EE1.customer ON U04EE1.appointment.customerId = U04EE1.customer.customerId \n" +
-                    "JOIN U04EE1.user ON U04EE1.appointment.userId = U04EE1.user.userId;";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(allAppointment);
             while (rs.next()) {
@@ -340,8 +339,6 @@ public class QueryManager{
                 String endYearString = endDateAsString.substring(0,4);
                 String endMonthString = endDateAsString.substring(5,7);
                 String endDayString = endDateAsString.substring(8,10);
-
-
                 String startHourString = startTimeAsString.substring(0,2);
                 String startMinuteString = startTimeAsString.substring(3,5);
                 String endHourString = endTimeAsString.substring(0,2);
@@ -379,12 +376,15 @@ public class QueryManager{
                 appointmentList.add(current);
             }
         }catch(SQLException e){
-            System.out.println("Error on Building Data: " + e);
+            System.out.println("Error on Building Data: " + e + allAppointment);
         }
         return appointmentList;
     }
-    public static boolean appointmentOverlaps(Timestamp newStartTime, Timestamp newEndTime)throws ParseException{
+    public static boolean appointmentOverlaps(int appointmentIndex, Timestamp newStartTime, Timestamp newEndTime)throws ParseException{
         ObservableList<Appointment> appointmentList = getAppointmentTableView();
+        if(appointmentIndex != -1){
+            appointmentList.remove(appointmentIndex);
+        }
         for(Appointment app: appointmentList){
             Timestamp appStartTime = app.getStart();
             Timestamp appEndTime = app.getEnd();
@@ -405,11 +405,12 @@ public class QueryManager{
 
     public static ObservableList<String> getCustomerNames(){
         ObservableList<String> allCustomersList  = FXCollections.observableArrayList();
+        String allCustomers =
+            "SELECT U04EE1.customer.customerName, U04EE1.customer.customerId\n" +
+            "FROM U04EE1.customer \n" +
+            "WHERE U04EE1.customer.active = 1;";
         try{
-            String allCustomers =
-                            "SELECT U04EE1.customer.customerName, U04EE1.customer.customerId\n" +
-                            "FROM U04EE1.customer \n" +
-                            "WHERE U04EE1.customer.active = 1;";
+
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(allCustomers);
             while(rs.next()){
@@ -417,17 +418,18 @@ public class QueryManager{
             }
             return allCustomersList;
         }catch(SQLException e){
-            System.out.println("Error getting user name data: " + e);
+            System.out.println("Error getting user name data: " + e + allCustomers);
             return null;
         }
     }
     public static ObservableList<String> getUserNames(){
         ObservableList<String> allUsersList  = FXCollections.observableArrayList();
+        String allUsers =
+                        "SELECT U04EE1.user.userName \n" +
+                        "FROM U04EE1.user \n" +
+                        "WHERE U04EE1.user.active = 1;";
         try{
-            String allUsers =
-                            "SELECT U04EE1.user.userName \n" +
-                            "FROM U04EE1.user \n" +
-                            "WHERE U04EE1.user.active = 1;";
+
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(allUsers);
             while(rs.next()){
@@ -435,7 +437,7 @@ public class QueryManager{
             }
             return allUsersList;
         }catch(SQLException e){
-            System.out.println("Error getting user name data: " + e);
+            System.out.println("Error getting user name data: " + e + allUsers);
             return null;
         }
     }
@@ -471,18 +473,18 @@ public class QueryManager{
     }
     public static ObservableList<String> getTypeDrops(){
         ObservableList<String> allTypesList  = FXCollections.observableArrayList();
+        String allTypes =
+                "SELECT DISTINCT U04EE1.appointment.type \n" +
+                        "FROM U04EE1.appointment;";
         try{
-            String allUsers =
-                    "SELECT DISTINCT U04EE1.appointment.type \n" +
-                    "FROM U04EE1.appointment;";
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(allUsers);
+            ResultSet rs = stmt.executeQuery(allTypes);
             while(rs.next()){
                 allTypesList.add(rs.getString("type"));
             }
             return allTypesList;
         }catch(SQLException e){
-            System.out.println("Error getting user name data: " + e);
+            System.out.println("Error getting user name data: " + e + allTypes);
             return null;
         }
     }
@@ -492,7 +494,6 @@ public class QueryManager{
                 "INSERT INTO U04EE1.appointment(customerId,userId,title,description,location,contact,type,url,start,end,createDate,createdBy,lastUpdate,lastUpdateBy) \n" +
                         "VALUES ("+customerId+","+userId+",'"+title+"','"+description+"','"+location+"','"+contact+"','"+type+"','"+url+"','"+startTime+"','"+endTime+"',NOW(),'"+loggedUser+"',NOW(),'"+loggedUser+"');";
         try{
-            System.out.println(insertAppointment);
             Statement insertStmt = conn.createStatement();
             rows = insertStmt.executeUpdate(insertAppointment);
             if (rows == 0) {
@@ -503,7 +504,7 @@ public class QueryManager{
                 return rows;
             }
         }catch(SQLException e){
-            System.out.println("Customer Insert was unsuccessful:" +e);
+            System.out.println("Customer Insert was unsuccessful:" + e + insertAppointment);
             rows = -1;
         }
         return rows;
@@ -518,10 +519,8 @@ public class QueryManager{
                         "U04EE1.appointment.lastUpdate=NOW(),U04EE1.appointment.lastUpdateBy='"+loggedUser+"' \n" +
                         "WHERE U04EE1.appointment.appointmentId = "+appointmentId+";";
         try{
-            System.out.println(updateAppointment);
             Statement updateStmt = conn.createStatement();
             rows = updateStmt.executeUpdate(updateAppointment);
-
             if (rows == 0) {
                 //update didn't work
                 System.out.println("Failed to update data, no rows were updated");
@@ -530,7 +529,21 @@ public class QueryManager{
                 return rows;
             }
         }catch(SQLException e){
-            System.out.println("Customer Insert was unsuccessful:" +e);
+            System.out.println("Customer Insert was unsuccessful:" + e + updateAppointment);
+            rows = -1;
+        }
+        return rows;
+    }
+    public static int deleteAppointment(int appointmentId){
+        int rows;
+        String deleteAppointment =
+                "DELETE FROM U04EE1.appointment \n" +
+                "WHERE U04EE1.appointment.appointmentId = '" + appointmentId + "';";
+        try{
+            Statement deleteStmt = conn.createStatement();
+            rows = deleteStmt.
+        }catch(SQLException e){
+            System.out.println("Appointment delete was unsuccessful" + e + deleteAppointment);
             rows = -1;
         }
         return rows;
