@@ -21,7 +21,6 @@ import java.util.ResourceBundle;
 
 import static main.QueryManager.deleteTheAppointment;
 import static main.QueryManager.getAppointmentTableView;
-import static main.QueryManager.getAppointmentsByMonth;
 
 public class ManageAppointmentsController {
     public static ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
@@ -144,6 +143,5 @@ public class ManageAppointmentsController {
     }
     public void initialize()throws ParseException {
         populateTableView();
-        getAppointmentsByMonth();
     }
 }
