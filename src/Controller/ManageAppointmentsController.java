@@ -21,6 +21,8 @@ import java.util.ResourceBundle;
 
 import static main.QueryManager.deleteTheAppointment;
 import static main.QueryManager.getAppointmentTableView;
+import static main.QueryManager.getAppointmentsByMonth;
+import static main.QueryManager.getAppointmentsByWeek;
 
 public class ManageAppointmentsController {
     public static ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
@@ -52,6 +54,12 @@ public class ManageAppointmentsController {
     @FXML
     private Button manageAppointmentCancel;
     @FXML
+    private Button byFutureButton;
+    @FXML
+    private Button byMonthButton;
+    @FXML
+    private Button byWeekButton;
+    @FXML
     void deleteAppointment(){
         int appointmentToModifyId = appointmentList.get(manageAppointmentTableView.getSelectionModel().getFocusedIndex()).getCustomerId();
         if(appointmentToModifyId != 0) {
@@ -64,7 +72,7 @@ public class ManageAppointmentsController {
                 if(result.get() == ButtonType.OK) {
                     int rowsDeleted = deleteTheAppointment(appointmentToModifyId);
                     System.out.println(rowsDeleted + " Appointment Deleted Successfully");
-                    populateTableView();
+                    populateTableView(getAppointmentTableView());
                 }
             }catch(Exception e){
                 e.printStackTrace();
@@ -109,10 +117,21 @@ public class ManageAppointmentsController {
             alert.setTitle(title);
             alert.setHeaderText(header);
             alert.showAndWait();
+    }@FXML
+    void loadFutureAppointments(ActionEvent event) throws ParseException{
+        populateTableView(getAppointmentTableView());
     }
-    public void populateTableView(){
+    @FXML
+    void loadMonthAppointments(ActionEvent event) throws ParseException{
+        populateTableView(getAppointmentsByMonth());
+    }
+    @FXML
+    void loadWeekAppointments(ActionEvent event) throws ParseException{
+        populateTableView(getAppointmentsByWeek());
+    }
+    public void populateTableView(ObservableList<Appointment> appointmentList){
         try{
-            appointmentList = getAppointmentTableView();
+            //appointmentList = getAppointmentTableView();
 
             idColumn.setCellValueFactory(cellData -> {
                 return new ReadOnlyObjectWrapper(cellData.getValue().getAppointmentId());
@@ -142,6 +161,6 @@ public class ManageAppointmentsController {
         }
     }
     public void initialize()throws ParseException {
-        populateTableView();
+        populateTableView(getAppointmentTableView());
     }
 }

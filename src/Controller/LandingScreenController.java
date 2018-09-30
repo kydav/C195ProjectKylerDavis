@@ -5,10 +5,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.text.Text;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 
 import java.util.ResourceBundle;
+import static main.QueryManager.loggedUser;
 
 public class LandingScreenController {
     @FXML
@@ -19,6 +21,8 @@ public class LandingScreenController {
     private Button customersButton;
     @FXML
     private Button reportsButton;
+    @FXML
+    private Text userName;
     @FXML
     void manageCustomersClicked(ActionEvent event) throws Exception {
         Stage stage = (Stage) customersButton.getScene().getWindow();
@@ -44,5 +48,8 @@ public class LandingScreenController {
         Scene scene = new Scene(schedules);
         stage.setScene(scene);
         stage.show();
+    }
+    public void initialize(){
+        userName.setText(loggedUser);
     }
 }

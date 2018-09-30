@@ -2,12 +2,26 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
-
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.LandingScreenController">
    <children>
-      <Button fx:id="schedulingButton" layoutX="271.0" layoutY="187.0" mnemonicParsing="false" onAction="#schedulingButtonClicked" text="Scheduling" />
-      <Button fx:id="customersButton" layoutX="117.0" layoutY="187.0" mnemonicParsing="false" onAction="#manageCustomersClicked" text="Customers" />
-      <Button fx:id="reportsButton" layoutX="432.0" layoutY="187.0" mnemonicParsing="false" onAction="#reportsButtonClicked" text="Reports" />
+      <Button fx:id="schedulingButton" layoutX="276.0" layoutY="225.0" mnemonicParsing="false" onAction="#schedulingButtonClicked" text="Scheduling" />
+      <Button fx:id="customersButton" layoutX="122.0" layoutY="225.0" mnemonicParsing="false" onAction="#manageCustomersClicked" text="Customers" />
+      <Button fx:id="reportsButton" layoutX="437.0" layoutY="225.0" mnemonicParsing="false" onAction="#reportsButtonClicked" text="Reports" />
+      <Text layoutX="261.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <Text fx:id="userName" layoutX="280.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="66.50000810623169">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <Text layoutX="122.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To view and edit Customers" textAlignment="CENTER" wrappingWidth="84.99999046325684" />
+      <Text layoutX="276.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To view and edit Appointments" textAlignment="CENTER" wrappingWidth="86.49999797344208" />
+      <Text layoutX="437.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To view Reports" textAlignment="CENTER" wrappingWidth="66.49999916553497" />
    </children>
 </AnchorPane>
