@@ -132,7 +132,6 @@ public class ManageAppointmentsController {
     public void populateTableView(ObservableList<Appointment> appointmentList){
         try{
             //appointmentList = getAppointmentTableView();
-
             idColumn.setCellValueFactory(cellData -> {
                 return new ReadOnlyObjectWrapper(cellData.getValue().getAppointmentId());
             });

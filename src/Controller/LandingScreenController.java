@@ -34,11 +34,11 @@ public class LandingScreenController {
 
     @FXML
     void reportsButtonClicked(ActionEvent event) throws Exception{
-        //Stage stage = (Stage) reportsButton.getScene().getWindow();
-        //Parent reports = FXMLLoader.load(getClass().getResource("../View/ManageReports.fxml"), resources);
-        //Scene scene = new Scene(reports);
-        //stage.setScene(scene);
-        //stage.show();
+        Stage stage = (Stage) reportsButton.getScene().getWindow();
+        Parent reports = FXMLLoader.load(getClass().getResource("../View/ReportScreen.fxml"), resources);
+        Scene scene = new Scene(reports);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
