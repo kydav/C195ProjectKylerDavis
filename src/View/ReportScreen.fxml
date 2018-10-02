@@ -15,5 +15,6 @@
       <Text layoutX="267.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="View inactive customers" textAlignment="CENTER" wrappingWidth="66.49999916553497" />
       <ComboBox fx:id="consultantsCombo" layoutX="377.0" layoutY="83.0" prefWidth="150.0" />
       <ComboBox fx:id="appointmentTypesCombo" layoutX="77.0" layoutY="83.0" prefWidth="150.0" />
+      <Button fx:id="cancelButton" layoutX="467.0" layoutY="359.0" mnemonicParsing="false" onAction="#cancelReports" text="%generic.cancel" />
    </children>
 </AnchorPane>

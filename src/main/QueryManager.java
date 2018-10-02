@@ -755,4 +755,40 @@ public class QueryManager{
         }
         return appointmentList;
     }
+    public static ObservableList<Customer> getInactiveCustomers(){
+        ObservableList<Customer> customerList = FXCollections.observableArrayList();
+        String allCustomer =
+                "SELECT U04EE1.customer.customerid, U04EE1.customer.customerName, " +
+                        "U04EE1.address.addressId, U04EE1.address.address, U04EE1.address.address2,  " +
+                        "U04EE1.city.cityId, U04EE1.address.postalCode, U04EE1.address.phone, " +
+                        "U04EE1.city.city, U04EE1.city.countryId, U04EE1.country.country, U04EE1.customer.active \n" +
+                        "FROM U04EE1.customer \n" +
+                        "JOIN U04EE1.address ON U04EE1.customer.addressid = U04EE1.address.addressid \n" +
+                        "JOIN U04EE1.city ON U04EE1.address.cityid = U04EE1.city.cityid \n" +
+                        "JOIN U04EE1.country ON U04EE1.city.countryid = U04EE1.country.countryid \n" +
+                        "WHERE U04EE1.customer.active = 0;";
+        try{
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(allCustomer);
+            while (rs.next()) {
+                Customer current = new Customer();
+                current.setCustomerId(new SimpleIntegerProperty(Integer.parseInt(rs.getString("customerId"))));
+                current.setCustomerName(rs.getString("customerName"));
+                current.setAddressId(Integer.parseInt((rs.getString("addressId"))));
+                current.setAddress(rs.getString("address"));
+                current.setAddress2(rs.getString("address2"));
+                current.setCityId(Integer.parseInt((rs.getString("cityId"))));
+                current.setPostalCode(rs.getString("postalCode"));
+                current.setPhone(rs.getString("phone"));
+                current.setCity(rs.getString("city"));
+                current.setCountryId(Integer.parseInt((rs.getString("countryId"))));
+                current.setCountry(rs.getString("country"));
+                current.setActive(Integer.parseInt((rs.getString("active"))));
+                customerList.add(current);
+            }
+        }catch(SQLException e){
+            System.out.println("Error on Building Data: " + e + allCustomer);
+        }
+        return customerList;
+    }
 }
