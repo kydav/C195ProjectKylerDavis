@@ -505,7 +505,7 @@ public class QueryManager{
     public static int insertAppointment(int customerId, int userId, String title, String description, String location, String contact, String type, String url, Timestamp startTime, Timestamp endTime){
         int rows = 0;
         String insertAppointment =
-                "INSERT INTO U04EE1.appointment(customerId,userId,title,description,location,contact,type,url,start,end,createDate,createdBy,lastUpdate,lastUpdateBy) \n" +
+                        "INSERT INTO U04EE1.appointment(customerId,userId,title,description,location,contact,type,url,start,end,createDate,createdBy,lastUpdate,lastUpdateBy) \n" +
                         "VALUES ("+customerId+","+userId+",'"+title+"','"+description+"','"+location+"','"+contact+"','"+type+"','"+url+"','"+startTime+"','"+endTime+"',NOW(),'"+loggedUser+"',NOW(),'"+loggedUser+"');";
         try{
             Statement insertStmt = conn.createStatement();

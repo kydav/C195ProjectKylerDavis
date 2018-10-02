@@ -26,7 +26,8 @@ import static main.QueryManager.getAppointmentsByWeek;
 
 public class ManageAppointmentsController {
     public static ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
-    public static int appointmentToModifyIndex = -1;
+    public static int appointmentToModifyId = -1;
+    public static int appointmentToModifyIndex;
     @FXML
     private TableView<Appointment> manageAppointmentTableView;
     @FXML
@@ -40,9 +41,9 @@ public class ManageAppointmentsController {
     @FXML
     private TableColumn<Appointment, String> dayColumn;
     @FXML
-    private TableColumn<Appointment, Timestamp> startColumn;
+    private TableColumn<Appointment, String> startColumn;
     @FXML
-    private TableColumn<Appointment, Timestamp> endColumn;
+    private TableColumn<Appointment, String> endColumn;
     @FXML
     private ResourceBundle resources;
     @FXML
@@ -61,12 +62,12 @@ public class ManageAppointmentsController {
     private Button byWeekButton;
     @FXML
     void deleteAppointment(){
-        int appointmentToModifyId = appointmentList.get(manageAppointmentTableView.getSelectionModel().getFocusedIndex()).getCustomerId();
-        if(appointmentToModifyId != 0) {
+        appointmentToModifyId = manageAppointmentTableView.getSelectionModel().getSelectedItem().getAppointmentId();
+        if(appointmentToModifyId > 0) {
             try{
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle(resources.getString("manage.deleteConfirmTitle"));
-                alert.setHeaderText(resources.getString("manage.deleteConfirmHeader"));
+                alert.setHeaderText(resources.getString("appointment.deleteConfirmHeader"));
                 alert.setContentText(resources.getString("manage.deleteConfirmText"));
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.get() == ButtonType.OK) {
@@ -84,8 +85,9 @@ public class ManageAppointmentsController {
     }
     @FXML
     void editAppointment(ActionEvent event) throws IOException {
+        appointmentToModifyId = manageAppointmentTableView.getSelectionModel().getSelectedItem().getAppointmentId();
         appointmentToModifyIndex = manageAppointmentTableView.getSelectionModel().getSelectedIndex();
-        if(appointmentToModifyIndex != -1) {
+        if(appointmentToModifyId > 0) {
             Stage stage = (Stage) manageAppointmentEdit.getScene().getWindow();
             Parent modifyCustomer = FXMLLoader.load(getClass().getResource("../View/NewEditAppointment.fxml"), resources);
             Scene scene = new Scene(modifyCustomer);
@@ -97,7 +99,7 @@ public class ManageAppointmentsController {
     }
     @FXML
     void newAppointment(ActionEvent event) throws IOException{
-        appointmentToModifyIndex = -1;
+        appointmentToModifyId = 0;
         Stage stage = (Stage) manageAppointmentNew.getScene().getWindow();
         Parent newCustomer = FXMLLoader.load(getClass().getResource("../View/NewEditAppointment.fxml"), resources);
         Scene scene = new Scene(newCustomer);
@@ -144,28 +146,22 @@ public class ManageAppointmentsController {
     }
     public void populateTableView(ObservableList<Appointment> appointmentList){
         try{
-            //appointmentList = getAppointmentTableView();
-            idColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyObjectWrapper(cellData.getValue().getAppointmentId());
-            });
-            nameColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyStringWrapper(cellData.getValue().getCustomerName());
-            });
-            titleColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyStringWrapper(cellData.getValue().getTitle());
-            });
-            locationColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyStringWrapper(cellData.getValue().getLocation());
-            });
-            dayColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyStringWrapper(cellData.getValue().getStartDayOfWeek());
-            });
-            startColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyObjectWrapper(cellData.getValue().getStartDate());
-            });
-            endColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyObjectWrapper(cellData.getValue().getEndDate());
-            });
+
+            idColumn.setCellValueFactory(cellData -> cellData.getValue().appointmentIdProperty().asObject());
+            nameColumn.setCellValueFactory(cellData -> cellData.getValue().customerNameProperty());
+            titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
+            locationColumn.setCellValueFactory(cellData -> cellData.getValue().locationProperty());
+            dayColumn.setCellValueFactory(cellData -> cellData.getValue().startDayOfWeekProperty());
+            startColumn.setCellValueFactory(cellData -> cellData.getValue().startDateProperty());
+            endColumn.setCellValueFactory(cellData -> cellData.getValue().endDateProperty());
+
+            /*idColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getAppointmentId()));
+            nameColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getCustomerName()));
+            titleColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getTitle()));
+            locationColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getLocation()));
+            dayColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getStartDayOfWeek()));
+            startColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getStartDate()));
+            endColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getEndDate()));*/
             manageAppointmentTableView.setItems(appointmentList);
         }catch(Exception e){
             e.printStackTrace();
@@ -173,6 +169,7 @@ public class ManageAppointmentsController {
         }
     }
     public void initialize()throws ParseException {
-        populateTableView(getAppointmentTableView());
+        appointmentList = getAppointmentTableView();
+        populateTableView(appointmentList);
     }
 }

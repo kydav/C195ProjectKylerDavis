@@ -81,24 +81,12 @@ public class InactiveCustomersController {
         try{
             customerList = getInactiveCustomers();
 
-            idColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyObjectWrapper(cellData.getValue().getCustomerId());
-            });
-            nameColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyStringWrapper(cellData.getValue().getCustomerName());
-            });
-            phoneColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyStringWrapper(cellData.getValue().getPhone());
-            });
-            cityColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyStringWrapper(cellData.getValue().getCity());
-            });
-            postalCodeColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyObjectWrapper(cellData.getValue().getPostalCode());
-            });
-            countryColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyStringWrapper(cellData.getValue().getCountry());
-            });
+            idColumn.setCellValueFactory(cellData -> cellData.getValue().customerIdProperty().asObject());
+            nameColumn.setCellValueFactory(cellData -> cellData.getValue().customerNameProperty());
+            phoneColumn.setCellValueFactory(cellData -> cellData.getValue().phoneProperty());
+            cityColumn.setCellValueFactory(cellData -> cellData.getValue().cityProperty());
+            postalCodeColumn.setCellValueFactory(cellData -> cellData.getValue().postalCodeProperty());
+            countryColumn.setCellValueFactory(cellData -> cellData.getValue().countryProperty());
             inactiveCustomerTableView.setItems(customerList);
         }catch(Exception e){
             e.printStackTrace();

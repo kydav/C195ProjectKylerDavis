@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 import static Controller.ManageAppointmentsController.appointmentList;
+import static Controller.ManageAppointmentsController.appointmentToModifyId;
 import static Controller.ManageAppointmentsController.appointmentToModifyIndex;
 import static main.QueryManager.*;
 import Model.Appointment;

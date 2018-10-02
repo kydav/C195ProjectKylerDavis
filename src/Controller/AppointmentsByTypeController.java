@@ -1,8 +1,6 @@
 package Controller;
 
 import Model.Appointment;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +12,6 @@ import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ResourceBundle;
 
 import static Controller.ReportScreenController.appointmentType;
@@ -36,9 +33,9 @@ public class AppointmentsByTypeController {
     @FXML
     private TableColumn<Appointment, String> dayColumn;
     @FXML
-    private TableColumn<Appointment, Timestamp> startColumn;
+    private TableColumn<Appointment, String> startColumn;
     @FXML
-    private TableColumn<Appointment, Timestamp> endColumn;
+    private TableColumn<Appointment, String> endColumn;
 
     @FXML
     private Button cancelButton;
@@ -58,27 +55,13 @@ public class AppointmentsByTypeController {
     public void initialize(){
         try{
             ObservableList<Appointment> appointmentTypeList = getAppointmentsByType(appointmentType);
-            idColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyObjectWrapper(cellData.getValue().getAppointmentId());
-            });
-            nameColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyStringWrapper(cellData.getValue().getCustomerName());
-            });
-            titleColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyStringWrapper(cellData.getValue().getTitle());
-            });
-            locationColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyStringWrapper(cellData.getValue().getLocation());
-            });
-            dayColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyStringWrapper(cellData.getValue().getStartDayOfWeek());
-            });
-            startColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyObjectWrapper(cellData.getValue().getStartDate());
-            });
-            endColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyObjectWrapper(cellData.getValue().getEndDate());
-            });
+            idColumn.setCellValueFactory(cellData -> cellData.getValue().appointmentIdProperty().asObject());
+            nameColumn.setCellValueFactory(cellData -> cellData.getValue().customerNameProperty());
+            titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
+            locationColumn.setCellValueFactory(cellData -> cellData.getValue().locationProperty());
+            dayColumn.setCellValueFactory(cellData -> cellData.getValue().startDayOfWeekProperty());
+            startColumn.setCellValueFactory(cellData -> cellData.getValue().startDateProperty());
+            endColumn.setCellValueFactory(cellData -> cellData.getValue().endDateProperty());
             AppointmentsByTypeTableView.setItems(appointmentTypeList);
         }catch(Exception e){
             e.printStackTrace();

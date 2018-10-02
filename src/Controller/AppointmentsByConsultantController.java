@@ -35,9 +35,9 @@ public class AppointmentsByConsultantController {
     @FXML
     private TableColumn<Appointment, String> dayColumn;
     @FXML
-    private TableColumn<Appointment, Timestamp> startColumn;
+    private TableColumn<Appointment, String> startColumn;
     @FXML
-    private TableColumn<Appointment, Timestamp> endColumn;
+    private TableColumn<Appointment, String> endColumn;
     @FXML
     private Button cancelButton;
     @FXML
@@ -55,27 +55,13 @@ public class AppointmentsByConsultantController {
     public void initialize(){
         try{
             ObservableList<Appointment>  appointmentByConsultantList = getAppointmentsByConsultant(consultantId);
-            idColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyObjectWrapper(cellData.getValue().getAppointmentId());
-            });
-            nameColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyStringWrapper(cellData.getValue().getCustomerName());
-            });
-            titleColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyStringWrapper(cellData.getValue().getTitle());
-            });
-            locationColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyStringWrapper(cellData.getValue().getLocation());
-            });
-            dayColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyStringWrapper(cellData.getValue().getStartDayOfWeek());
-            });
-            startColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyObjectWrapper(cellData.getValue().getStartDate());
-            });
-            endColumn.setCellValueFactory(cellData -> {
-                return new ReadOnlyObjectWrapper(cellData.getValue().getEndDate());
-            });
+            idColumn.setCellValueFactory(cellData -> cellData.getValue().appointmentIdProperty().asObject());
+            nameColumn.setCellValueFactory(cellData -> cellData.getValue().customerNameProperty());
+            titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
+            locationColumn.setCellValueFactory(cellData -> cellData.getValue().locationProperty());
+            dayColumn.setCellValueFactory(cellData -> cellData.getValue().startDayOfWeekProperty());
+            startColumn.setCellValueFactory(cellData -> cellData.getValue().startDateProperty());
+            endColumn.setCellValueFactory(cellData -> cellData.getValue().endDateProperty());
             AppointmentsByConsultantTableView.setItems(appointmentByConsultantList);
         }catch(Exception e){
             e.printStackTrace();
