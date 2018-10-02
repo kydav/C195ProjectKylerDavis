@@ -118,16 +118,29 @@ public class ManageAppointmentsController {
             alert.setHeaderText(header);
             alert.showAndWait();
     }@FXML
-    void loadFutureAppointments(ActionEvent event) throws ParseException{
-        populateTableView(getAppointmentTableView());
+    void loadFutureAppointments(){
+        try {
+            populateTableView(getAppointmentTableView());
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
     }
     @FXML
-    void loadMonthAppointments(ActionEvent event) throws ParseException{
+    void loadMonthAppointments(){
+        try{
         populateTableView(getAppointmentsByMonth());
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
     }
     @FXML
-    void loadWeekAppointments(ActionEvent event) throws ParseException{
-        populateTableView(getAppointmentsByWeek());
+    void loadWeekAppointments(){
+        try{
+            populateTableView(getAppointmentsByWeek());
+
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
     }
     public void populateTableView(ObservableList<Appointment> appointmentList){
         try{

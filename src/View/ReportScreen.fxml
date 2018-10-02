@@ -10,9 +10,9 @@
       <Button fx:id="appointmentsByConsultantButton" layoutX="403.0" layoutY="128.0" mnemonicParsing="false" onAction="#getAppointmentsByConsultant" text="%generic.run" />
       <Button fx:id="appointmentTypesButton" layoutX="102.0" layoutY="128.0" mnemonicParsing="false" onAction="#getAppointmentsByType" text="%generic.run" />
       <Button fx:id="inactiveCustomersButton" layoutX="251.0" layoutY="290.0" mnemonicParsing="false" onAction="#viewInactiveCustomers" text="%generic.run" />
-      <Text layoutX="109.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of appointment types this month" textAlignment="CENTER" wrappingWidth="84.99999046325684" />
-      <Text layoutX="409.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="View Scheduled by consultant" textAlignment="CENTER" wrappingWidth="86.49999797344208" />
-      <Text layoutX="267.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="View inactive customers" textAlignment="CENTER" wrappingWidth="66.49999916553497" />
+      <Text layoutX="109.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%reports.types" textAlignment="CENTER" wrappingWidth="84.99999046325684" />
+      <Text layoutX="409.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%reports.consultant" textAlignment="CENTER" wrappingWidth="86.49999797344208" />
+      <Text layoutX="267.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%reports.inactive" textAlignment="CENTER" wrappingWidth="66.49999916553497" />
       <ComboBox fx:id="consultantsCombo" layoutX="377.0" layoutY="83.0" prefWidth="150.0" />
       <ComboBox fx:id="appointmentTypesCombo" layoutX="77.0" layoutY="83.0" prefWidth="150.0" />
       <Button fx:id="cancelButton" layoutX="467.0" layoutY="359.0" mnemonicParsing="false" onAction="#cancelReports" text="%generic.cancel" />
