@@ -58,7 +58,7 @@ public class LoginScreenController {
                         bw = new BufferedWriter(fw);
                         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                         LocalDateTime now = LocalDateTime.now();
-                        bw.write("User: " +userName + "Logged in on: " + dtf.format(now));
+                        bw.write("User: " +userName + " Logged in on: " + dtf.format(now) + "\n");
                         System.out.println("Done");
                     } catch (IOException e) {
                         e.printStackTrace();

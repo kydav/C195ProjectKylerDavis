@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 import static Controller.ManageAppointmentsController.appointmentList;
-import static Controller.ManageAppointmentsController.appointmentToModifyId;
 import static Controller.ManageAppointmentsController.appointmentToModifyIndex;
 import static main.QueryManager.*;
 import Model.Appointment;
@@ -71,7 +70,6 @@ public class NewEditAppointmentController {
     private ComboBox<String> endPeriod;
     @FXML
     private ComboBox<String> typeCombo;
-
     @FXML
     void CancelAppointment(ActionEvent event) throws IOException{
         try {
@@ -170,7 +168,7 @@ public class NewEditAppointmentController {
                         int rowsInserted = insertAppointment(appointmentToSave.getCustomerId(), appointmentToSave.getUserId(), appointmentToSave.getTitle(), appointmentToSave.getDescription(),
                                 appointmentToSave.getLocation(), appointmentToSave.getContact(), appointmentToSave.getType(), appointmentToSave.getUrl(), appointmentToSave.getStart(), appointmentToSave.getEnd());
                         System.out.println("Inserted Rows: " + rowsInserted);
-                        Stage stage = (Stage) appointmentCancelButton.getScene().getWindow();
+                        Stage stage = (Stage) appointmentSaveButton.getScene().getWindow();
                         Parent manage = FXMLLoader.load(getClass().getResource("../View/ManageAppointments.fxml"), resources);
                         Scene scene = new Scene(manage);
                         stage.setScene(scene);
@@ -180,7 +178,7 @@ public class NewEditAppointmentController {
                         int rowsUpdated = updateAppointment(appointmentToSave.getAppointmentId(), appointmentToSave.getCustomerId(), appointmentToSave.getUserId(), appointmentToSave.getTitle(), appointmentToSave.getDescription(),
                                 appointmentToSave.getLocation(), appointmentToSave.getContact(), appointmentToSave.getType(), appointmentToSave.getUrl(), appointmentToSave.getStart(), appointmentToSave.getEnd());
                         System.out.println("Updated rows:" + rowsUpdated);
-                        Stage stage = (Stage) appointmentCancelButton.getScene().getWindow();
+                        Stage stage = (Stage) appointmentSaveButton.getScene().getWindow();
                         Parent manage = FXMLLoader.load(getClass().getResource("../View/ManageAppointments.fxml"), resources);
                         Scene scene = new Scene(manage);
                         stage.setScene(scene);
@@ -278,6 +276,5 @@ public class NewEditAppointmentController {
             }
         }
     }
-
 }
 

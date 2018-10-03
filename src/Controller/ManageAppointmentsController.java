@@ -3,7 +3,6 @@ package Controller;
 import Model.Appointment;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -99,22 +98,30 @@ public class ManageAppointmentsController {
         }
     }
     @FXML
-    void newAppointment(ActionEvent event) throws IOException{
-        appointmentToModifyId = -1;
-        appointmentToModifyIndex = -1;
-        Stage stage = (Stage) manageAppointmentNew.getScene().getWindow();
-        Parent newCustomer = FXMLLoader.load(getClass().getResource("../View/NewEditAppointment.fxml"), resources);
-        Scene scene = new Scene(newCustomer);
-        stage.setScene(scene);
-        stage.show();
+    void newAppointment(){
+        try {
+            appointmentToModifyId = -1;
+            appointmentToModifyIndex = -1;
+            Stage stage = (Stage) manageAppointmentNew.getScene().getWindow();
+            Parent newCustomer = FXMLLoader.load(getClass().getResource("../View/NewEditAppointment.fxml"), resources);
+            Scene scene = new Scene(newCustomer);
+            stage.setScene(scene);
+            stage.show();
+        } catch(IOException e){
+            e.printStackTrace();
+            }
     }
     @FXML
-    void cancelManageAppointment(ActionEvent event) throws IOException {
-        Stage stage = (Stage) manageAppointmentCancel.getScene().getWindow();
-        Parent landing = FXMLLoader.load(getClass().getResource("../View/LandingScreen.fxml"), resources);
-        Scene scene = new Scene(landing);
-        stage.setScene(scene);
-        stage.show();
+    void cancelManageAppointment(){
+        try {
+            Stage stage = (Stage) manageAppointmentCancel.getScene().getWindow();
+            Parent landing = FXMLLoader.load(getClass().getResource("../View/LandingScreen.fxml"), resources);
+            Scene scene = new Scene(landing);
+            stage.setScene(scene);
+            stage.show();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
     void alertFunction(String title, String header){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -162,8 +169,12 @@ public class ManageAppointmentsController {
             System.out.println("Error putting data into TableView");
         }
     }
-    public void initialize()throws ParseException {
-        appointmentList = getAppointmentTableView();
-        populateTableView(appointmentList);
+    public void initialize(){
+        try {
+            appointmentList = getAppointmentTableView();
+            populateTableView(appointmentList);
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
     }
 }
