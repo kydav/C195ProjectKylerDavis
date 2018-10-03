@@ -75,6 +75,7 @@ public class NewEditAppointmentController {
     @FXML
     void CancelAppointment(ActionEvent event) throws IOException{
         try {
+            appointmentToModifyIndex = -1;
             Stage stage = (Stage) appointmentCancelButton.getScene().getWindow();
             Parent manage = FXMLLoader.load(getClass().getResource("../View/ManageAppointments.fxml"), resources);
             Scene scene = new Scene(manage);
@@ -148,7 +149,7 @@ public class NewEditAppointmentController {
                 Timestamp endsqlts = Timestamp.valueOf(endLocalDateTime);  //Should be 2018-02-08 23:00:00
                 String validAppointment = Appointment.validAppointment(title, customer, user, type, description, startsqlts, endsqlts, startLocalDateTime, endLocalDateTime, startLocalTime, endLocalTime);
 
-                boolean appointmentOverLaps = appointmentOverlaps(appointmentToModifyIndex, startsqlts, endsqlts);
+                boolean appointmentOverLaps = appointmentOverlaps(appointmentToModifyIndex, startsqlts, endsqlts, appointmentList);
                 if (validAppointment.equals("") && !appointmentOverLaps) {
                     Appointment appointmentToSave = new Appointment();
                     appointmentToSave.setCustomerName(customer);
@@ -200,6 +201,7 @@ public class NewEditAppointmentController {
                 }
             }
         }
+        appointmentToModifyIndex = -1;
     }
     public void initialize() {
         ObservableList<String> customerNames = getCustomerNames();
@@ -216,7 +218,6 @@ public class NewEditAppointmentController {
         startPeriod.setItems(periodDrop);
         endPeriod.setItems(periodDrop);
         typeCombo.setItems(getTypeDrops());
-
         if(appointmentToModifyIndex != -1){
             try {
                 appointmentToModify = appointmentList.get(appointmentToModifyIndex);

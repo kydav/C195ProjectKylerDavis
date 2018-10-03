@@ -395,8 +395,8 @@ public class QueryManager{
         }
         return appointmentList;
     }
-    public static boolean appointmentOverlaps(int appointmentIndex, Timestamp newStartTime, Timestamp newEndTime)throws ParseException{
-        ObservableList<Appointment> appointmentList = getAppointmentTableView();
+    public static boolean appointmentOverlaps(int appointmentIndex, Timestamp newStartTime, Timestamp newEndTime, ObservableList<Appointment> appointmentListInput)throws ParseException{
+        ObservableList<Appointment> appointmentList = appointmentListInput;
         if(appointmentIndex != -1){
             appointmentList.remove(appointmentIndex);
         }

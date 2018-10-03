@@ -49,9 +49,10 @@ public class ManageCustomerController {
     private Button manageCustomerCancel;
     @FXML
     void deleteCustomer(){
-        int customerToModifyId = customerList.get(manageCustomerTableView.getSelectionModel().getFocusedIndex()).getCustomerId();
-        if(customerToModifyId != 0) {
+        customerToModifyIndex = manageCustomerTableView.getSelectionModel().getSelectedIndex();
+        if(customerToModifyIndex != -1) {
             try{
+                int customerToModifyId = customerList.get(manageCustomerTableView.getSelectionModel().getFocusedIndex()).getCustomerId();
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle(resources.getString("manage.deleteConfirmTitle"));
                 alert.setHeaderText(resources.getString("manage.deleteConfirmHeader"));

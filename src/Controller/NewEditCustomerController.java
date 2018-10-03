@@ -43,6 +43,7 @@ public class NewEditCustomerController {
     @FXML
     void CancelCustomer(){
         try {
+            customerToModifyIndex = -1;
             Stage stage = (Stage) customerCancelButton.getScene().getWindow();
             Parent manage = FXMLLoader.load(getClass().getResource("../View/ManageCustomer.fxml"), resources);
             Scene scene = new Scene(manage);
@@ -133,6 +134,7 @@ public class NewEditCustomerController {
                 Scene scene = new Scene(manage);
                 stage.setScene(scene);
                 stage.show();
+                customerToModifyIndex = -1;
             }
         }else{
             Alert alert = new Alert(AlertType.INFORMATION);
