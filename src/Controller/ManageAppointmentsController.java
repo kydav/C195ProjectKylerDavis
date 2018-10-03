@@ -81,16 +81,19 @@ public class ManageAppointmentsController {
         }
     }
     @FXML
-    void editAppointment(ActionEvent event) throws IOException {
+    void editAppointment(){
         appointmentToModifyIndex = manageAppointmentTableView.getSelectionModel().getSelectedIndex();
         if(appointmentToModifyIndex != -1) {
             appointmentToModifyId = manageAppointmentTableView.getSelectionModel().getSelectedItem().getAppointmentId();
-
-            Stage stage = (Stage) manageAppointmentEdit.getScene().getWindow();
-            Parent modifyCustomer = FXMLLoader.load(getClass().getResource("../View/NewEditAppointment.fxml"), resources);
-            Scene scene = new Scene(modifyCustomer);
-            stage.setScene(scene);
-            stage.show();
+            try {
+                Stage stage = (Stage) manageAppointmentEdit.getScene().getWindow();
+                Parent modifyCustomer = FXMLLoader.load(getClass().getResource("../View/NewEditAppointment.fxml"), resources);
+                Scene scene = new Scene(modifyCustomer);
+                stage.setScene(scene);
+                stage.show();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
         }else{
             alertFunction(resources.getString("manage.noSelectedTitle"), resources.getString("manage.noSelectedHeader"));
         }

@@ -10,12 +10,13 @@ import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
-
 import java.io.IOException;
 import java.util.ResourceBundle;
 
 import static Controller.ManageCustomerController.customerToModifyIndex;
 import static Controller.ManageCustomerController.customerList;
+import static Controller.InactiveCustomersController.isFromInactiveCustomersController;
+import static Controller.InactiveCustomersController.customerListInactive;
 import static main.QueryManager.*;
 import Model.Customer;
 
@@ -42,15 +43,30 @@ public class NewEditCustomerController {
     private Button customerCancelButton;
     @FXML
     void CancelCustomer(){
-        try {
-            customerToModifyIndex = -1;
-            Stage stage = (Stage) customerCancelButton.getScene().getWindow();
-            Parent manage = FXMLLoader.load(getClass().getResource("../View/ManageCustomer.fxml"), resources);
-            Scene scene = new Scene(manage);
-            stage.setScene(scene);
-            stage.show();
-        }catch(IOException e){
-            System.out.println("Error Cancelling out of customer:" + e);
+        if(isFromInactiveCustomersController){
+            try {
+                customerToModifyIndex = -1;
+                isFromInactiveCustomersController = false;
+                Stage stage = (Stage) customerCancelButton.getScene().getWindow();
+                Parent manage = FXMLLoader.load(getClass().getResource("../View/InactiveCustomers.fxml"), resources);
+                Scene scene = new Scene(manage);
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                System.out.println("Error Cancelling out of customer:" + e);
+            }
+        }else {
+            try {
+                customerToModifyIndex = -1;
+                isFromInactiveCustomersController = false;
+                Stage stage = (Stage) customerCancelButton.getScene().getWindow();
+                Parent manage = FXMLLoader.load(getClass().getResource("../View/ManageCustomer.fxml"), resources);
+                Scene scene = new Scene(manage);
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                System.out.println("Error Cancelling out of customer:" + e);
+            }
         }
     }
     @FXML
@@ -128,13 +144,23 @@ public class NewEditCustomerController {
                     int updateAddressTable = updateAddressTable(editCustomer.getAddressId(), editCustomer.getPhone(), editCustomer.getAddress(), editCustomer.getAddress2(), editCustomer.getPostalCode());
                     System.out.println(updateAddressTable + "Record updated");
                 }
-
-                Stage stage = (Stage) customerSaveButton.getScene().getWindow();
-                Parent manage = FXMLLoader.load(getClass().getResource("../View/ManageCustomer.fxml"), resources);
-                Scene scene = new Scene(manage);
-                stage.setScene(scene);
-                stage.show();
-                customerToModifyIndex = -1;
+                if (isFromInactiveCustomersController) {
+                    customerToModifyIndex = -1;
+                    isFromInactiveCustomersController = false;
+                    Stage stage = (Stage) customerSaveButton.getScene().getWindow();
+                    Parent manage = FXMLLoader.load(getClass().getResource("../View/InactiveCustomers.fxml"), resources);
+                    Scene scene = new Scene(manage);
+                    stage.setScene(scene);
+                    stage.show();
+                }else {
+                    customerToModifyIndex = -1;
+                    isFromInactiveCustomersController = false;
+                    Stage stage = (Stage) customerSaveButton.getScene().getWindow();
+                    Parent manage = FXMLLoader.load(getClass().getResource("../View/ManageCustomer.fxml"), resources);
+                    Scene scene = new Scene(manage);
+                    stage.setScene(scene);
+                    stage.show();
+                }
             }
         }else{
             Alert alert = new Alert(AlertType.INFORMATION);
@@ -148,7 +174,12 @@ public class NewEditCustomerController {
     public void initialize() {
         if(customerToModifyIndex != -1){
             try {
-                Customer customerToModify = customerList.get(customerToModifyIndex);
+                Customer customerToModify;
+                if(isFromInactiveCustomersController){
+                    customerToModify = customerListInactive.get(customerToModifyIndex);
+                }else {
+                    customerToModify = customerList.get(customerToModifyIndex);
+                }
                 customerNameField.setText(customerToModify.getCustomerName());
                 customerPhoneField.setText(customerToModify.getPhone());
                 customerAddressField.setText(customerToModify.getAddress());

@@ -1,8 +1,6 @@
 package Controller;
 
 import Model.Appointment;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +12,6 @@ import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ResourceBundle;
 import static Controller.ReportScreenController.consultantId;
 import static main.QueryManager.getAppointmentsByConsultant;

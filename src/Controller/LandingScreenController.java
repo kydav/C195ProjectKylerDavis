@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
-import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 
 import java.util.ResourceBundle;
@@ -24,30 +23,42 @@ public class LandingScreenController {
     @FXML
     private Text userName;
     @FXML
-    void manageCustomersClicked(ActionEvent event) throws Exception {
-        Stage stage = (Stage) customersButton.getScene().getWindow();
-        Parent customers = FXMLLoader.load(getClass().getResource("../View/ManageCustomer.fxml"), resources);
-        Scene scene = new Scene(customers);
-        stage.setScene(scene);
-        stage.show();
+    void manageCustomersClicked(){
+        try {
+            Stage stage = (Stage) customersButton.getScene().getWindow();
+            Parent customers = FXMLLoader.load(getClass().getResource("../View/ManageCustomer.fxml"), resources);
+            Scene scene = new Scene(customers);
+            stage.setScene(scene);
+            stage.show();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     @FXML
-    void reportsButtonClicked(ActionEvent event) throws Exception{
-        Stage stage = (Stage) reportsButton.getScene().getWindow();
-        Parent reports = FXMLLoader.load(getClass().getResource("../View/ReportScreen.fxml"), resources);
-        Scene scene = new Scene(reports);
-        stage.setScene(scene);
-        stage.show();
+    void reportsButtonClicked(){
+        try {
+            Stage stage = (Stage) reportsButton.getScene().getWindow();
+            Parent reports = FXMLLoader.load(getClass().getResource("../View/ReportScreen.fxml"), resources);
+            Scene scene = new Scene(reports);
+            stage.setScene(scene);
+            stage.show();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     @FXML
-    void schedulingButtonClicked(ActionEvent event) throws Exception{
-        Stage stage = (Stage) schedulingButton.getScene().getWindow();
-        Parent schedules = FXMLLoader.load(getClass().getResource("../View/ManageAppointments.fxml"), resources);
-        Scene scene = new Scene(schedules);
-        stage.setScene(scene);
-        stage.show();
+    void schedulingButtonClicked(){
+        try {
+            Stage stage = (Stage) schedulingButton.getScene().getWindow();
+            Parent schedules = FXMLLoader.load(getClass().getResource("../View/ManageAppointments.fxml"), resources);
+            Scene scene = new Scene(schedules);
+            stage.setScene(scene);
+            stage.show();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
     public void initialize(){
         userName.setText(loggedUser);

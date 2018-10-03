@@ -1,12 +1,10 @@
 package Controller;
 
-import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.event.ActionEvent;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 import javafx.stage.Stage;
@@ -22,7 +20,6 @@ import static main.QueryManager.deleteTheCustomer;
 public class ManageCustomerController {
     public static ObservableList<Customer> customerList = FXCollections.observableArrayList();
     public static int customerToModifyIndex = -1;
-
     @FXML
     private TableView<Customer> manageCustomerTableView;
     @FXML
@@ -72,34 +69,46 @@ public class ManageCustomerController {
         }
     }
     @FXML
-    void editCustomer(ActionEvent event) throws IOException {
+    void editCustomer(){
         customerToModifyIndex = manageCustomerTableView.getSelectionModel().getSelectedIndex();
         if(customerToModifyIndex != -1) {
-            Stage stage = (Stage) manageCustomerEdit.getScene().getWindow();
-            Parent modifyCustomer = FXMLLoader.load(getClass().getResource("../View/NewEditCustomer.fxml"), resources);
-            Scene scene = new Scene(modifyCustomer);
-            stage.setScene(scene);
-            stage.show();
+            try {
+                Stage stage = (Stage) manageCustomerEdit.getScene().getWindow();
+                Parent modifyCustomer = FXMLLoader.load(getClass().getResource("../View/NewEditCustomer.fxml"), resources);
+                Scene scene = new Scene(modifyCustomer);
+                stage.setScene(scene);
+                stage.show();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
         }else{
             alertFunction(resources.getString("manage.noSelectedTitle"), resources.getString("manage.noSelectedHeader"));
         }
     }
     @FXML
-    void newCustomer(ActionEvent event) throws IOException{
-        customerToModifyIndex = -1;
-        Stage stage = (Stage) manageCustomerNew.getScene().getWindow();
-        Parent newCustomer = FXMLLoader.load(getClass().getResource("../View/NewEditCustomer.fxml"), resources);
-        Scene scene = new Scene(newCustomer);
-        stage.setScene(scene);
-        stage.show();
+    void newCustomer(){
+        try {
+            customerToModifyIndex = -1;
+            Stage stage = (Stage) manageCustomerNew.getScene().getWindow();
+            Parent newCustomer = FXMLLoader.load(getClass().getResource("../View/NewEditCustomer.fxml"), resources);
+            Scene scene = new Scene(newCustomer);
+            stage.setScene(scene);
+            stage.show();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
     @FXML
-    void cancelManageCustomer(ActionEvent event) throws IOException {
-        Stage stage = (Stage) manageCustomerCancel.getScene().getWindow();
-        Parent landing = FXMLLoader.load(getClass().getResource("../View/LandingScreen.fxml"), resources);
-        Scene scene = new Scene(landing);
-        stage.setScene(scene);
-        stage.show();
+    void cancelManageCustomer(){
+        try {
+            Stage stage = (Stage) manageCustomerCancel.getScene().getWindow();
+            Parent landing = FXMLLoader.load(getClass().getResource("../View/LandingScreen.fxml"), resources);
+            Scene scene = new Scene(landing);
+            stage.setScene(scene);
+            stage.show();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
     void alertFunction(String title, String header){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

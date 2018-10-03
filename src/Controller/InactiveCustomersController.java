@@ -1,8 +1,7 @@
 package Controller;
 
 import Model.Customer;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,10 +17,12 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 import static main.QueryManager.getInactiveCustomers;
+import static Controller.ManageCustomerController.customerToModifyIndex;
 
 public class InactiveCustomersController {
-    private ObservableList<Customer> customerList;
-    public static int customerToModifyIndex = -1;
+    public static ObservableList<Customer> customerListInactive = FXCollections.observableArrayList();
+    //public static int customerToModifyIndex = -1;
+    public static boolean isFromInactiveCustomersController;
     @FXML
     private ResourceBundle resources;
     @FXML
@@ -56,6 +57,7 @@ public class InactiveCustomersController {
     }
     @FXML
     void editInactive() {
+        isFromInactiveCustomersController = true;
         customerToModifyIndex = inactiveCustomerTableView.getSelectionModel().getSelectedIndex();
         if(customerToModifyIndex != -1) {
             try {
@@ -79,7 +81,7 @@ public class InactiveCustomersController {
     }
     public void initialize(){
         try{
-            customerList = getInactiveCustomers();
+            customerListInactive = getInactiveCustomers();
 
             idColumn.setCellValueFactory(cellData -> cellData.getValue().customerIdProperty().asObject());
             nameColumn.setCellValueFactory(cellData -> cellData.getValue().customerNameProperty());
@@ -87,7 +89,7 @@ public class InactiveCustomersController {
             cityColumn.setCellValueFactory(cellData -> cellData.getValue().cityProperty());
             postalCodeColumn.setCellValueFactory(cellData -> cellData.getValue().postalCodeProperty());
             countryColumn.setCellValueFactory(cellData -> cellData.getValue().countryProperty());
-            inactiveCustomerTableView.setItems(customerList);
+            inactiveCustomerTableView.setItems(customerListInactive);
         }catch(Exception e){
             e.printStackTrace();
             System.out.println("Error putting data into TableView");

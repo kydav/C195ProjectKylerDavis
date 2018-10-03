@@ -36,10 +36,8 @@ public class AppointmentsByTypeController {
     private TableColumn<Appointment, String> startColumn;
     @FXML
     private TableColumn<Appointment, String> endColumn;
-
     @FXML
     private Button cancelButton;
-
     @FXML
     void cancelAppointments() {
         try {
