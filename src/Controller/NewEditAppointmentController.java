@@ -111,14 +111,30 @@ public class NewEditAppointmentController {
             String endHourString = "";
 
             if (startPeriod.getValue().equals("PM")) {
-                startHourString = Integer.toString(Integer.parseInt(startHour.getValue()) + 12);
+                if(Integer.parseInt(startHour.getValue())== 12){
+                    startHourString = "12";
+                }else{
+                    startHourString = Integer.toString(Integer.parseInt(startHour.getValue()) + 12);
+                }
             } else {
-                startHourString = startHour.getValue();
+                if(Integer.parseInt(startHour.getValue()) == 12){
+                    startHourString = Integer.toString(Integer.parseInt(startHour.getValue()) + 12);
+                }else {
+                    startHourString = startHour.getValue();
+                }
             }
             if (endPeriod.getValue().equals("PM")) {
-                endHourString = Integer.toString(Integer.parseInt(endHour.getValue()) + 12);
+                if(Integer.parseInt(endHour.getValue()) == 12){
+                    endHourString = "12";
+                }else {
+                    endHourString = Integer.toString(Integer.parseInt(endHour.getValue()) + 12);
+                }
             } else {
-                endHourString = endHour.getValue();
+                if(Integer.parseInt(endHour.getValue()) == 12){
+                    endHourString = Integer.toString(Integer.parseInt(endHour.getValue()) + 12);
+                }else {
+                    endHourString = endHour.getValue();
+                }
             }
             if (Integer.parseInt(startHourString) == 24 || Integer.parseInt(endHourString) == 24) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -252,15 +268,24 @@ public class NewEditAppointmentController {
                 String startMinuteString = startTimeAsString.substring(3,5);
                 String endHourString = endTimeAsString.substring(0,2);
                 String endMinuteString = endTimeAsString.substring(3,5);
-                if(Integer.parseInt(startHourString) > 12){
-                    startHourString = Integer.toString(Integer.parseInt(startHourString)-12);
-                    startPeriod.getSelectionModel().select("PM");
+
+                if(Integer.parseInt(startHourString) >= 12){
+                    if(Integer.parseInt(startHourString) == 12){
+                        startPeriod.getSelectionModel().select("PM");
+                    }else {
+                        startHourString = Integer.toString(Integer.parseInt(startHourString) - 12);
+                        startPeriod.getSelectionModel().select("PM");
+                    }
                 }else{
                     startPeriod.getSelectionModel().select("AM");
                 }
-                if(Integer.parseInt(endHourString) > 12){
-                    endHourString = Integer.toString(Integer.parseInt(endHourString)-12);
-                    endPeriod.getSelectionModel().select("PM");
+                if(Integer.parseInt(endHourString) >= 12){
+                    if(Integer.parseInt(endHourString) == 12){
+                        endPeriod.getSelectionModel().select("PM");
+                    }else {
+                        endHourString = Integer.toString(Integer.parseInt(endHourString) - 12);
+                        endPeriod.getSelectionModel().select("PM");
+                    }
                 }else{
                     endPeriod.getSelectionModel().select("AM");
                 }

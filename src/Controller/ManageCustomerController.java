@@ -119,6 +119,7 @@ public class ManageCustomerController {
     public void populateTableView(){
         try{
             customerList = getCustomerTableView();
+            //Using Lambdas to shorten the amount of code needed to set up the tableview
             idColumn.setCellValueFactory(cellData -> cellData.getValue().customerIdProperty().asObject());
             nameColumn.setCellValueFactory(cellData -> cellData.getValue().customerNameProperty());
             phoneColumn.setCellValueFactory(cellData -> cellData.getValue().phoneProperty());

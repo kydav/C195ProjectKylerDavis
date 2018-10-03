@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.util.ResourceBundle;
 
 import static Controller.ReportScreenController.appointmentType;
 import static main.QueryManager.getAppointmentsByType;
+import static main.QueryManager.typeCount;
 
 public class AppointmentsByTypeController {
     @FXML
@@ -39,6 +41,8 @@ public class AppointmentsByTypeController {
     @FXML
     private Button cancelButton;
     @FXML
+    private Text countField;
+    @FXML
     void cancelAppointments() {
         try {
             Stage stage = (Stage) cancelButton.getScene().getWindow();
@@ -61,6 +65,7 @@ public class AppointmentsByTypeController {
             startColumn.setCellValueFactory(cellData -> cellData.getValue().startDateProperty());
             endColumn.setCellValueFactory(cellData -> cellData.getValue().endDateProperty());
             AppointmentsByTypeTableView.setItems(appointmentTypeList);
+            countField.setText(Integer.toString(typeCount));
         }catch(Exception e){
             e.printStackTrace();
             System.out.println("Error putting data into TableView");

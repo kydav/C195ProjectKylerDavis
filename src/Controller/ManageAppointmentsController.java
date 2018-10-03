@@ -156,6 +156,7 @@ public class ManageAppointmentsController {
     public void populateTableView(ObservableList<Appointment> appointmentListInput){
         try{
             appointmentList = appointmentListInput;
+            //Using Lambdas to shorten the amount of code needed to set up the tableview
             idColumn.setCellValueFactory(cellData -> cellData.getValue().appointmentIdProperty().asObject());
             nameColumn.setCellValueFactory(cellData -> cellData.getValue().customerNameProperty());
             titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());

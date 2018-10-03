@@ -5,6 +5,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="554.0" prefWidth="842.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AppointmentsByTypeController">
    <children>
@@ -23,5 +24,7 @@
             <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#cancelAppointments" text="%manage.cancelButton" />
          </buttons>
       </ButtonBar>
+      <Text layoutX="138.0" layoutY="525.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Count:" />
+      <Text fx:id="countField" layoutX="206.0" layoutY="525.0" strokeType="OUTSIDE" strokeWidth="0.0" />
    </children>
 </AnchorPane>

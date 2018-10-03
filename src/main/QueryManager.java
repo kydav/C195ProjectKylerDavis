@@ -22,6 +22,7 @@ import Model.Appointment;
 
 public class QueryManager{
     public static String loggedUser;
+    public static int typeCount;
 
     public static String userValidation(String userName, String password)throws ParseException{
         try {
@@ -359,15 +360,23 @@ public class QueryManager{
                 String startPeriod;
                 String endPeriod;
 
-                if(Integer.parseInt(startHourString) > 12){
-                    startHourString = Integer.toString(Integer.parseInt(startHourString)-12);
-                    startPeriod ="PM";
+                if(Integer.parseInt(startHourString) >= 12){
+                    if(Integer.parseInt(startHourString) == 12){
+                        startPeriod ="PM";
+                    }else {
+                        startHourString = Integer.toString(Integer.parseInt(startHourString) - 12);
+                        startPeriod = "PM";
+                    }
                 }else{
                     startPeriod = "AM";
                 }
-                if(Integer.parseInt(endHourString) > 12){
-                    endHourString = Integer.toString(Integer.parseInt(endHourString)-12);
-                    endPeriod = "PM";
+                if(Integer.parseInt(endHourString) >= 12){
+                    if(Integer.parseInt(endHourString) == 12){
+                        endPeriod = "PM";
+                    }else {
+                        endHourString = Integer.toString(Integer.parseInt(endHourString) - 12);
+                        endPeriod = "PM";
+                    }
                 }else{
                     endPeriod = "AM";
                 }
@@ -911,6 +920,7 @@ public class QueryManager{
         return userId;
     }
     public static ObservableList<Appointment> getAppointmentsByType(String type) throws ParseException {
+        typeCount = 0;
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         String allAppointment =
                 "SELECT U04EE1.appointment.appointmentid, U04EE1.user.userName, U04EE1.appointment.customerId, U04EE1.appointment.userid, " +
@@ -925,6 +935,7 @@ public class QueryManager{
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(allAppointment);
             while (rs.next()) {
+                typeCount = typeCount +1;
                 Appointment current = new Appointment();
                 current.setAppointmentId(new SimpleIntegerProperty(Integer.parseInt(rs.getString("appointmentId"))));
                 current.setCustomerId(new SimpleIntegerProperty(Integer.parseInt(rs.getString("customerId"))));
